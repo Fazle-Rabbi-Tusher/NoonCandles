@@ -1,3 +1,4 @@
+{%- if settings.cart_type == 'drawer' -%}
 <div id="CartDrawer" class="drawer drawer--right cart-drawer" aria-hidden="true">
   <div class="drawer__overlay" data-close></div>
   <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
@@ -63,6 +64,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
