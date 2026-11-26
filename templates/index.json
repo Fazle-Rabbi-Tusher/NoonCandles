@@ -477,10 +477,10 @@
         "button_label": "Mix & Match",
         "button_link": "shopify://collections/all",
         "button_style": "outline",
-        "bg": "#DDE9C6",
-        "ink": "#2E3A22",
-        "button_bg": "#2E3A22",
-        "button_ink": "#DDE9C6",
+        "bg": "#829266",
+        "ink": "#4B0B19",
+        "button_bg": "#4B0B19",
+        "button_ink": "#F8EED5",
         "image": "shopify://shop_images/noon-bubble-jars-table.jpg"
       }
     },

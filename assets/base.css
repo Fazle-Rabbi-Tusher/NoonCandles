@@ -776,7 +776,7 @@ html.no-js [data-reveal] { opacity: 1 !important; transform: none !important; }
 .strip__art { height: 100%; display: grid; place-items: center; }
 .strip__art .candle-art { height: 82%; width: auto; }
 .strip__art--1 { background: linear-gradient(180deg, #3a0812, #b98579); }
-.strip__art--2 { background: linear-gradient(180deg, #4c6a35, #dde9c6); }
+.strip__art--2 { background: linear-gradient(180deg, var(--c-matcha-deep), var(--c-matcha)); }
 .strip__art--3 { background: linear-gradient(180deg, #e8d3ad, #fff7e8); }
 .strip__art--0 { background: linear-gradient(180deg, #1e0a10, #6b2333); }
 @media (max-width: 749px) { .strip__row { grid-auto-flow: row; grid-template-columns: 1fr 1fr; height: auto; } .strip__cell { aspect-ratio: 1; } }

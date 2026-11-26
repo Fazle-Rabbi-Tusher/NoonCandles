@@ -17,7 +17,7 @@
       { "type": "color", "id": "color_cherry", "label": "Cherry Red (primary / text)", "default": "#4B0B19" },
       { "type": "color", "id": "color_white", "label": "Natural White (page background)", "default": "#F0EDE6" },
       { "type": "color", "id": "color_cream", "label": "Whipped Cream (soft panels)", "default": "#F8EED5" },
-      { "type": "color", "id": "color_matcha", "label": "Matcha Green (accent)", "default": "#BED698" },
+      { "type": "color", "id": "color_matcha", "label": "Matcha Green (accent)", "default": "#829266" },
       {
         "type": "checkbox",
         "id": "background_glow",

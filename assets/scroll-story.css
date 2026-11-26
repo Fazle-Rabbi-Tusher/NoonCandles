@@ -148,7 +148,7 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
 .orb::before { background: radial-gradient(ellipse 60% 35% at 50% 10%, rgba(255, 255, 255, 0.18), transparent 70%); }
 .orb::after {
   padding: 1.5px;
-  background: conic-gradient(from 200deg, transparent 0 22%, rgba(190, 214, 152, 0.9) 30%, rgba(248, 238, 213, 0.95) 35%, rgba(255, 170, 90, 0.9) 40%, transparent 48% 70%, rgba(190, 214, 152, 0.5) 76%, transparent 84% 100%);
+  background: conic-gradient(from 200deg, transparent 0 22%, rgba(var(--c-matcha-rgb), 0.9) 30%, rgba(248, 238, 213, 0.95) 35%, rgba(255, 170, 90, 0.9) 40%, transparent 48% 70%, rgba(var(--c-matcha-rgb), 0.5) 76%, transparent 84% 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
