@@ -22,6 +22,52 @@
   endif
   assign variant = product.selected_or_first_available_variant
 -%}
+{%- if style == 'tile' -%}
+  {%- liquid
+    assign tile_color = product.metafields.custom.page_color.value
+    assign tone = index | default: 0 | modulo: 4
+    assign sub = product.metafields.custom.tagline.value | default: product.type | default: product.vendor
+  -%}
+  <article class="tile tile--tone-{{ tone }}" style="--i: {{ index | default: 0 }};{% if tile_color != blank %} --tile-top: {{ tile_color | color_darken: 10 }}; --tile-bottom: {{ tile_color | color_lighten: 25 }};{% endif %}">
+    <a class="tile__card" href="{{ product.url }}">
+      {%- if on_sale -%}
+        {%- assign save = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+        <span class="tile__badge">{{ 'products.product.save_percent' | t: percent: save }}</span>
+      {%- elsif product.available == false -%}
+        <span class="tile__badge">{{ 'products.product.sold_out' | t }}</span>
+      {%- endif -%}
+      <span class="tile__img">
+        {%- if product.featured_media -%}
+          {%- assign tile_alt = product.featured_media.alt | default: product.title | escape -%}
+          {{ product.featured_media | image_url: width: 800 | image_tag: loading: 'lazy', sizes: sizes, widths: '300, 500, 800', alt: tile_alt }}
+        {%- else -%}
+          {% render 'candle-art', id: product.id %}
+        {%- endif -%}
+      </span>
+      <span class="tile__label">
+        <span class="tile__name">{{ product.title | escape }}</span>
+        {%- if sub != blank -%}<span class="tile__sub">{{ sub | escape }}</span>{%- endif -%}
+      </span>
+    </a>
+    <div class="tile__foot">
+      <span class="tile__price">
+        {%- if on_sale -%}<s>{{ product.compare_at_price | money }}</s> {% endif -%}
+        {%- if product.price_varies -%}{{ product.price_min | money }} – {{ product.price_max | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+      </span>
+      {%- if quick and product.available -%}
+        {%- if product.has_only_default_variant -%}
+          {%- form 'product', product, data-product-form: '', novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button class="tile__quick" type="submit"><span>{{ 'products.product.quick_add_html' | t }}</span><span class="spinner" aria-hidden="true"></span></button>
+          {%- endform -%}
+        {%- else -%}
+          <a class="tile__quick" href="{{ product.url }}"><span>{{ 'products.product.quick_add_html' | t }}</span></a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </article>
+{%- else -%}
 <article class="product-card" style="--i: {{ index | default: 0 }}">
   <a class="product-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
     <span class="badges">
@@ -85,3 +131,4 @@
     </div>
   {%- endif -%}
 </article>
+{%- endif -%}

@@ -6,22 +6,22 @@
         "stat-1": {
           "type": "stat",
           "settings": {
-            "label": "Scents in rotation",
-            "value": "24"
+            "label": "Dessert designs",
+            "value": "20+"
           }
         },
         "stat-2": {
           "type": "stat",
           "settings": {
-            "label": "Slow, clean burn",
-            "value": "Up to 60 h"
+            "label": "Made",
+            "value": "By hand, in small batches"
           }
         },
         "stat-3": {
           "type": "stat",
           "settings": {
             "label": "Wax",
-            "value": "100% soy · hand-poured"
+            "value": "Soy blend · cotton wicks"
           }
         }
       },
@@ -31,15 +31,15 @@
         "stat-3"
       ],
       "settings": {
-        "length": 750,
-        "reveal_shape": "arch",
-        "hero_eyebrow": "Hand-poured candles",
+        "length": 800,
+        "hero_eyebrow": "Hand-poured dessert candles",
         "hero_heading": "A little light isn’t found. <em>It’s poured.</em>",
-        "hero_text": "Made by hand, one small batch at a time.",
-        "statement_heading": "Every candle is melted, scented, poured and finished by hand.",
-        "statement_text": "No two are quite the same — that’s the point.",
+        "hero_text": "Scroll to light the candle.",
+        "statement_heading": "Every candle is whipped, piped and finished by hand.",
+        "statement_text": "Sweet enough to eat. Please don’t.",
+        "mark_caption": "Our flame is the dot of the ن.",
         "final_eyebrow": "What we make",
-        "final_heading": "Small-batch candles. From the first pour to your front door.",
+        "final_heading": "Dessert candles. From the first pour to your front door.",
         "final_button_label": "Shop candles",
         "final_button_link": "shopify://collections/all"
       }
@@ -382,10 +382,42 @@
         "button": "Subscribe",
         "small": "No spam. Unsubscribe anytime."
       }
+    },
+    "banner-sweet": {
+      "type": "split-banner",
+      "settings": {
+        "layout": "image-left",
+        "heading": "Sweet enough to eat. <em>Please don’t.</em>",
+        "text": "Whipped, piped and finished by hand — dessert candles for every table.",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/all",
+        "button_style": "solid",
+        "bg": "#2A0710",
+        "ink": "#F8EED5",
+        "button_bg": "#C97B84",
+        "button_ink": "#FFFFFF"
+      }
+    },
+    "banner-together": {
+      "type": "split-banner",
+      "settings": {
+        "layout": "image-left",
+        "heading": "Better Together",
+        "text": "Build a dessert table — mix coupes, scoops and strawberries.",
+        "button_label": "Mix & Match",
+        "button_link": "shopify://collections/all",
+        "button_style": "outline",
+        "bg": "#DDE9C6",
+        "ink": "#2E3A22",
+        "button_bg": "#2E3A22",
+        "button_ink": "#DDE9C6"
+      }
     }
   },
   "order": [
     "story",
+    "banner-sweet",
+    "banner-together",
     "hero",
     "highlights",
     "shop",

@@ -3,24 +3,242 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "title": { "type": "title", "settings": { "show_collection": true, "show_vendor": false } },
-        "price": { "type": "price", "settings": {} },
-        "notes": { "type": "notes", "settings": { "heading": "Scent notes", "tag_prefix": "note:" } },
-        "variant_picker": { "type": "variant_picker", "settings": {} },
-        "buy_buttons": { "type": "buy_buttons", "settings": { "show_quantity": true, "show_dynamic_checkout": true } },
-        "inventory": { "type": "inventory", "settings": { "threshold": 5 } },
-        "stats": { "type": "stats", "settings": { "stat_1_value": "60 h", "stat_1_label": "burn time", "stat_2_value": "Soy", "stat_2_label": "natural wax", "stat_3_value": "250 g", "stat_3_label": "net weight" } },
-        "description": { "type": "description", "settings": {} },
-        "care": { "type": "collapsible", "settings": { "heading": "Candle care", "content": "<p>Burn for 2–3 hours the first time so the wax melts to the edge. Trim the wick to 5 mm before each light. Never leave a burning candle unattended.</p>", "open": false } },
-        "shipping": { "type": "collapsible", "settings": { "heading": "Shipping & returns", "content": "<p>Orders are packed within 1–3 business days. Because every candle is handmade, please allow for small variations in colour and finish.</p>", "open": false } }
+        "title": {
+          "type": "title",
+          "settings": {
+            "fallback_tagline": "Smells like a little celebration."
+          }
+        },
+        "notes": {
+          "type": "notes",
+          "settings": {
+            "tag_prefix": "note:"
+          }
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false
+          }
+        },
+        "tab-fragrance": {
+          "type": "tab",
+          "settings": {
+            "label": "Fragrance",
+            "heading": "Scent notes",
+            "source": "description",
+            "content": "<p>Hand-poured in small batches with a soy wax blend and phthalate-free fragrance.</p>"
+          }
+        },
+        "tab-sizing": {
+          "type": "tab",
+          "settings": {
+            "label": "Sizing",
+            "heading": "Size & burn time",
+            "source": "text",
+            "content": "<p>Each candle is sculpted by hand, so size and finish vary slightly. Burn time is listed on each design.</p>"
+          }
+        },
+        "tab-shipping": {
+          "type": "tab",
+          "settings": {
+            "label": "Shipping",
+            "heading": "Shipping",
+            "source": "text",
+            "content": "<p>Orders are packed within 1–3 business days in gift-ready packaging.</p>"
+          }
+        },
+        "tab-care": {
+          "type": "tab",
+          "settings": {
+            "label": "Care",
+            "heading": "Candle care",
+            "source": "text",
+            "content": "<p>Burn on a heat-safe surface, trim the wick to 5 mm and never leave a burning candle unattended. Dessert candles are decorative wax — not food.</p>"
+          }
+        }
       },
-      "block_order": ["title", "price", "notes", "variant_picker", "buy_buttons", "inventory", "stats", "description", "care", "shipping"],
-      "settings": { "update_url": true }
+      "block_order": [
+        "title",
+        "notes",
+        "variants",
+        "buy",
+        "tab-fragrance",
+        "tab-sizing",
+        "tab-shipping",
+        "tab-care"
+      ],
+      "settings": {
+        "update_url": true,
+        "bg_top": "#3A0812",
+        "bg_bottom": "#B98579",
+        "ink": "light"
+      }
+    },
+    "strip": {
+      "type": "image-strip",
+      "blocks": {
+        "p1": {
+          "type": "image",
+          "settings": {}
+        },
+        "p2": {
+          "type": "image",
+          "settings": {}
+        },
+        "p3": {
+          "type": "image",
+          "settings": {}
+        },
+        "p4": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "source": "product",
+        "height": 18
+      }
+    },
+    "features": {
+      "type": "icon-features",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "pour",
+            "line_1": "Hand Poured",
+            "line_2": "In small batches"
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "star",
+            "line_1": "Phthalate-Free",
+            "line_2": "Fragrance"
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "line_1": "Soy Blend",
+            "line_2": "Wax"
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "no",
+            "line_1": "No Additives or",
+            "line_2": "Preservatives"
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "icon": "cotton",
+            "line_1": "Cotton Core",
+            "line_2": "Wicks"
+          }
+        },
+        "f6": {
+          "type": "feature",
+          "settings": {
+            "icon": "paw",
+            "line_1": "Cruelty-Free",
+            "line_2": "Always"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "settings": {
+        "heading_1": "Playful Shapes",
+        "heading_2": "Quality Ingredients",
+        "bg": "#DDE9C6",
+        "ink": "#2E3A22"
+      }
+    },
+    "care": {
+      "type": "candle-care",
+      "blocks": {
+        "c1": {
+          "type": "step",
+          "settings": {
+            "title": "Be Safe",
+            "text": "Always follow the safety instructions when burning candles."
+          }
+        },
+        "c2": {
+          "type": "step",
+          "settings": {
+            "title": "Trim It",
+            "text": "Trim the wick to 5 mm before every burn for a clean, steady flame."
+          }
+        },
+        "c3": {
+          "type": "step",
+          "settings": {
+            "title": "Melt It",
+            "text": "Let the wax melt to the edge of the glass the first time. Don’t burn for more than 3 hours at once."
+          }
+        },
+        "c4": {
+          "type": "step",
+          "settings": {
+            "title": "Snuff It",
+            "text": "Never leave a candle burning unattended or within reach of children and pets."
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "Set the mood safely",
+        "dark_bg": "#1E0A10",
+        "panel_bg": "#F8EED5",
+        "panel_ink": "#4B0B19"
+      }
     },
     "related": {
       "type": "product-recommendations",
-      "settings": { "heading": "You might also <em>love</em>", "limit": 4, "columns": 4 }
+      "settings": {
+        "heading": "You might also <em>love</em>",
+        "style": "tiles",
+        "limit": 3,
+        "columns": 3,
+        "bg": "#2B3320",
+        "ink": "#F8EED5"
+      }
     }
   },
-  "order": ["main", "related"]
+  "order": [
+    "main",
+    "strip",
+    "features",
+    "care",
+    "related"
+  ]
 }

@@ -391,15 +391,31 @@
       const idInput = $('form[data-product-form] input[name="id"]', product);
       const picker = $('[data-variant-picker]', product);
 
-      // Gallery thumbs
+      // Gallery: thumbs / dashes, optional swipeable track
       const slides = $$('[data-media-id]', product).filter((el) => el.classList.contains('media-slide'));
       const thumbs = $$('[data-thumb]', product);
-      const showMedia = (mediaId) => {
-        if (!mediaId) return;
+      const track = $('[data-gallery-track]', product);
+      const markCurrent = (mediaId) => {
         slides.forEach((s) => s.classList.toggle('is-active', s.dataset.mediaId === String(mediaId)));
         thumbs.forEach((t) => t.setAttribute('aria-current', t.dataset.thumb === String(mediaId)));
       };
+      const showMedia = (mediaId) => {
+        if (!mediaId) return;
+        markCurrent(mediaId);
+        const slide = slides.find((s) => s.dataset.mediaId === String(mediaId));
+        if (track && slide) track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+      };
       thumbs.forEach((t) => t.addEventListener('click', () => showMedia(t.dataset.thumb)));
+      if (track) {
+        let st;
+        track.addEventListener('scroll', () => {
+          clearTimeout(st);
+          st = setTimeout(() => {
+            const i = Math.round(track.scrollLeft / (track.clientWidth || 1));
+            if (slides[i]) markCurrent(slides[i].dataset.mediaId);
+          }, 80);
+        }, { passive: true });
+      }
 
       if (!picker) return;
       const fieldsets = $$('fieldset', picker);
@@ -501,8 +517,31 @@
     if (sel) sel.form.submit();
   });
 
+  /* ------------------------------------------- Scroll progress (--p) */
+  // Sets --p (0 → 1) on [data-scroll-progress] while it scrolls through the viewport (sticky scenes).
+  const progressEls = new Set();
+  let progressTick = false;
+  function updateProgress() {
+    progressTick = false;
+    const vh = window.innerHeight;
+    progressEls.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
+      el.style.setProperty('--p', p.toFixed(4));
+    });
+  }
+  function initProgress(root = document) {
+    $$('[data-scroll-progress]', root).forEach((el) => progressEls.add(el));
+    updateProgress();
+  }
+  window.addEventListener('scroll', () => {
+    if (!progressTick && progressEls.size) { progressTick = true; requestAnimationFrame(updateProgress); }
+  }, { passive: true });
+
   /* ------------------------------------------------------------ Init */
   function init(root = document) {
+    initProgress(root);
     initReveal(root);
     initCounters(root);
     initTabs(root);

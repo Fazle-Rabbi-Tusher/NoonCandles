@@ -1,0 +1,62 @@
+{%- assign s = section.settings -%}
+<section class="split split--{{ s.layout }}" style="--split-bg: {{ s.bg }}; --split-ink: {{ s.ink }}; --split-btn: {{ s.button_bg }}; --split-btn-ink: {{ s.button_ink }};">
+  <div class="split__media" data-reveal="fade">
+    {%- if s.image != blank -%}
+      {%- assign split_alt = s.image.alt | default: s.heading | escape -%}
+      {{ s.image | image_url: width: 1800 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 55vw, 100vw', widths: '600, 900, 1200, 1800', alt: split_alt }}
+    {%- else -%}
+      <div class="split__art">{% render 'candle-art', id: section.id %}</div>
+    {%- endif -%}
+  </div>
+  <div class="split__content">
+    <div class="split__copy" data-reveal>
+      <h2 class="split__heading">{{ s.heading }}</h2>
+      {%- if s.text != blank -%}<p class="split__text">{{ s.text | escape }}</p>{%- endif -%}
+      {%- if s.button_label != blank -%}
+        <a class="btn-round btn-round--{{ s.button_style }}" href="{{ s.button_link | default: routes.all_products_collection_url }}">
+          <span>{{ s.button_label | escape }}</span>
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "image-left", "label": "Image left" },
+        { "value": "image-right", "label": "Image right" },
+        { "value": "overlay", "label": "Text over image" }
+      ],
+      "default": "image-left"
+    },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Sweet enough to eat. <em>Please don’t.</em>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Whipped, piped and finished by hand — dessert candles for every table." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "solid", "label": "Solid circle" },
+        { "value": "outline", "label": "Outline circle" }
+      ],
+      "default": "solid"
+    },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#2A0710" },
+    { "type": "color", "id": "ink", "label": "Text", "default": "#F8EED5" },
+    { "type": "color", "id": "button_bg", "label": "Button colour", "default": "#C97B84" },
+    { "type": "color", "id": "button_ink", "label": "Button text", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "Split banner" }]
+}
+{% endschema %}

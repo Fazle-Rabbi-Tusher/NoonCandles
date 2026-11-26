@@ -1,0 +1,55 @@
+{%- liquid
+  assign s = section.settings
+  assign use_product = false
+  if s.source == 'product' and product and product.media.size > 1
+    assign use_product = true
+  endif
+-%}
+<section class="strip" style="--strip-h: {{ s.height }}vw">
+  <div class="strip__row">
+    {%- if use_product -%}
+      {%- for media in product.media offset: 1 limit: 4 -%}
+        <div class="strip__cell" data-reveal="fade" style="--reveal-delay: {{ forloop.index0 | times: 80 }}">
+          {{ media.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '25vw', alt: '' }}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        <div class="strip__cell" data-reveal="fade" style="--reveal-delay: {{ forloop.index0 | times: 80 }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '25vw', alt: block.settings.image.alt }}
+          {%- else -%}
+            <div class="strip__art strip__art--{{ forloop.index | modulo: 4 }}">{% render 'candle-art', id: block.id %}</div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Photo strip",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Photos",
+      "options": [
+        { "value": "product", "label": "Product photos 2–5 (on product pages)" },
+        { "value": "blocks", "label": "Photos below" }
+      ],
+      "default": "product",
+      "info": "Falls back to the photos below when a product has only one image."
+    },
+    { "type": "range", "id": "height", "label": "Height", "min": 10, "max": 40, "step": 1, "unit": "vw", "default": 18 }
+  ],
+  "blocks": [
+    { "type": "image", "name": "Photo", "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }] }
+  ],
+  "presets": [
+    { "name": "Photo strip", "settings": { "source": "blocks" }, "blocks": [{ "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }] }
+  ]
+}
+{% endschema %}

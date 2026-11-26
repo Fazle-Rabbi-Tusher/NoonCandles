@@ -1,30 +1,36 @@
 {%- comment -%}
-  Scroll story: a scroll-scrubbed, frame-by-frame sequence.
-  Hero orbs → statement panel → shape reveal → one orb → splits into two → many orbs + stats.
-  Timeline lives in assets/scroll-story.js; visuals in assets/scroll-story.css.
+  Scroll story — a burning candle, scrubbed frame by frame by scroll.
+  1 unlit candle + headline → 2 flame ignites, room warms → 3 zoom into the flame (statement)
+  → 4 light floods the screen, the Noon ن appears (the flame is its dot)
+  → 5 the light divides into two flames that drift apart → 6 a cluster of glowing orbs (your photos) + stats.
+  Timeline: assets/scroll-story.js · visuals: assets/scroll-story.css · candle drawing: snippets/candle-art.liquid
 {%- endcomment -%}
 {{ 'scroll-story.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'scroll-story.js' | asset_url }}" defer></script>
 
-{%- liquid
-  assign s = section.settings
-  assign shape = s.reveal_shape | default: 'arch'
--%}
+{%- assign s = section.settings -%}
 <section
-  class="story story--{{ shape }}"
+  class="story"
   data-story
   style="--story-length: {{ s.length }}vh"
   aria-label="{{ s.hero_heading | strip_html | escape }}"
 >
   <div class="story__stage" data-story-stage>
-    {%- comment -%} Layer 1: gradient backdrop {%- endcomment -%}
     <div class="story__bg" aria-hidden="true"></div>
+    <div class="story__warm" data-layer="warm" aria-hidden="true"></div>
 
-    {%- comment -%} Layer 2: hero orbs {%- endcomment -%}
-    <div class="story__orb orb orb--dark" data-orb="h1" aria-hidden="true"></div>
-    <div class="story__orb orb orb--light" data-orb="h2" aria-hidden="true"></div>
+    {%- comment -%} background bokeh {%- endcomment -%}
+    {%- for i in (1..5) -%}
+      <div class="story__orb orb orb--bokeh" data-orb="k{{ i }}" aria-hidden="true"></div>
+    {%- endfor -%}
 
-    {%- comment -%} Layer 3: hero copy {%- endcomment -%}
+    {%- comment -%} flame glow + candle {%- endcomment -%}
+    <div class="story__glow" data-layer="glow" aria-hidden="true"></div>
+    <div class="story__candle" data-layer="candle" aria-hidden="true">
+      {% render 'candle-art', id: 'story' %}
+    </div>
+
+    {%- comment -%} 1 · hero copy {%- endcomment -%}
     <div class="story__hero" data-layer="hero">
       {%- if s.hero_eyebrow != blank -%}<span class="story__eyebrow">{{ s.hero_eyebrow | escape }}</span>{%- endif -%}
       <h2 class="story__title">{{ s.hero_heading }}</h2>
@@ -34,28 +40,44 @@
       {% render 'icon', name: 'arrow-right' %}
     </button>
 
-    {%- comment -%} Layer 4: solid panel with statement {%- endcomment -%}
-    <div class="story__panel" data-layer="panel">
-      <div class="story__statement" data-layer="statement">
-        <h2 class="story__title story__title--md">{{ s.statement_heading }}</h2>
-        {%- if s.statement_text != blank -%}<p class="story__sub">{{ s.statement_text | escape }}</p>{%- endif -%}
-      </div>
+    {%- comment -%} 3 · statement over the flame {%- endcomment -%}
+    <div class="story__statement" data-layer="statement">
+      <h2 class="story__title story__title--md">{{ s.statement_heading }}</h2>
+      {%- if s.statement_text != blank -%}<p class="story__sub">{{ s.statement_text | escape }}</p>{%- endif -%}
     </div>
 
-    {%- comment -%} Layer 5: shape reveal with the main orbs inside {%- endcomment -%}
-    <div class="story__reveal" data-layer="reveal" aria-hidden="true">
-      <div class="story__bg story__bg--reveal"></div>
+    {%- comment -%} 4–6 · light floods the screen {%- endcomment -%}
+    <div class="story__fill" data-layer="fill" aria-hidden="true">
+      <div class="story__dusk" data-layer="dusk"></div>
       <div class="story__dim" data-layer="dim"></div>
-      <div class="story__orb orb orb--light" data-orb="b"></div>
-      <div class="story__orb orb orb--dark" data-orb="a">
-        <span class="story__mark" data-layer="mark">{% render 'logo', variant: 'mark' %}</span>
+
+      <div class="story__mark" data-layer="mark">
+        {% render 'logo', variant: 'mark' %}
+        {%- if s.mark_caption != blank -%}<p class="story__mark-caption">{{ s.mark_caption | escape }}</p>{%- endif -%}
       </div>
+
+      <div class="story__orb orb orb--lit" data-orb="b"><span class="orb__flame"></span></div>
+      <div class="story__orb orb orb--lit" data-orb="a"><span class="orb__flame"></span></div>
+
       {%- for i in (1..10) -%}
-        <div class="story__orb orb orb--{% cycle 'dark', 'light', 'dark', 'dark', 'light' %} orb--small" data-orb="s{{ i }}"></div>
+        {%- liquid
+          assign photo = nil
+          if i <= 6
+            assign key = 'photo_' | append: i
+            assign photo = s[key]
+          endif
+        -%}
+        <div class="story__orb orb {% if photo %}orb--photo{% else %}orb--lit orb--small{% endif %}" data-orb="s{{ i }}">
+          {%- if photo -%}
+            {{ photo | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300, 500, 700', sizes: '40vw', alt: '' }}
+          {%- else -%}
+            <span class="orb__flame"></span>
+          {%- endif -%}
+        </div>
       {%- endfor -%}
     </div>
 
-    {%- comment -%} Layer 6: final copy + stats {%- endcomment -%}
+    {%- comment -%} 6 · finale {%- endcomment -%}
     <div class="story__final" data-layer="final">
       <div class="story__final-copy">
         {%- if s.final_eyebrow != blank -%}<span class="story__eyebrow story__eyebrow--dot">{{ s.final_eyebrow | escape }}</span>{%- endif -%}
@@ -69,7 +91,7 @@
       {%- if section.blocks.size > 0 -%}
         <dl class="story__stats">
           {%- for block in section.blocks -%}
-            <div class="story__stat" data-layer="stat-{{ forloop.index }}" {{ block.shopify_attributes }}>
+            <div class="story__stat" {{ block.shopify_attributes }}>
               <dt>{{ block.settings.label | escape }}</dt>
               <dd>{{ block.settings.value | escape }}</dd>
             </div>
@@ -88,7 +110,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "A scroll-driven animation: scrolling plays it forward frame by frame. Works best as the first section on the home page."
+      "content": "A candle that lights as you scroll. Works best as the first section on the home page."
     },
     {
       "type": "range",
@@ -99,48 +121,50 @@
       "max": 1200,
       "step": 50,
       "unit": "vh",
-      "default": 750
+      "default": 800
     },
-    {
-      "type": "select",
-      "id": "reveal_shape",
-      "label": "Reveal shape",
-      "options": [
-        { "value": "arch", "label": "Arch (candle jar)" },
-        { "value": "diamond", "label": "Rounded diamond" }
-      ],
-      "default": "arch"
-    },
-    { "type": "header", "content": "1 · Hero" },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Hand-poured candles" },
+    { "type": "header", "content": "1 · Unlit candle" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Hand-poured dessert candles" },
     { "type": "inline_richtext", "id": "hero_heading", "label": "Heading", "default": "A little light isn’t found. <em>It’s poured.</em>" },
-    { "type": "text", "id": "hero_text", "label": "Text", "default": "Made by hand, one small batch at a time." },
-    { "type": "header", "content": "2 · Statement" },
+    { "type": "text", "id": "hero_text", "label": "Text", "default": "Scroll to light the candle." },
+    { "type": "header", "content": "2 · Into the flame" },
     {
       "type": "inline_richtext",
       "id": "statement_heading",
       "label": "Heading",
-      "default": "Every candle is melted, scented, poured and finished by hand."
+      "default": "Every candle is whipped, piped and finished by hand."
     },
-    { "type": "text", "id": "statement_text", "label": "Text", "default": "No two are quite the same — that’s the point." },
+    { "type": "text", "id": "statement_text", "label": "Text", "default": "Sweet enough to eat. Please don’t." },
+    { "type": "text", "id": "mark_caption", "label": "Caption under the logo", "default": "Our flame is the dot of the ن." },
     { "type": "header", "content": "3 · Finale" },
     { "type": "text", "id": "final_eyebrow", "label": "Eyebrow", "default": "What we make" },
     {
       "type": "inline_richtext",
       "id": "final_heading",
       "label": "Heading",
-      "default": "Small-batch candles. From the first pour to your front door."
+      "default": "Dessert candles. From the first pour to your front door."
     },
     { "type": "text", "id": "final_button_label", "label": "Button label", "default": "Shop candles" },
-    { "type": "url", "id": "final_button_link", "label": "Button link" }
+    { "type": "url", "id": "final_button_link", "label": "Button link" },
+    {
+      "type": "header",
+      "content": "Photos in the final orbs",
+      "info": "Square-ish product photos work best. Empty slots show glowing flames."
+    },
+    { "type": "image_picker", "id": "photo_1", "label": "Photo 1 (large, left)" },
+    { "type": "image_picker", "id": "photo_2", "label": "Photo 2" },
+    { "type": "image_picker", "id": "photo_3", "label": "Photo 3" },
+    { "type": "image_picker", "id": "photo_4", "label": "Photo 4" },
+    { "type": "image_picker", "id": "photo_5", "label": "Photo 5" },
+    { "type": "image_picker", "id": "photo_6", "label": "Photo 6" }
   ],
   "blocks": [
     {
       "type": "stat",
       "name": "Stat",
       "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Scents in rotation" },
-        { "type": "text", "id": "value", "label": "Value", "default": "24" }
+        { "type": "text", "id": "label", "label": "Label", "default": "Dessert designs" },
+        { "type": "text", "id": "value", "label": "Value", "default": "20+" }
       ]
     }
   ],
@@ -148,9 +172,9 @@
     {
       "name": "Scroll story",
       "blocks": [
-        { "type": "stat", "settings": { "label": "Scents in rotation", "value": "24" } },
-        { "type": "stat", "settings": { "label": "Slow, clean burn", "value": "Up to 60 h" } },
-        { "type": "stat", "settings": { "label": "Wax", "value": "100% soy · hand-poured" } }
+        { "type": "stat", "settings": { "label": "Dessert designs", "value": "20+" } },
+        { "type": "stat", "settings": { "label": "Made", "value": "By hand, in small batches" } },
+        { "type": "stat", "settings": { "label": "Wax", "value": "Soy blend · cotton wicks" } }
       ]
     }
   ]

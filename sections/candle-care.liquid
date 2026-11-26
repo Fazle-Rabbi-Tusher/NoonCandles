@@ -1,0 +1,110 @@
+{%- assign s = section.settings -%}
+<section
+  class="care"
+  data-scroll-progress
+  style="--care-dark: {{ s.dark_bg }}; --care-panel: {{ s.panel_bg }}; --care-ink: {{ s.panel_ink }}; --care-length: {{ section.blocks.size | times: 45 | plus: 100 }}vh"
+>
+  <div class="care__grid">
+    <div class="care__visual">
+      <div class="care__sticky">
+        <p class="care__eyebrow">{{ s.eyebrow | escape }}</p>
+        {%- if s.image != blank -%}
+          {{ s.image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'care__photo', sizes: '50vw', widths: '600, 900, 1400', alt: s.image.alt }}
+        {%- else -%}
+          <svg class="care__scene" viewBox="0 0 400 520" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="care-jar" x1="0" x2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".3" stop-color="#fff" stop-opacity=".08"/>
+                <stop offset=".75" stop-color="#fff" stop-opacity=".14"/><stop offset="1" stop-color="#fff" stop-opacity=".38"/>
+              </linearGradient>
+              <linearGradient id="care-metal" x1="0" x2="1">
+                <stop offset="0" stop-color="#7a4a2c"/><stop offset=".35" stop-color="#f3c79a"/><stop offset=".55" stop-color="#fff0d8"/><stop offset=".8" stop-color="#c98a5a"/><stop offset="1" stop-color="#6b3d22"/>
+              </linearGradient>
+              <radialGradient id="care-flame" cx=".5" cy=".78" r=".75">
+                <stop offset="0" stop-color="#FFFFF4"/><stop offset=".3" stop-color="#FFF1B8"/><stop offset=".58" stop-color="#FFC25A"/>
+                <stop offset=".85" stop-color="#FF8A2B" stop-opacity=".8"/><stop offset="1" stop-color="#FF6A1A" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="care-halo"><stop offset="0" stop-color="#FFD98A" stop-opacity=".7"/><stop offset="1" stop-color="#FF9A3C" stop-opacity="0"/></radialGradient>
+            </defs>
+            {%- comment -%} glass jar with whipped wax {%- endcomment -%}
+            <g class="care__jar">
+              <rect x="105" y="330" width="190" height="200" rx="26" fill="#F6E7C6" fill-opacity=".9"/>
+              <rect x="105" y="330" width="190" height="200" rx="26" fill="url(#care-jar)" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>
+              <ellipse cx="200" cy="334" rx="95" ry="16" fill="#FBF2DE"/>
+              <ellipse cx="200" cy="334" rx="95" ry="16" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/>
+              <path d="M200 334 C200 326 201 320 200 314" stroke="#2B1A14" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </g>
+            {%- comment -%} flame (goes out as the snuffer lands) {%- endcomment -%}
+            <g class="care__flame">
+              <circle cx="200" cy="292" r="46" fill="url(#care-halo)" class="candle-art__halo"/>
+              <path class="candle-art__fire" d="M200 316 C188 311 186 298 191 286 C195 278 199 270 200 258 C203 270 211 278 212 290 C213 303 209 312 200 316Z" fill="url(#care-flame)"/>
+            </g>
+            {%- comment -%} smoke (appears after) {%- endcomment -%}
+            <g class="care__smoke" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2.4">
+              <path d="M200 312 C190 290 214 276 202 252 C192 232 214 216 204 192"/>
+              <path d="M206 312 C218 292 196 280 210 258 C222 240 202 226 214 206"/>
+            </g>
+            {%- comment -%} snuffer: long handle + bell, lowers with scroll {%- endcomment -%}
+            <g class="care__snuffer">
+              <path d="M-40 70 L196 168" stroke="url(#care-metal)" stroke-width="12" stroke-linecap="round"/>
+              <circle cx="196" cy="170" r="9" fill="url(#care-metal)"/>
+              <path d="M172 176 H228 V232 Q228 248 212 248 H188 Q172 248 172 232 Z" fill="url(#care-metal)"/>
+              <path d="M172 232 Q172 248 188 248 H212 Q228 248 228 232" fill="none" stroke="#3a1f10" stroke-opacity=".5" stroke-width="2"/>
+            </g>
+          </svg>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="care__panel">
+      <ol class="care__steps list-unstyled" role="list">
+        {%- for block in section.blocks -%}
+          <li class="care__step" style="--i: {{ forloop.index0 }}" data-reveal {{ block.shopify_attributes }}>
+            <h3 class="care__title">{{ block.settings.title | escape }}</h3>
+            <p class="care__text">{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Candle care",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Set the mood safely" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo (optional)",
+      "info": "Leave empty to show the animated snuffer."
+    },
+    { "type": "color", "id": "dark_bg", "label": "Left background", "default": "#1E0A10" },
+    { "type": "color", "id": "panel_bg", "label": "Right background", "default": "#F8EED5" },
+    { "type": "color", "id": "panel_ink", "label": "Right text", "default": "#4B0B19" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Be Safe" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Always follow the safety instructions when burning candles." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Candle care",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Be Safe", "text": "Always follow the safety instructions when burning candles." } },
+        { "type": "step", "settings": { "title": "Trim It", "text": "Trim the wick to 5 mm before every burn for a clean, steady flame." } },
+        { "type": "step", "settings": { "title": "Melt It", "text": "Let the wax melt to the edge of the glass the first time. Don't burn for more than 3 hours at once." } },
+        { "type": "step", "settings": { "title": "Snuff It", "text": "Never leave a candle burning unattended or within reach of children and pets." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

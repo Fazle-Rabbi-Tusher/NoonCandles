@@ -1,5 +1,9 @@
 {
   "general": {
+    "404": {
+      "title": "This wick went out",
+      "text": "We couldn't find the page you were looking for. Let's get you back to the candles."
+    },
     "close": "Close",
     "previous": "Previous",
     "next": "Next",
@@ -14,10 +18,6 @@
       "label": "Pagination",
       "previous": "Previous page",
       "next": "Next page"
-    },
-    "404": {
-      "title": "This wick went out",
-      "text": "We couldn't find the page you were looking for. Let's get you back to the candles."
     }
   },
   "accessibility": {
@@ -63,7 +63,12 @@
         "other": "Only {{ count }} left"
       },
       "made_to_order": "Made to order",
-      "view_media": "View image {{ index }}"
+      "view_media": "View image {{ index }}",
+      "breadcrumb": "Breadcrumb",
+      "shop": "Shop",
+      "free_shipping_away_html": "<strong>{{ amount }}</strong> away from free shipping",
+      "save_percent": "Save {{ percent }}%",
+      "quick_add_html": "Quick<br>Add"
     }
   },
   "collections": {
