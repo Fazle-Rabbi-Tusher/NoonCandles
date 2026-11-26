@@ -894,3 +894,20 @@ html.no-js [data-reveal] { opacity: 1 !important; transform: none !important; }
   .split__media { aspect-ratio: 4 / 5; order: 0 !important; }
   .split--overlay .split__media { position: relative; }
 }
+
+/* ---------- Brand sparkle in place of arrows ---------- */
+.icon-spark { width: 11px; height: 11px; flex: none; transition: transform 0.6s var(--ease-spring), opacity 0.3s; }
+.btn .icon-spark { width: 12px; height: 12px; }
+.btn:hover .icon-spark, .link-arrow:hover .icon-spark, .btn-round:hover .icon-spark, .collection-tile:hover .icon-spark, .mobile-menu a:hover .icon-spark {
+  transform: rotate(90deg) scale(1.35);
+}
+.link-arrow .icon-spark { width: 10px; height: 10px; }
+.link-arrow:hover svg { transform: rotate(90deg) scale(1.35); }
+.btn-round .icon-spark { width: 13px; height: 13px; margin-top: 2px; }
+.mobile-menu a .icon-spark { width: 12px; height: 12px; align-self: center; opacity: 0.6; }
+.collection-tile__label .icon-spark { width: 14px; height: 14px; }
+@keyframes spark-twinkle { 0%, 100% { transform: rotate(0deg) scale(1); opacity: 1; } 50% { transform: rotate(45deg) scale(0.82); opacity: 0.75; } }
+
+/* Round italic text controls (carousel / pagination) */
+.carousel__btn { width: auto; min-width: 64px; height: 44px; padding: 0 18px; border-radius: 999px; font-family: var(--font-display); font-style: italic; font-size: 1.02rem; }
+.pagination .pagination__step { padding: 0 18px; font-family: var(--font-display); font-style: italic; }

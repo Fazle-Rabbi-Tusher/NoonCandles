@@ -18,7 +18,10 @@
       "label": "Pagination",
       "previous": "Previous page",
       "next": "Next page"
-    }
+    },
+    "prev_short": "Prev",
+    "next_short": "Next",
+    "scroll": "Scroll"
   },
   "accessibility": {
     "skip_to_content": "Skip to content"

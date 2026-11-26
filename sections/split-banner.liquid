@@ -15,7 +15,7 @@
       {%- if s.button_label != blank -%}
         <a class="btn-round btn-round--{{ s.button_style }}" href="{{ s.button_link | default: routes.all_products_collection_url }}">
           <span>{{ s.button_label | escape }}</span>
-          {% render 'icon', name: 'arrow-right' %}
+          {% render 'icon', name: 'spark' %}
         </a>
       {%- endif -%}
     </div>

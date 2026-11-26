@@ -43,11 +43,16 @@
         "final_button_label": "Shop candles",
         "final_button_link": "shopify://collections/all",
         "photo_1": "shopify://shop_images/noon-dessert-table-full.jpg",
-        "photo_2": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
-        "photo_3": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg",
+        "photo_2": "shopify://shop_images/noon-letterboard-coupes.jpg",
+        "photo_3": "shopify://shop_images/noon-hearts-peonies-strawberries.jpg",
         "photo_4": "shopify://shop_images/noon-mango-matcha-bubble-jar.jpg",
         "photo_5": "shopify://shop_images/noon-strawberry-matcha-bubble-jar.jpg",
-        "photo_6": "shopify://shop_images/noon-scoops-and-cups.jpg"
+        "photo_6": "shopify://shop_images/noon-scoops-and-cups.jpg",
+        "hero_image": "shopify://shop_images/noon-candle-glow-night.jpg",
+        "flame_x": 51,
+        "flame_y": 49,
+        "orb_a_image": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
+        "orb_b_image": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg"
       }
     },
     "hero": {
@@ -155,10 +160,26 @@
           "settings": {
             "label": "All"
           }
+        },
+        "tab-coupes": {
+          "type": "collection",
+          "settings": {
+            "collection": "whipped-coupes",
+            "label": "Whipped Coupes"
+          }
+        },
+        "tab-jars": {
+          "type": "collection",
+          "settings": {
+            "collection": "bubble-jars",
+            "label": "Bubble Jars"
+          }
         }
       },
       "block_order": [
-        "tab-all"
+        "tab-all",
+        "tab-coupes",
+        "tab-jars"
       ],
       "settings": {
         "eyebrow": "The shop",

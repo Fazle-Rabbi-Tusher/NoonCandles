@@ -7,6 +7,13 @@
 {%- endcomment -%}
 {{ 'scroll-story.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'scroll-story.js' | asset_url }}" defer></script>
+{%- comment -%} Switch the header to light text right away (no dark-logo flash before the script loads) {%- endcomment -%}
+<script>
+  (function () {
+    var h = document.querySelector('[data-header]');
+    if (h && window.scrollY < 10) h.classList.add('is-on-dark');
+  })();
+</script>
 
 {%- assign s = section.settings -%}
 <section
@@ -24,11 +31,30 @@
       <div class="story__orb orb orb--bokeh" data-orb="k{{ i }}" aria-hidden="true"></div>
     {%- endfor -%}
 
-    {%- comment -%} flame glow + candle {%- endcomment -%}
-    <div class="story__glow" data-layer="glow" aria-hidden="true"></div>
-    <div class="story__candle" data-layer="candle" aria-hidden="true">
-      {% render 'candle-art', id: 'story' %}
-    </div>
+    {%- comment -%}
+      Real candle photo (preferred) — positioned by JS so its flame stays on the zoom point.
+      Without a photo the drawn candle is used instead.
+    {%- endcomment -%}
+    {%- if s.hero_image != blank -%}
+      <div
+        class="story__photo"
+        data-layer="photo"
+        data-iw="{{ s.hero_image.width }}"
+        data-ih="{{ s.hero_image.height }}"
+        data-fx="{{ s.flame_x | divided_by: 100.0 }}"
+        data-fy="{{ s.flame_y | divided_by: 100.0 }}"
+        aria-hidden="true"
+      >
+        {{ s.hero_image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '800, 1200, 1600, 2000', sizes: '300vw', alt: '' }}
+      </div>
+      <div class="story__shade" data-layer="shade" aria-hidden="true"></div>
+    {%- endif -%}
+    <div class="story__glow" data-layer="glow" aria-hidden="true"><span class="story__glow-core"></span></div>
+    {%- if s.hero_image == blank -%}
+      <div class="story__candle" data-layer="candle" aria-hidden="true">
+        {% render 'candle-art', id: 'story' %}
+      </div>
+    {%- endif -%}
 
     {%- comment -%} 1 · hero copy {%- endcomment -%}
     <div class="story__hero" data-layer="hero">
@@ -36,8 +62,9 @@
       <h2 class="story__title">{{ s.hero_heading }}</h2>
       {%- if s.hero_text != blank -%}<p class="story__sub">{{ s.hero_text | escape }}</p>{%- endif -%}
     </div>
-    <button class="story__down" type="button" data-story-next data-layer="down" aria-label="{{ 'general.next' | t }}">
-      {% render 'icon', name: 'arrow-right' %}
+    <button class="story__down" type="button" data-story-next data-layer="down">
+      <span>{{ 'general.scroll' | t }}</span>
+      {% render 'icon', name: 'spark' %}
     </button>
 
     {%- comment -%} 3 · statement over the flame {%- endcomment -%}
@@ -56,8 +83,16 @@
         {%- if s.mark_caption != blank -%}<p class="story__mark-caption">{{ s.mark_caption | escape }}</p>{%- endif -%}
       </div>
 
-      <div class="story__orb orb orb--lit" data-orb="b"><span class="orb__flame"></span></div>
-      <div class="story__orb orb orb--lit" data-orb="a"><span class="orb__flame"></span></div>
+      {%- for pair in (1..2) -%}
+        {%- if pair == 1 -%}{%- assign orb_img = s.orb_b_image -%}{%- assign orb_id = 'b' -%}{%- else -%}{%- assign orb_img = s.orb_a_image -%}{%- assign orb_id = 'a' -%}{%- endif -%}
+        <div class="story__orb orb {% if orb_img %}orb--photo{% else %}orb--lit{% endif %}" data-orb="{{ orb_id }}">
+          {%- if orb_img -%}
+            {{ orb_img | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500, 800, 1200', sizes: '90vmin', alt: '' }}
+          {%- else -%}
+            <span class="orb__flame"></span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
 
       {%- for i in (1..10) -%}
         {%- liquid
@@ -123,6 +158,17 @@
       "unit": "vh",
       "default": 800
     },
+    { "type": "header", "content": "Candle photo" },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Lit candle photo",
+      "info": "A dark photo of a lit candle works best. The scroll brightens it and zooms into the flame. Leave empty for the drawn candle."
+    },
+    { "type": "range", "id": "flame_x", "label": "Flame position across", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 51 },
+    { "type": "range", "id": "flame_y", "label": "Flame position down", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 49 },
+    { "type": "image_picker", "id": "orb_a_image", "label": "Split orb photo 1", "info": "The light splits into two orbs. Show a product in each." },
+    { "type": "image_picker", "id": "orb_b_image", "label": "Split orb photo 2" },
     { "type": "header", "content": "1 · Unlit candle" },
     { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Hand-poured dessert candles" },
     { "type": "inline_richtext", "id": "hero_heading", "label": "Heading", "default": "A little light isn’t found. <em>It’s poured.</em>" },

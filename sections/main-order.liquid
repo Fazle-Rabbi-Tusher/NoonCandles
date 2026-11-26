@@ -1,6 +1,6 @@
 <section class="section" style="padding-top: clamp(28px, 4vw, 56px)">
   <div class="page-width">
-    <a class="link-arrow" href="{{ routes.account_url }}" style="margin-bottom: 16px">{% render 'icon', name: 'arrow-left' %} {{ 'customer.account.title' | t }}</a>
+    <a class="link-arrow" href="{{ routes.account_url }}" style="margin-bottom: 16px">{% render 'icon', name: 'spark' %} {{ 'customer.account.title' | t }}</a>
     <h1 style="margin: 12px 0 6px">{{ 'customer.order.title' | t: name: order.name }}</h1>
     <p class="muted">{{ order.created_at | time_tag: format: 'date_at_time' }}</p>
     {%- if order.cancelled -%}

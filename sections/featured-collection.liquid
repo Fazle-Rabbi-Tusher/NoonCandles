@@ -68,7 +68,7 @@
     {%- if s.view_all_label != blank -%}
       <div class="text-center" style="margin-top: 40px" data-reveal>
         <a class="btn btn--outline" href="{{ s.view_all_link | default: routes.all_products_collection_url }}">
-          <span>{{ s.view_all_label | escape }}</span>{% render 'icon', name: 'arrow-right' %}
+          <span>{{ s.view_all_label | escape }}</span>{% render 'icon', name: 'spark' %}
         </a>
       </div>
     {%- endif -%}

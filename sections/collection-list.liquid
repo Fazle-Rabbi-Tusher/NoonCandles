@@ -6,7 +6,7 @@
         {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
         <h2>{{ s.heading }}</h2>
       </div>
-      <a class="link-arrow" href="{{ routes.collections_url }}">{{ 'collections.view_all' | t }} {% render 'icon', name: 'arrow-right' %}</a>
+      <a class="link-arrow" href="{{ routes.collections_url }}">{{ 'collections.view_all' | t }} {% render 'icon', name: 'spark' %}</a>
     </div>
     <div class="collection-list">
       {%- for block in section.blocks -%}
@@ -20,7 +20,7 @@
           {%- endif -%}
           <span class="collection-tile__label">
             {{ block.settings.label | default: c.title | default: 'Collection' | escape }}
-            {% render 'icon', name: 'arrow-right' %}
+            {% render 'icon', name: 'spark' %}
           </span>
         </a>
       {%- endfor -%}
