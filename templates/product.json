@@ -237,7 +237,7 @@
         "style": "tiles",
         "limit": 3,
         "columns": 3,
-        "bg": "#2B3320",
+        "bg": "#4C563C",
         "ink": "#F8EED5"
       }
     }
