@@ -1,21 +1,19 @@
 {%- comment -%}
-  Scroll story — a burning candle, scrubbed frame by frame by scroll.
-  1 unlit candle + headline → 2 flame ignites, room warms → 3 zoom into the flame (statement)
-  → 4 light floods the screen, the Noon ن appears (the flame is its dot)
-  → 5 the light divides into two flames that drift apart → 6 a cluster of glowing orbs (your photos) + stats.
-  Timeline: assets/scroll-story.js · visuals: assets/scroll-story.css · candle drawing: snippets/candle-art.liquid
+  Scroll story — scrubbed frame by frame by scroll.
+  1 bright hero: headline + product photo in an arch → 2 the room dims, the arch becomes a window
+  onto a real candle photo → 3 the candle lights, the arch opens and we zoom into the flame
+  → 4 its light floods the screen, the Noon ن appears (the flame is its dot)
+  → 5 the light splits into two orbs (product photos) → 6 a cluster of photo orbs + stats.
+  Timeline: assets/scroll-story.js · visuals: assets/scroll-story.css
 {%- endcomment -%}
 {{ 'scroll-story.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'scroll-story.js' | asset_url }}" defer></script>
-{%- comment -%} Switch the header to light text right away (no dark-logo flash before the script loads) {%- endcomment -%}
-<script>
-  (function () {
-    var h = document.querySelector('[data-header]');
-    if (h && window.scrollY < 10) h.classList.add('is-on-dark');
-  })();
-</script>
 
-{%- assign s = section.settings -%}
+{%- liquid
+  assign s = section.settings
+  assign zoom_img = s.hero_image | default: s.hero_photo
+  assign chip = s.hero_product
+-%}
 <section
   class="story"
   data-story
@@ -24,47 +22,68 @@
 >
   <div class="story__stage" data-story-stage>
     <div class="story__bg" aria-hidden="true"></div>
+    <div class="story__night" data-layer="night" aria-hidden="true"></div>
     <div class="story__warm" data-layer="warm" aria-hidden="true"></div>
 
-    {%- comment -%} background bokeh {%- endcomment -%}
     {%- for i in (1..5) -%}
       <div class="story__orb orb orb--bokeh" data-orb="k{{ i }}" aria-hidden="true"></div>
     {%- endfor -%}
 
-    {%- comment -%}
-      Real candle photo (preferred) — positioned by JS so its flame stays on the zoom point.
-      Without a photo the drawn candle is used instead.
-    {%- endcomment -%}
-    {%- if s.hero_image != blank -%}
-      <div
-        class="story__photo"
-        data-layer="photo"
-        data-iw="{{ s.hero_image.width }}"
-        data-ih="{{ s.hero_image.height }}"
-        data-fx="{{ s.flame_x | divided_by: 100.0 }}"
-        data-fy="{{ s.flame_y | divided_by: 100.0 }}"
-        aria-hidden="true"
-      >
-        {{ s.hero_image | image_url: width: 2000 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '800, 1200, 1600, 2000', sizes: '300vw', alt: '' }}
-      </div>
-      <div class="story__shade" data-layer="shade" aria-hidden="true"></div>
-    {%- endif -%}
-    <div class="story__glow" data-layer="glow" aria-hidden="true"><span class="story__glow-core"></span></div>
-    {%- if s.hero_image == blank -%}
-      <div class="story__candle" data-layer="candle" aria-hidden="true">
-        {% render 'candle-art', id: 'story' %}
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} 1 · hero copy {%- endcomment -%}
-    <div class="story__hero" data-layer="hero">
-      {%- if s.hero_eyebrow != blank -%}<span class="story__eyebrow">{{ s.hero_eyebrow | escape }}</span>{%- endif -%}
-      <h2 class="story__title">{{ s.hero_heading }}</h2>
-      {%- if s.hero_text != blank -%}<p class="story__sub">{{ s.hero_text | escape }}</p>{%- endif -%}
+    {%- comment -%} The arch: hero photo first, then a window onto the lit candle {%- endcomment -%}
+    <div class="story__frame" data-layer="frame" aria-hidden="true">
+      {%- if s.hero_photo != blank -%}
+        <div class="story__frame-hero" data-layer="heroimg">
+          {{ s.hero_photo | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '500, 800, 1100, 1400', sizes: '(min-width: 900px) 36vw, 74vw', alt: '' }}
+        </div>
+      {%- endif -%}
+      {%- if zoom_img != blank -%}
+        <div
+          class="story__photo"
+          data-layer="photo"
+          data-iw="{{ zoom_img.width }}"
+          data-ih="{{ zoom_img.height }}"
+          data-fx="{{ s.flame_x | divided_by: 100.0 }}"
+          data-fy="{{ s.flame_y | divided_by: 100.0 }}"
+        >
+          {{ zoom_img | image_url: width: 2000 | image_tag: loading: 'eager', widths: '800, 1200, 1600, 2000', sizes: '200vw', alt: '' }}
+        </div>
+        <div class="story__shade" data-layer="shade"></div>
+      {%- endif -%}
     </div>
-    <button class="story__down" type="button" data-story-next data-layer="down">
-      <span>{{ 'general.scroll' | t }}</span>
-      {% render 'icon', name: 'spark' %}
+    <div class="story__glow" data-layer="glow" aria-hidden="true"><span class="story__glow-core"></span></div>
+
+    {%- comment -%} 1 · bright hero copy {%- endcomment -%}
+    <div class="story__hero" data-layer="hero">
+      <div class="story__hero-inner">
+        {%- if s.hero_eyebrow != blank -%}<span class="story__eyebrow">{{ s.hero_eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="story__title">{{ s.hero_heading }}</h2>
+        {%- if s.hero_text != blank -%}<p class="story__sub">{{ s.hero_text | escape }}</p>{%- endif -%}
+        <div class="story__actions">
+          {%- if s.hero_button_label != blank -%}
+            <a class="btn" href="{{ s.hero_button_link | default: routes.all_products_collection_url }}">
+              <span>{{ s.hero_button_label | escape }}</span>{% render 'icon', name: 'spark' %}
+            </a>
+          {%- endif -%}
+          {%- if s.hero_link_label != blank -%}
+            <a class="story__textlink" href="{{ s.hero_link_link | default: '#' }}">{{ s.hero_link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+        {%- if chip != blank -%}
+          <a class="story__chip" href="{{ chip.url }}">
+            {%- if chip.featured_media -%}
+              {{ chip.featured_media | image_url: width: 160 | image_tag: loading: 'eager', alt: '', width: 48, height: 48 }}
+            {%- endif -%}
+            <span class="story__chip-text">
+              <span class="story__chip-name">{{ chip.title | escape }}</span>
+              <span class="story__chip-price">{{ chip.price | money }}</span>
+            </span>
+            {% render 'icon', name: 'spark' %}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+    <button class="story__down" type="button" data-story-next data-layer="down" aria-label="{{ 'general.scroll' | t }}">
+      {% render 'icon', name: 'arrow-down' %}
     </button>
 
     {%- comment -%} 3 · statement over the flame {%- endcomment -%}
@@ -145,7 +164,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "A candle that lights as you scroll. Works best as the first section on the home page."
+      "content": "Bright hero that scrolls into a candle lighting up. Works best as the first section on the home page."
     },
     {
       "type": "range",
@@ -158,22 +177,28 @@
       "unit": "vh",
       "default": 800
     },
-    { "type": "header", "content": "Candle photo" },
+    { "type": "header", "content": "1 · Hero" },
+    { "type": "image_picker", "id": "hero_photo", "label": "Hero photo (in the arch)", "info": "A bright product photo. Portrait works best." },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Hand-poured dessert candles" },
+    { "type": "inline_richtext", "id": "hero_heading", "label": "Heading", "default": "A little light isn’t found. <em>It’s poured.</em>" },
+    { "type": "text", "id": "hero_text", "label": "Text", "default": "Whipped, piped and finished by hand — candles that look good enough to eat." },
+    { "type": "text", "id": "hero_button_label", "label": "Button label", "default": "Shop candles" },
+    { "type": "url", "id": "hero_button_link", "label": "Button link" },
+    { "type": "text", "id": "hero_link_label", "label": "Text link label", "default": "Our story" },
+    { "type": "url", "id": "hero_link_link", "label": "Text link" },
+    { "type": "product", "id": "hero_product", "label": "Featured product chip", "info": "Shows the product photo, name and live price under the buttons." },
+    { "type": "header", "content": "2 · The candle lights" },
     {
       "type": "image_picker",
       "id": "hero_image",
       "label": "Lit candle photo",
-      "info": "A dark photo of a lit candle works best. The scroll brightens it and zooms into the flame. Leave empty for the drawn candle."
+      "info": "Appears inside the arch as the room dims, then we zoom into its flame."
     },
     { "type": "range", "id": "flame_x", "label": "Flame position across", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 51 },
     { "type": "range", "id": "flame_y", "label": "Flame position down", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 49 },
     { "type": "image_picker", "id": "orb_a_image", "label": "Split orb photo 1", "info": "The light splits into two orbs. Show a product in each." },
     { "type": "image_picker", "id": "orb_b_image", "label": "Split orb photo 2" },
-    { "type": "header", "content": "1 · Unlit candle" },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Hand-poured dessert candles" },
-    { "type": "inline_richtext", "id": "hero_heading", "label": "Heading", "default": "A little light isn’t found. <em>It’s poured.</em>" },
-    { "type": "text", "id": "hero_text", "label": "Text", "default": "Scroll to light the candle." },
-    { "type": "header", "content": "2 · Into the flame" },
+    { "type": "header", "content": "3 · Into the flame" },
     {
       "type": "inline_richtext",
       "id": "statement_heading",
@@ -182,7 +207,7 @@
     },
     { "type": "text", "id": "statement_text", "label": "Text", "default": "Sweet enough to eat. Please don’t." },
     { "type": "text", "id": "mark_caption", "label": "Caption under the logo", "default": "Our flame is the dot of the ن." },
-    { "type": "header", "content": "3 · Finale" },
+    { "type": "header", "content": "4 · Finale" },
     { "type": "text", "id": "final_eyebrow", "label": "Eyebrow", "default": "What we make" },
     {
       "type": "inline_richtext",

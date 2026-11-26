@@ -1,15 +1,16 @@
 /* ==========================================================================
-   Noon Candles — Scroll story: a burning candle, scrubbed by scroll
-   Positions/opacity are driven by assets/scroll-story.js
+   Noon Candles — Scroll story
+   Bright hero → arch window onto a lit candle → zoom into the flame → light floods → orbs.
+   Positions / opacity are driven by assets/scroll-story.js
    ========================================================================== */
 
 .story {
   --story-ink: var(--c-cream);
   --fx: 50%;
-  --fy: 60%;
+  --fy: 50%;
   position: relative;
   height: var(--story-length, 800vh);
-  background: #14030a;
+  background: var(--c-white);
   color: var(--story-ink);
 }
 main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)); }
@@ -24,20 +25,44 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   contain: layout paint;
 }
 
-/* night room → warmed by the flame */
+/* ---------- Day (hero) and night layers ---------- */
 .story__bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 80% at 50% 100%, color-mix(in srgb, var(--c-cherry) 70%, #000) 0%, transparent 70%),
-    linear-gradient(180deg, #0d0205 0%, #1d040b 50%, color-mix(in srgb, var(--c-cherry) 55%, #000) 100%);
+    radial-gradient(55% 60% at 74% 50%, rgba(255, 238, 205, 0.95) 0%, rgba(255, 238, 205, 0) 70%),
+    radial-gradient(40% 45% at 12% 90%, rgba(var(--c-matcha-rgb), 0.35) 0%, transparent 70%),
+    linear-gradient(180deg, var(--c-white) 0%, var(--c-cream) 100%);
+}
+.story__night {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(120% 80% at 50% 100%, color-mix(in srgb, var(--c-cherry) 55%, #000) 0%, transparent 70%),
+    linear-gradient(180deg, #0b0204 0%, #1a040a 55%, color-mix(in srgb, var(--c-cherry) 45%, #000) 100%);
 }
 .story__warm {
   position: absolute;
   inset: 0;
   opacity: 0;
-  background: radial-gradient(circle at var(--fx) var(--fy), rgba(255, 196, 120, 0.55) 0%, rgba(255, 150, 70, 0.22) 22%, rgba(120, 30, 20, 0.12) 45%, transparent 70%);
+  background: radial-gradient(circle at var(--fx) var(--fy), rgba(255, 196, 120, 0.5) 0%, rgba(255, 150, 70, 0.18) 24%, rgba(120, 30, 20, 0.1) 46%, transparent 70%);
 }
+
+/* ---------- The arch frame ---------- */
+.story__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  background: #120306;
+  box-shadow: 0 60px 110px -50px rgba(var(--c-cherry-rgb), 0.55), 0 0 0 1px rgba(var(--c-cherry-rgb), 0.06);
+  will-change: transform, width, height, border-radius;
+}
+.story__frame-hero { position: absolute; inset: 0; z-index: 2; }
+.story__frame-hero img { width: 100%; height: 100%; object-fit: cover; }
 .story__photo { position: absolute; left: 0; top: 0; will-change: transform, width, height; }
 .story__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .story__shade {
@@ -45,6 +70,8 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   inset: 0;
   background: radial-gradient(circle at var(--fx) var(--fy), rgba(12, 2, 5, 0.55) 0%, rgba(6, 1, 3, 0.9) 45%, rgba(4, 1, 2, 0.97) 100%);
 }
+
+/* ---------- Realistic flame bloom ---------- */
 .story__glow {
   position: absolute;
   left: 0;
@@ -89,17 +116,6 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   35% { transform: translate(-51%, -60%) scale(0.92, 1.08); opacity: 1; }
   65% { transform: translate(-49%, -57%) scale(1.06, 0.95); opacity: 0.85; }
 }
-.story__candle {
-  position: absolute;
-  left: 0;
-  top: 0;
-  will-change: transform, width, height;
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
-}
-.story__candle .candle-art { width: 100%; height: 100%; overflow: visible; }
-.story__candle .candle-art__flame { opacity: var(--ignite, 0); transform: scale(var(--ignite-s, 0.2)); transform-box: fill-box; transform-origin: 50% 92%; }
-.story__candle .candle-art__glass, .story__candle .candle-art__bowl { filter: brightness(calc(0.55 + var(--ignite, 0) * 0.45)); }
-.story__candle .candle-art__wax, .story__candle .candle-art__berries { filter: brightness(calc(0.6 + var(--ignite, 0) * 0.45)); }
 
 /* ---------- Glass orbs ---------- */
 .orb {
@@ -119,7 +135,7 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
     0 50px 90px -60px rgba(20, 2, 6, 0.7);
 }
 .orb::before,
-.orb::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2; }
+.orb::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2; }
 .orb::before { background: radial-gradient(ellipse 60% 35% at 50% 10%, rgba(255, 255, 255, 0.18), transparent 70%); }
 .orb::after {
   padding: 1.5px;
@@ -130,12 +146,10 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   mask-composite: exclude;
   opacity: 0.75;
 }
-.orb--bokeh {
-  background: radial-gradient(circle at 50% 60%, rgba(255, 190, 120, 0.16), rgba(75, 11, 25, 0.12) 60%, rgba(248, 238, 213, 0.05));
-}
+.orb--bokeh { background: radial-gradient(circle at 50% 60%, rgba(255, 190, 120, 0.16), rgba(75, 11, 25, 0.12) 60%, rgba(248, 238, 213, 0.05)); }
 .orb--lit {
   background:
-    radial-gradient(circle at 50% 56%, rgba(255, 230, 170, 0.75) 0%, rgba(255, 180, 100, 0.32) 18%, rgba(255, 140, 60, 0.1) 40%, transparent 60%),
+    radial-gradient(circle at 50% 56%, rgba(255, 230, 170, 0.55) 0%, rgba(255, 180, 100, 0.22) 20%, rgba(255, 140, 60, 0.06) 42%, transparent 60%),
     linear-gradient(180deg, rgba(22, 2, 7, 0.32) 0%, rgba(75, 11, 25, 0.12) 55%, rgba(248, 238, 213, 0.14) 100%);
 }
 .orb--photo { overflow: hidden; background: var(--c-cream); }
@@ -160,27 +174,30 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   79% { opacity: 0.97; transform: translate(-50%, -50%) scale(1.03); }
 }
 
-/* ---------- Copy ---------- */
+/* ---------- Hero copy (bright) ---------- */
 .story__hero {
   position: absolute;
-  left: 50%;
-  top: calc(var(--header-h) + 4vh);
-  width: min(980px, calc(100% - var(--gutter) * 2));
-  transform: translateX(-50%);
-  text-align: center;
-  display: grid;
-  justify-items: center;
-  gap: 14px;
+  top: var(--header-h);
+  bottom: 0;
+  left: 0;
+  width: 52%;
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(16px, 3vw, 40px) 8vh var(--gutter);
   z-index: 4;
+  color: var(--c-cherry);
 }
+.story__hero-inner { display: grid; justify-items: start; gap: 20px; max-width: 640px; }
 .story__eyebrow { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(var(--c-cream-rgb), 0.75); }
+.story__hero .story__eyebrow { color: rgba(var(--c-cherry-rgb), 0.7); display: inline-flex; align-items: center; gap: 10px; }
+.story__hero .story__eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
 .story__eyebrow--dot { display: inline-flex; align-items: center; gap: 10px; }
-.story__eyebrow--dot::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #ffb35c; box-shadow: 0 0 10px #ffb35c; }
+.story__eyebrow--dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ffb35c; box-shadow: 0 0 10px #ffb35c; }
 .story__title {
   font-family: var(--font-display);
-  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 144;
   font-weight: 420;
-  font-size: clamp(2.4rem, 5.8vw, 5.4rem);
+  font-size: clamp(2.6rem, 5.6vw, 5.4rem);
   line-height: 0.98;
   letter-spacing: -0.035em;
   color: var(--story-ink);
@@ -188,34 +205,61 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   text-shadow: 0 2px 40px rgba(20, 2, 6, 0.45);
 }
 .story__title em { font-style: italic; color: #ffcf8a; font-weight: 380; }
+.story__hero .story__title { color: var(--c-cherry); text-shadow: none; }
+.story__hero .story__title em { color: color-mix(in srgb, var(--c-cherry) 70%, #c97b84); }
 .story__title--md { font-size: clamp(2rem, 4.4vw, 4rem); line-height: 1.02; }
-.story__sub { font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(var(--c-cream-rgb), 0.75); max-width: 46ch; }
+.story__sub { font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(var(--c-cream-rgb), 0.75); max-width: 44ch; line-height: 1.5; }
+.story__hero .story__sub { color: rgba(var(--c-cherry-rgb), 0.75); }
+.story__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 4px; }
+.story__textlink { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; color: var(--c-cherry); text-underline-offset: 0.25em; }
+.story__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 6px 18px 6px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(var(--c-cherry-rgb), 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 14px 30px -18px rgba(var(--c-cherry-rgb), 0.45);
+  text-decoration: none;
+  color: var(--c-cherry);
+  transition: transform 0.4s var(--ease-spring), background-color 0.3s;
+}
+.story__chip:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.85); }
+.story__chip img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.story__chip-text { display: grid; line-height: 1.2; }
+.story__chip-name { font-weight: 600; font-size: 0.9rem; }
+.story__chip-price { font-size: 0.85rem; color: rgba(var(--c-cherry-rgb), 0.7); }
+.story__chip .icon-spark { width: 11px; height: 11px; color: var(--c-cherry); }
+.story__chip:hover .icon-spark { transform: rotate(90deg) scale(1.35); }
 
+/* Scroll arrow */
 .story__down {
   position: absolute;
   left: 50%;
-  bottom: clamp(20px, 5vh, 48px);
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 48px;
-  padding: 0 22px;
-  border-radius: 999px;
-  color: var(--c-cream);
-  border: 1px solid rgba(var(--c-cream-rgb), 0.32);
-  background: rgba(var(--c-cream-rgb), 0.07);
+  bottom: clamp(18px, 4vh, 40px);
+  width: 58px;
+  height: 58px;
+  margin-left: -29px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--c-cherry);
+  border: 1px solid rgba(var(--c-cherry-rgb), 0.28);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.02rem;
   z-index: 6;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.4s var(--ease-spring);
 }
-.story__down .icon-spark { width: 12px; height: 12px; color: #ffcf8a; animation: spark-twinkle 2.6s ease-in-out infinite; }
-.story__down:hover { background: rgba(var(--c-cream-rgb), 0.16); border-color: rgba(var(--c-cream-rgb), 0.6); }
+.story__down svg { width: 20px; height: 20px; animation: scroll-bob 2.2s ease-in-out infinite; }
+.story__down:hover { background: rgba(255, 255, 255, 0.85); border-color: var(--c-cherry); transform: translateY(2px); }
+@keyframes scroll-bob { 0%, 100% { transform: translateY(-3px); } 50% { transform: translateY(4px); } }
 
+/* Statement over the flame */
 .story__statement {
   position: absolute;
   left: 50%;
@@ -231,7 +275,7 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
 }
 .story__statement .story__title { max-width: 18ch; }
 
-/* ---------- Light floods the screen ---------- */
+/* ---------- Light floods the screen (feathered mask set by JS) ---------- */
 .story__fill {
   position: absolute;
   inset: 0;
@@ -282,15 +326,22 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
 .story__stat dt { font-size: 0.88rem; color: rgba(var(--c-cream-rgb), 0.7); }
 .story__stat dd { margin: 6px 0 0; font-family: var(--font-display); font-size: clamp(1.3rem, 2.1vw, 1.9rem); line-height: 1.1; color: var(--c-cream); }
 
-@media (max-width: 749px) {
+/* ---------- Phones: text on top, arch below ---------- */
+@media (max-width: 899px) {
+  .story__hero { top: var(--header-h); bottom: auto; width: 100%; padding: 14px var(--gutter) 0; align-items: flex-start; }
+  .story__hero-inner { justify-items: center; text-align: center; gap: 14px; margin: 0 auto; }
+  .story__title { font-size: clamp(2.2rem, 9vw, 3.4rem); }
+  .story__sub { font-size: 0.95rem; }
+  .story__actions { justify-content: center; }
+  .story__chip { display: none; }
   .story__stats { left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 8px); width: auto; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .story__stat { padding: 10px 0 0; }
   .story__stat dt { font-size: 0.72rem; }
   .story__stat dd { font-size: 1rem; }
 }
 
-/* Without JS: lit candle + headline only */
+/* Without JS: just the bright hero */
 html.no-js .story { height: auto; }
 html.no-js .story__stage { position: relative; min-height: 100vh; }
-html.no-js .story__candle { left: 50%; bottom: 0; top: auto; width: 320px; height: 480px; transform: translateX(-50%); --ignite: 1; --ignite-s: 1; }
-html.no-js .story__fill, html.no-js .story__final, html.no-js .story__down, html.no-js .story__statement { display: none; }
+html.no-js .story__frame { left: 58%; top: 12%; width: 34vw; height: 76vh; border-radius: 999px 999px 24px 24px; }
+html.no-js .story__photo, html.no-js .story__shade, html.no-js .story__fill, html.no-js .story__final, html.no-js .story__down, html.no-js .story__statement, html.no-js .story__night { display: none; }

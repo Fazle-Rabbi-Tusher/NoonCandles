@@ -1,7 +1,9 @@
-/* Noon Candles — Scroll story: a burning candle, scrubbed frame by frame by scroll.
-   Scroll position (0 → 1 through the section) drives a keyframed timeline.
-   Positions are offsets from the stage centre in units of U = min(width, height),
-   so the composition keeps its shape on every screen size. */
+/* Noon Candles — Scroll story, scrubbed frame by frame by scroll.
+   1 bright hero (copy + product photo in an arch) → 2 the room dims; the arch glides to the centre
+   and becomes a window onto a real candle photo → 3 the candle lights; the arch opens to full screen
+   while zooming into the flame → 4 its light floods the screen, the Noon mark appears
+   → 5 the light splits into two photo orbs → 6 a cluster of photo orbs + stats.
+   Orb positions are offsets from the stage centre in units of U = min(width, height). */
 (() => {
   'use strict';
 
@@ -26,51 +28,54 @@
     return track[track.length - 1][1];
   }
 
-  // Orb keyframe: dx, dy from centre (U), diameter (U), opacity
   const K = (dx, dy, d, o = 1) => ({ dx, dy, d, o });
-
-  // Candle SVG is 200 × 300; flame centre sits at y = 30 → 10% from the top
-  const CANDLE_RATIO = 200 / 300;
-  const FLAME_Y = 0.1;
 
   // ---- Timeline -----------------------------------------------------------
   const T = {
-    // 1 · Unlit candle + headline
-    hero: [[0, { y: 0, o: 1 }], [0.035, { y: 0, o: 1 }], [0.11, { y: -0.22, o: 0 }]],
-    down: [[0, 1], [0.02, 0]],
-    candle: [
-      [0, { dx: 0, dy: 0.3, h: 0.62, o: 1 }],
-      [0.11, { dx: 0, dy: 0.24, h: 0.66, o: 1 }],
-      [0.27, { dx: 0, dy: 1.3, h: 3.3, o: 1 }],
-      [0.34, { dx: 0, dy: 1.5, h: 3.8, o: 0 }]
+    // 1 · Bright hero
+    hero: [[0, { x: 0, o: 1 }], [0.02, { x: 0, o: 1 }], [0.075, { x: -0.06, o: 0 }]],
+    down: [[0, 1], [0.018, 0]],
+    // Arch frame: centre (x, y as fractions of the screen), k = 0 arch box → 1 full screen, r = arch roundness
+    frameWide: [
+      [0, { x: 0.735, y: 0.55, k: 0, r: 1 }],
+      [0.025, { x: 0.735, y: 0.55, k: 0, r: 1 }],
+      [0.09, { x: 0.5, y: 0.53, k: 0, r: 1 }],
+      [0.16, { x: 0.5, y: 0.53, k: 0, r: 1 }],
+      [0.27, { x: 0.5, y: 0.5, k: 1, r: 0 }]
     ],
-    // Photo mode: zoom (z × cover) and where the flame sits vertically (ty), darkness lifting
+    frameNarrow: [
+      [0, { x: 0.5, y: 0.72, k: 0, r: 1 }],
+      [0.025, { x: 0.5, y: 0.72, k: 0, r: 1 }],
+      [0.09, { x: 0.5, y: 0.54, k: 0, r: 1 }],
+      [0.16, { x: 0.5, y: 0.54, k: 0, r: 1 }],
+      [0.27, { x: 0.5, y: 0.5, k: 1, r: 0 }]
+    ],
+    night: [[0.025, 0], [0.09, 1]],
+    heroImg: [[0.045, 1], [0.095, 0]],
+    // Candle photo inside the frame: zoom (z × cover), flame height (ty, fraction of frame), opacity
     photo: [
-      [0, { z: 1.14, ty: 0.58, o: 1 }],
-      [0.03, { z: 1.14, ty: 0.58, o: 1 }],
-      [0.11, { z: 1.32, ty: 0.55, o: 1 }],
-      [0.27, { z: 5.2, ty: 0.5, o: 1 }],
-      [0.33, { z: 6.4, ty: 0.5, o: 1 }],
-      [0.36, { z: 6.8, ty: 0.5, o: 0 }]
+      [0, { z: 1.03, ty: 0.5, o: 0 }],
+      [0.045, { z: 1.03, ty: 0.5, o: 0 }],
+      [0.095, { z: 1.05, ty: 0.5, o: 1 }],
+      [0.16, { z: 1.15, ty: 0.5, o: 1 }],
+      [0.27, { z: 4.4, ty: 0.5, o: 1 }],
+      [0.33, { z: 5.6, ty: 0.5, o: 1 }],
+      [0.36, { z: 6, ty: 0.5, o: 0 }]
     ],
-    shade: [[0, 0.9], [0.025, 0.9], [0.1, 0.12], [0.2, 0.02]],
-    bloom: [[0.02, { d: 0.2, o: 0 }], [0.1, { d: 1.1, o: 0.85 }], [0.27, { d: 2.4, o: 1 }], [0.36, { d: 3, o: 0 }]],
-
-    // 2 · Ignite: flame grows, room warms
-    ignite: [[0.025, { o: 0, s: 0.15 }], [0.075, { o: 1, s: 1 }]],
-    glow: [[0.025, { d: 0, o: 0 }], [0.085, { d: 1.1, o: 0.95 }], [0.27, { d: 2.6, o: 1 }], [0.36, { d: 3.2, o: 0 }]],
-    warm: [[0.025, 0], [0.1, 0.85], [0.3, 1]],
+    shade: [[0.06, 0.92], [0.105, 0.92], [0.16, 0.1], [0.22, 0]],
+    bloom: [[0.1, { d: 0.1, o: 0 }], [0.16, { d: 0.85, o: 0.85 }], [0.27, { d: 2.4, o: 1 }], [0.36, { d: 3, o: 0 }]],
+    warm: [[0.1, 0], [0.18, 0.5], [0.3, 0.6]],
 
     // 3 · Statement while zooming into the flame
-    statement: [[0.13, { y: 0.05, o: 0 }], [0.18, { y: 0, o: 1 }], [0.24, { y: -0.01, o: 1 }], [0.28, { y: -0.05, o: 0 }]],
+    statement: [[0.16, { y: 0.05, o: 0 }], [0.2, { y: 0, o: 1 }], [0.25, { y: -0.01, o: 1 }], [0.29, { y: -0.05, o: 0 }]],
 
-    // 4 · Light floods the screen (circle radius as a fraction of the screen diagonal)
-    fill: [[0.24, 0], [0.345, 1.15]],
-    mark: [[0.33, { o: 0, s: 0.88 }], [0.37, { o: 1, s: 1 }], [0.43, { o: 1, s: 1 }], [0.47, { o: 0, s: 1.06 }]],
+    // 4 · Light floods the screen (radius as a fraction of the screen diagonal)
+    fill: [[0.26, 0], [0.35, 1.15]],
+    mark: [[0.34, { o: 0, s: 0.88 }], [0.38, { o: 1, s: 1 }], [0.43, { o: 1, s: 1 }], [0.47, { o: 0, s: 1.06 }]],
     dusk: [[0.43, 0], [0.51, 1]],
     dim: [[0.75, 0], [0.88, 0.35]],
 
-    // 5 · The light divides into two flames
+    // 5 · The light divides into two
     a: [
       [0.46, K(0, 0, 0.2, 0)],
       [0.5, K(0, 0, 0.92, 1)],
@@ -100,7 +105,6 @@
     final: [[0.86, { y: 0.04, o: 0 }], [0.93, { y: 0, o: 1 }]]
   };
 
-  // Background bokeh (drift upward as you scroll)
   const BOKEH = [
     [-0.9, -0.25, 0.42],
     [0.88, -0.05, 0.3],
@@ -109,7 +113,6 @@
     [0.36, -0.5, 0.1]
   ];
 
-  // Finale cluster: s1–s6 can hold photos, s7–s10 are small flames
   const SWARM = [
     [-0.95, -0.4, 0.9],
     [-0.36, -0.36, 0.26],
@@ -154,7 +157,7 @@
       window.addEventListener('scroll', this.onScroll, { passive: true });
       window.addEventListener('resize', this.onResize);
       const next = root.querySelector('[data-story-next]');
-      if (next) next.addEventListener('click', () => this.scrollToProgress(0.09));
+      if (next) next.addEventListener('click', () => this.scrollToProgress(0.16));
       this.measure();
       this.update();
     }
@@ -170,6 +173,7 @@
       this.H = this.stage.clientHeight;
       this.U = Math.min(this.W, this.H);
       this.D = Math.hypot(this.W, this.H);
+      this.wide = this.W >= 900;
       this.headerH = this.header ? this.header.getBoundingClientRect().height : 0;
     }
 
@@ -205,83 +209,88 @@
       const inView = rect.bottom > 0 && rect.top < window.innerHeight;
 
       // Reduced motion: jump between key frames instead of moving
-      if (this.reduce) p = p < 0.05 ? 0 : p < 0.15 ? 0.1 : p < 0.3 ? 0.2 : p < 0.48 ? 0.4 : p < 0.8 ? 0.62 : 1;
+      if (this.reduce) p = p < 0.04 ? 0 : p < 0.15 ? 0.14 : p < 0.3 ? 0.21 : p < 0.48 ? 0.4 : p < 0.8 ? 0.62 : 1;
 
-      // Header: light text over the dark scenes, dark text while the screen is flooded with light
+      // Header: dark text on the bright hero and the bright light scene, light text over the dark scenes
       if (this.header) {
         const under = rect.top <= this.headerH + 1 && rect.bottom > this.headerH;
-        const brightScene = p > 0.28 && p < 0.47;
-        this.header.classList.toggle('is-on-dark', under && !brightScene);
+        const bright = p < 0.06 || (p > 0.28 && p < 0.47);
+        this.header.classList.toggle('is-on-dark', under && !bright);
       }
       if (!inView) return;
 
       const L = this.layer;
       const { W, H, U, D } = this;
 
-      // 1 · Hero copy
+      // 1 · Hero copy slides away
       const hero = sample(T.hero, p);
-      L.hero.style.transform = `translate(-50%, ${hero.y * H}px)`;
+      L.hero.style.transform = `translate3d(${hero.x * W}px, 0, 0)`;
       L.hero.style.opacity = hero.o;
       L.hero.style.visibility = hero.o <= 0.001 ? 'hidden' : 'visible';
+      L.hero.style.pointerEvents = hero.o > 0.6 ? 'auto' : 'none';
       if (L.down) {
         const d = sample(T.down, p);
         L.down.style.opacity = d;
         L.down.style.pointerEvents = d > 0.5 ? 'auto' : 'none';
       }
+      if (L.night) L.night.style.opacity = sample(T.night, p);
 
-      // Where the flame is on screen — from the real photo, or from the drawn candle
-      let fx;
-      let fy;
-      if (L.photo) {
+      // 2 · The arch frame
+      const f = sample(this.wide ? T.frameWide : T.frameNarrow, p);
+      const archH = this.wide ? H * 0.78 : H * 0.4;
+      const archW = this.wide ? Math.min(W * 0.36, archH * 0.74) : Math.min(W * 0.76, archH * 0.78);
+      const fw = lerp(archW, W * 1.04, f.k);
+      const fh = lerp(archH, H * 1.04, f.k);
+      const fl = f.x * W - fw / 2;
+      const ft = f.y * H - fh / 2;
+      const rTop = (f.r * fw) / 2;
+      const rBottom = f.r * 28;
+      L.frame.style.width = fw + 'px';
+      L.frame.style.height = fh + 'px';
+      L.frame.style.transform = `translate3d(${fl}px, ${ft}px, 0)`;
+      L.frame.style.borderRadius = `${rTop}px ${rTop}px ${rBottom}px ${rBottom}px`;
+      L.frame.style.visibility = p > 0.37 ? 'hidden' : 'visible';
+      if (L.heroimg) L.heroimg.style.opacity = sample(T.heroImg, p);
+
+      // Candle photo inside the frame, flame kept on the zoom point
+      let fx = fl + fw / 2;
+      let fy = ft + fh / 2;
+      if (L.photo && this.photo) {
         const ph = sample(T.photo, p);
-        const iw = this.photo.iw;
-        const ihh = this.photo.ih;
-        const s = Math.max(W / iw, H / ihh) * ph.z;
+        const { iw, ih } = this.photo;
+        const s = Math.max(fw / iw, fh / ih) * ph.z;
         const pw = iw * s;
-        const phh = ihh * s;
-        // keep the flame on the zoom point, but never let the photo edge show
-        let left = W / 2 - this.photo.fx * pw;
-        let top = ph.ty * H - this.photo.fy * phh;
-        left = Math.min(0, Math.max(W - pw, left));
-        top = Math.min(0, Math.max(H - phh, top));
-        fx = left + this.photo.fx * pw;
-        fy = top + this.photo.fy * phh;
+        const phh = ih * s;
+        let left = fw / 2 - this.photo.fx * pw;
+        let top = ph.ty * fh - this.photo.fy * phh;
+        left = Math.min(0, Math.max(fw - pw, left));
+        top = Math.min(0, Math.max(fh - phh, top));
+        const lfx = left + this.photo.fx * pw;
+        const lfy = top + this.photo.fy * phh;
+        fx = fl + lfx;
+        fy = ft + lfy;
         L.photo.style.width = pw + 'px';
         L.photo.style.height = phh + 'px';
         L.photo.style.transform = `translate3d(${left}px, ${top}px, 0)`;
         L.photo.style.opacity = ph.o;
-        L.photo.style.visibility = ph.o <= 0.001 ? 'hidden' : 'visible';
-        L.shade.style.opacity = sample(T.shade, p);
-      } else {
-        const c = sample(T.candle, p);
-        const ch = c.h * U;
-        const cw = ch * CANDLE_RATIO;
-        const cx = W / 2 + c.dx * U;
-        const cy = H / 2 + c.dy * U;
-        fx = cx;
-        fy = cy - ch / 2 + ch * FLAME_Y;
-        L.candle.style.width = cw + 'px';
-        L.candle.style.height = ch + 'px';
-        L.candle.style.transform = `translate3d(${cx - cw / 2}px, ${cy - ch / 2}px, 0)`;
-        L.candle.style.opacity = c.o;
-        L.candle.style.visibility = c.o <= 0.001 ? 'hidden' : 'visible';
-        const ig = sample(T.ignite, p);
-        L.candle.style.setProperty('--ignite', ig.o.toFixed(3));
-        L.candle.style.setProperty('--ignite-s', ig.s.toFixed(3));
+        if (L.shade) {
+          L.shade.style.opacity = sample(T.shade, p);
+          L.shade.style.setProperty('--fx', lfx + 'px');
+          L.shade.style.setProperty('--fy', lfy + 'px');
+        }
       }
 
-      // 2 · Bloom + warm room, centred on the flame
-      const g = sample(L.photo ? T.bloom : T.glow, p);
+      // Bloom + warm room, centred on the flame
+      const g = sample(T.bloom, p);
       this.place(L.glow, fx, fy, g.d * U, g.o);
       this.root.style.setProperty('--fx', fx + 'px');
       this.root.style.setProperty('--fy', fy + 'px');
-      L.warm.style.opacity = sample(T.warm, p) * (L.photo ? 0.55 : 1);
+      L.warm.style.opacity = sample(T.warm, p);
 
-      // Bokeh drift (softer over a photo)
-      const bokehMax = L.photo ? 0.45 : 1;
+      // Bokeh in the dark room
+      const night = clamp((p - 0.08) / 0.05) * (1 - clamp((p - 0.3) / 0.06));
       BOKEH.forEach(([dx, dy, d], i) => {
-        const lit = clamp((p - 0.03) / 0.06);
-        this.placeOrb('k' + (i + 1), p, { dx, dy: dy - p * 0.5, d, o: bokehMax * (0.35 + lit * 0.65) * (1 - clamp((p - 0.3) / 0.06)) });
+        this.placeOrb('k' + (i + 1), p, { dx, dy: dy - p * 0.5, d, o: 0.5 * night });
       });
 
       // 3 · Statement
@@ -289,11 +298,10 @@
       L.statement.style.transform = `translate(-50%, ${st.y * H}px)`;
       L.statement.style.opacity = st.o;
 
-      // 4 · Light floods out from the flame
+      // 4 · Light floods out from the flame, feathered edge
       const r = sample(T.fill, p) * D;
       L.fill.style.visibility = r > 0.5 ? 'visible' : 'hidden';
-      L.fill.classList.toggle('is-full', p >= 0.34);
-      // feathered edge: light spreads softly instead of a hard disc
+      L.fill.classList.toggle('is-full', p >= 0.355);
       const mask = `radial-gradient(circle ${Math.max(1, r)}px at ${fx}px ${fy}px, #000 ${r * 0.55}px, rgba(0,0,0,.6) ${r * 0.8}px, transparent ${r}px)`;
       L.fill.style.webkitMaskImage = mask;
       L.fill.style.maskImage = mask;
@@ -303,7 +311,7 @@
       L.dusk.style.opacity = sample(T.dusk, p);
       L.dim.style.opacity = sample(T.dim, p);
 
-      // 5 · Two flames
+      // 5 · Two orbs
       this.placeOrb('a', p);
       this.placeOrb('b', p);
 

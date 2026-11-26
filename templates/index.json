@@ -34,7 +34,7 @@
         "length": 800,
         "hero_eyebrow": "Hand-poured dessert candles",
         "hero_heading": "A little light isn’t found. <em>It’s poured.</em>",
-        "hero_text": "Scroll to light the candle.",
+        "hero_text": "Whipped, piped and finished by hand — candles that look good enough to eat.",
         "statement_heading": "Every candle is whipped, piped and finished by hand.",
         "statement_text": "Sweet enough to eat. Please don’t.",
         "mark_caption": "Our flame is the dot of the ن.",
@@ -52,7 +52,12 @@
         "flame_x": 51,
         "flame_y": 49,
         "orb_a_image": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
-        "orb_b_image": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg"
+        "orb_b_image": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg",
+        "hero_photo": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
+        "hero_product": "strawberry-whipped-coupe",
+        "hero_button_label": "Shop candles",
+        "hero_button_link": "shopify://collections/all",
+        "hero_link_label": "Our story"
       }
     },
     "hero": {
