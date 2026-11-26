@@ -4,3 +4,7 @@ node_modules/
 Thumbs.db
 *.log
 .claude/
+
+# original phone photos (may contain EXIF/GPS); cleaned copies live in brand/photos
+brand/png/Image*.jpeg
+brand/png/Image*.jpg

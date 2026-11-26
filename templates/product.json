@@ -84,19 +84,27 @@
       "blocks": {
         "p1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/noon-dessert-table-flatlay.jpg"
+          }
         },
         "p2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/noon-strawberries-and-cups.jpg"
+          }
         },
         "p3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/noon-scoops-and-cups.jpg"
+          }
         },
         "p4": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/noon-hearts-peonies-strawberries.jpg"
+          }
         }
       },
       "block_order": [

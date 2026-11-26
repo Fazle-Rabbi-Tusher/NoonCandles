@@ -41,7 +41,13 @@
         "final_eyebrow": "What we make",
         "final_heading": "Dessert candles. From the first pour to your front door.",
         "final_button_label": "Shop candles",
-        "final_button_link": "shopify://collections/all"
+        "final_button_link": "shopify://collections/all",
+        "photo_1": "shopify://shop_images/noon-dessert-table-full.jpg",
+        "photo_2": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
+        "photo_3": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg",
+        "photo_4": "shopify://shop_images/noon-mango-matcha-bubble-jar.jpg",
+        "photo_5": "shopify://shop_images/noon-strawberry-matcha-bubble-jar.jpg",
+        "photo_6": "shopify://shop_images/noon-scoops-and-cups.jpg"
       }
     },
     "hero": {
@@ -91,7 +97,8 @@
         "button_label": "Shop all candles",
         "button_link": "shopify://collections/all",
         "button_label_2": "Our story",
-        "trust_label": "Why people love Noon"
+        "trust_label": "Why people love Noon",
+        "image": "shopify://shop_images/noon-letterboard-coupes.jpg"
       },
       "disabled": true
     },
@@ -202,7 +209,8 @@
         "eyebrow": "Our story",
         "heading": "Behind every candle, <em>a pair of hands</em>",
         "text": "<p>Noon began at a kitchen table with one pot of wax and a lot of patience. Our mark is the Arabic letter <strong>ن</strong> (noon) — its dot became our flame.</p><p>Every candle is still poured, shaped and finished by hand, which is why each one is a little different from the last.</p>",
-        "button_label": "Read our story"
+        "button_label": "Read our story",
+        "image": "shopify://shop_images/noon-candle-glow-night.jpg"
       }
     },
     "process": {
@@ -256,37 +264,43 @@
         "r1": {
           "type": "reel",
           "settings": {
-            "caption": "Pouring a new batch"
+            "caption": "Strawberry whipped coupe",
+            "image": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg"
           }
         },
         "r2": {
           "type": "reel",
           "settings": {
-            "caption": "Whipping the wax"
+            "caption": "Raspberry swirl coupe",
+            "image": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg"
           }
         },
         "r3": {
           "type": "reel",
           "settings": {
-            "caption": "Matcha latte in the making"
+            "caption": "Mango matcha bubble jar",
+            "image": "shopify://shop_images/noon-mango-matcha-bubble-jar.jpg"
           }
         },
         "r4": {
           "type": "reel",
           "settings": {
-            "caption": "Cherry on top"
+            "caption": "Strawberry matcha bubble jar",
+            "image": "shopify://shop_images/noon-strawberry-matcha-bubble-jar.jpg"
           }
         },
         "r5": {
           "type": "reel",
           "settings": {
-            "caption": "Wrapped and ready"
+            "caption": "Peonies, hearts & berries",
+            "image": "shopify://shop_images/noon-hearts-peonies-strawberries.jpg"
           }
         },
         "r6": {
           "type": "reel",
           "settings": {
-            "caption": "Studio mornings"
+            "caption": "Berry cups",
+            "image": "shopify://shop_images/noon-strawberries-and-cups.jpg"
           }
         }
       },
@@ -395,7 +409,8 @@
         "bg": "#2A0710",
         "ink": "#F8EED5",
         "button_bg": "#C97B84",
-        "button_ink": "#FFFFFF"
+        "button_ink": "#FFFFFF",
+        "image": "shopify://shop_images/noon-letterboard-coupes.jpg"
       }
     },
     "banner-together": {
@@ -410,7 +425,8 @@
         "bg": "#DDE9C6",
         "ink": "#2E3A22",
         "button_bg": "#2E3A22",
-        "button_ink": "#DDE9C6"
+        "button_ink": "#DDE9C6",
+        "image": "shopify://shop_images/noon-bubble-jars-table.jpg"
       }
     }
   },
