@@ -1,0 +1,113 @@
+{%- liquid
+  assign s = section.settings
+  assign first_collection = section.blocks.first.settings.collection | default: collections.all
+  assign count_collection = s.count_collection | default: first_collection
+-%}
+<section class="section">
+  <div class="page-width">
+    <div class="section-header" data-reveal>
+      <div class="stack" style="--stack: .5rem">
+        {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="section-header__title">
+          {{ s.heading }}
+          {%- if s.show_count and count_collection != blank %}<sup>{{ count_collection.products_count }}</sup>{% endif -%}
+        </h2>
+      </div>
+
+      {%- if section.blocks.size > 1 -%}
+        <div class="tabs" role="tablist" data-tabs aria-label="{{ s.heading | strip_html | escape }}">
+          {%- for block in section.blocks -%}
+            {%- assign c = block.settings.collection | default: collections.all -%}
+            <button
+              class="pill"
+              type="button"
+              role="tab"
+              id="Tab-{{ section.id }}-{{ forloop.index }}"
+              aria-controls="Panel-{{ section.id }}-{{ forloop.index }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {{- block.settings.label | default: c.title | default: 'Collection' | escape -}}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection | default: collections.all -%}
+      <div
+        class="tab-panel"
+        id="Panel-{{ section.id }}-{{ forloop.index }}"
+        {% if section.blocks.size > 1 %}role="tabpanel" aria-labelledby="Tab-{{ section.id }}-{{ forloop.index }}"{% endif %}
+        {% unless forloop.first %}hidden{% endunless %}
+      >
+        <div class="product-grid" style="--cols: {{ s.columns }}">
+          {%- if c != blank and c.products_count > 0 -%}
+            {%- for product in c.products limit: s.products_to_show -%}
+              <div data-reveal style="--reveal-delay: {{ forloop.index0 | modulo: s.columns | times: 80 }}">
+                {% render 'product-card', product: product, index: forloop.index0 %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..s.columns) -%}
+              <div class="product-card" data-reveal>
+                <div class="product-card__media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                <div class="product-card__info">
+                  <span class="product-card__title">{{ 'onboarding.product_title' | t }}</span>
+                  <div class="price"><span class="price__current">{{ 3900 | money }}</span></div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- if s.view_all_label != blank -%}
+      <div class="text-center" style="margin-top: 40px" data-reveal>
+        <a class="btn btn--outline" href="{{ s.view_all_link | default: routes.all_products_collection_url }}">
+          <span>{{ s.view_all_label | escape }}</span>{% render 'icon', name: 'arrow-right' %}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product tabs",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The shop" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "All candles" },
+    { "type": "checkbox", "id": "show_count", "label": "Show product count next to heading", "default": true },
+    { "type": "collection", "id": "count_collection", "label": "Collection used for the count", "info": "Defaults to the first tab." },
+    { "type": "range", "id": "products_to_show", "label": "Products per tab", "min": 2, "max": 16, "step": 1, "default": 8 },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "view_all_label", "label": "View all button", "default": "See every candle" },
+    { "type": "url", "id": "view_all_link", "label": "View all link" }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Tab",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Tab label", "info": "Defaults to the collection title." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tabs",
+      "blocks": [
+        { "type": "collection", "settings": { "label": "All" } },
+        { "type": "collection", "settings": { "label": "New" } },
+        { "type": "collection", "settings": { "label": "Gift sets" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

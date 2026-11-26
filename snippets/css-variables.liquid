@@ -1,0 +1,48 @@
+{%- liquid
+  assign cherry = settings.color_cherry
+  assign white = settings.color_white
+  assign cream = settings.color_cream
+  assign matcha = settings.color_matcha
+-%}
+<style>
+  :root {
+    --c-cherry: {{ cherry }};
+    --c-cherry-rgb: {{ cherry.red }}, {{ cherry.green }}, {{ cherry.blue }};
+    --c-cherry-deep: {{ cherry | color_darken: 6 }};
+    --c-cherry-soft: {{ cherry | color_lighten: 8 }};
+    --c-white: {{ white }};
+    --c-white-rgb: {{ white.red }}, {{ white.green }}, {{ white.blue }};
+    --c-cream: {{ cream }};
+    --c-cream-rgb: {{ cream.red }}, {{ cream.green }}, {{ cream.blue }};
+    --c-matcha: {{ matcha }};
+    --c-matcha-rgb: {{ matcha.red }}, {{ matcha.green }}, {{ matcha.blue }};
+    --c-matcha-deep: {{ matcha | color_darken: 32 }};
+
+    --c-bg: var(--c-white);
+    --c-text: var(--c-cherry);
+    --c-text-muted: rgba(var(--c-cherry-rgb), 0.72);
+    --c-line: rgba(var(--c-cherry-rgb), 0.14);
+    --c-surface: rgba(255, 255, 255, 0.55);
+
+    --font-display: 'Fraunces', 'Cooper', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --logo-width: {{ settings.logo_width }}px;
+    --page-width: 1320px;
+    --gutter: clamp(16px, 4vw, 48px);
+    --radius-lg: 28px;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --header-h: 84px;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    {%- case settings.card_image_ratio -%}
+      {%- when 'portrait' -%}
+        --card-ratio: 4 / 5;
+      {%- when 'natural' -%}
+        --card-ratio: auto;
+      {%- else -%}
+        --card-ratio: 1 / 1;
+    {%- endcase %}
+  }
+</style>

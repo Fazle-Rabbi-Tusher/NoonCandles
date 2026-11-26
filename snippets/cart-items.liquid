@@ -1,0 +1,57 @@
+{%- comment -%}
+  Shared cart line items used by the cart drawer and cart page.
+  Params: size ('sm' for drawer)
+{%- endcomment -%}
+<ul class="cart-items list-unstyled" role="list">
+  {%- for item in cart.items -%}
+    <li class="cart-item">
+      <a class="cart-item__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+        {%- if item.image -%}
+          {{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </a>
+      <div>
+        <a class="cart-item__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+        {%- unless item.product.has_only_default_variant -%}
+          <div class="cart-item__meta">{{ item.variant.title | escape }}</div>
+        {%- endunless -%}
+        {%- for property in item.properties -%}
+          {%- assign first_char = property.first | slice: 0 -%}
+          {%- if property.last != blank and first_char != '_' -%}
+            <div class="cart-item__meta">{{ property.first }}: {{ property.last }}</div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if item.selling_plan_allocation -%}
+          <div class="cart-item__meta">{{ item.selling_plan_allocation.selling_plan.name }}</div>
+        {%- endif -%}
+        {%- for discount in item.line_level_discount_allocations -%}
+          <div class="cart-item__meta">{{ discount.discount_application.title }} (−{{ discount.amount | money }})</div>
+        {%- endfor -%}
+        <div class="cart-item__controls">
+          <div class="quantity{% if size == 'sm' %} quantity--sm{% endif %}">
+            <button type="button" data-qty-step="-1" aria-label="{{ 'cart.decrease' | t: product: item.product.title | escape }}">{% render 'icon', name: 'minus' %}</button>
+            <input
+              type="number"
+              min="0"
+              {% if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny' %}max="{{ item.variant.inventory_quantity }}"{% endif %}
+              value="{{ item.quantity }}"
+              name="updates[]"
+              data-line-qty="{{ forloop.index }}"
+              aria-label="{{ 'cart.quantity' | t }}"
+            >
+            <button type="button" data-qty-step="1" aria-label="{{ 'cart.increase' | t: product: item.product.title | escape }}">{% render 'icon', name: 'plus' %}</button>
+          </div>
+          <a class="cart-item__remove" href="{{ item.url_to_remove }}" data-line-remove="{{ forloop.index }}">{{ 'cart.remove' | t }}</a>
+        </div>
+      </div>
+      <div class="cart-item__price">
+        {%- if item.original_line_price != item.final_line_price -%}
+          <s class="price__compare">{{ item.original_line_price | money }}</s><br>
+        {%- endif -%}
+        {{ item.final_line_price | money }}
+      </div>
+    </li>
+  {%- endfor -%}
+</ul>

@@ -1,0 +1,351 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "trust-1": {
+          "type": "trust",
+          "settings": {
+            "label": "5-star",
+            "name": "Loved by 2,000+"
+          }
+        },
+        "trust-2": {
+          "type": "trust",
+          "settings": {
+            "label": "Burn time",
+            "name": "Up to 60 h"
+          }
+        },
+        "trust-3": {
+          "type": "trust",
+          "settings": {
+            "label": "Wax",
+            "name": "100% soy"
+          }
+        },
+        "trust-4": {
+          "type": "trust",
+          "settings": {
+            "label": "Made in",
+            "name": "Small batches"
+          }
+        }
+      },
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3",
+        "trust-4"
+      ],
+      "settings": {
+        "badge": "Freshly poured this week",
+        "reverse": false,
+        "eyebrow": "Hand-poured candles",
+        "heading": "A little <em>light</em> for every moment.",
+        "text": "<p>Small-batch candles that look as good as they smell. Each one is poured, finished and wrapped by hand — no two are quite the same.</p>",
+        "button_label": "Shop all candles",
+        "button_link": "shopify://collections/all",
+        "button_label_2": "Our story",
+        "trust_label": "Why people love Noon"
+      }
+    },
+    "highlights": {
+      "type": "usp-stats",
+      "blocks": {
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "icon": "leaf",
+            "value": "100%",
+            "label": "natural soy wax"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "icon": "clock",
+            "value": "60 h",
+            "label": "of slow, clean burn"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "icon": "hand",
+            "value": "1 of 1",
+            "label": "hand-finished, no two alike"
+          }
+        },
+        "s4": {
+          "type": "stat",
+          "settings": {
+            "icon": "gift",
+            "value": "Gift-ready",
+            "label": "wrapped with care, every order"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {}
+    },
+    "shop": {
+      "type": "featured-collection",
+      "blocks": {
+        "tab-all": {
+          "type": "collection",
+          "settings": {
+            "label": "All"
+          }
+        }
+      },
+      "block_order": [
+        "tab-all"
+      ],
+      "settings": {
+        "eyebrow": "The shop",
+        "heading": "All candles",
+        "show_count": true,
+        "products_to_show": 8,
+        "columns": 4,
+        "view_all_label": "See every candle",
+        "view_all_link": "shopify://collections/all"
+      }
+    },
+    "about": {
+      "type": "image-with-text",
+      "blocks": {
+        "c1": {
+          "type": "counter",
+          "settings": {
+            "number": 1000,
+            "suffix": "+",
+            "label": "candles found a home"
+          }
+        },
+        "c2": {
+          "type": "counter",
+          "settings": {
+            "number": 24,
+            "label": "scents in rotation"
+          }
+        },
+        "c3": {
+          "type": "counter",
+          "settings": {
+            "number": 100,
+            "suffix": "%",
+            "label": "poured by hand"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "sticker": "Poured by hand",
+        "reverse": false,
+        "background": "none",
+        "eyebrow": "Our story",
+        "heading": "Behind every candle, <em>a pair of hands</em>",
+        "text": "<p>Noon began at a kitchen table with one pot of wax and a lot of patience. Our mark is the Arabic letter <strong>ن</strong> (noon) — its dot became our flame.</p><p>Every candle is still poured, shaped and finished by hand, which is why each one is a little different from the last.</p>",
+        "button_label": "Read our story"
+      }
+    },
+    "process": {
+      "type": "process",
+      "blocks": {
+        "p1": {
+          "type": "step",
+          "settings": {
+            "title": "Melt & colour",
+            "text": "Soy wax is melted slowly and tinted by hand in small batches."
+          }
+        },
+        "p2": {
+          "type": "step",
+          "settings": {
+            "title": "Scent & pour",
+            "text": "Premium, phthalate-free fragrance oils are blended in, then poured into glass or moulds."
+          }
+        },
+        "p3": {
+          "type": "step",
+          "settings": {
+            "title": "Cure & finish",
+            "text": "Each candle cures for days before it is decorated, trimmed and checked by hand."
+          }
+        },
+        "p4": {
+          "type": "step",
+          "settings": {
+            "title": "Wrap & send",
+            "text": "Packed gift-ready with a care card, so it arrives looking as good as it left."
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "background": "cream",
+        "eyebrow": "How it's made",
+        "heading": "Slow-made, <em>on purpose</em>",
+        "text": "<p>It takes longer this way — and that's the point. Two candles from the same batch are never quite identical. That's what handmade looks like.</p>"
+      }
+    },
+    "reels": {
+      "type": "reels",
+      "blocks": {
+        "r1": {
+          "type": "reel",
+          "settings": {
+            "caption": "Pouring a new batch"
+          }
+        },
+        "r2": {
+          "type": "reel",
+          "settings": {
+            "caption": "Whipping the wax"
+          }
+        },
+        "r3": {
+          "type": "reel",
+          "settings": {
+            "caption": "Matcha latte in the making"
+          }
+        },
+        "r4": {
+          "type": "reel",
+          "settings": {
+            "caption": "Cherry on top"
+          }
+        },
+        "r5": {
+          "type": "reel",
+          "settings": {
+            "caption": "Wrapped and ready"
+          }
+        },
+        "r6": {
+          "type": "reel",
+          "settings": {
+            "caption": "Studio mornings"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6"
+      ],
+      "settings": {
+        "eyebrow": "Inside the studio",
+        "heading": "A peek at the pour",
+        "handle": "@nooncandles",
+        "slide_width": 260
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "q1": {
+          "type": "quote",
+          "settings": {
+            "quote": "I opened the box and the whole room smelled amazing. Almost too pretty to light!",
+            "author": "Sarah",
+            "stars": 5
+          }
+        },
+        "q2": {
+          "type": "quote",
+          "settings": {
+            "quote": "Bought one as a gift and ended up ordering three more for myself.",
+            "author": "Amira",
+            "stars": 5
+          }
+        },
+        "q3": {
+          "type": "quote",
+          "settings": {
+            "quote": "The packaging, the scent, the little note — every detail is perfect.",
+            "author": "Jess",
+            "stars": 5
+          }
+        },
+        "q4": {
+          "type": "quote",
+          "settings": {
+            "quote": "Burns so evenly and the matcha scent is unreal.",
+            "author": "Lina",
+            "stars": 5
+          }
+        },
+        "q5": {
+          "type": "quote",
+          "settings": {
+            "quote": "My go-to birthday present now. Everyone asks where it's from.",
+            "author": "Hannah",
+            "stars": 5
+          }
+        },
+        "q6": {
+          "type": "quote",
+          "settings": {
+            "quote": "Arrived quickly and beautifully wrapped. 10/10 customer service.",
+            "author": "Zara",
+            "stars": 5
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
+      "settings": {
+        "background": "none",
+        "eyebrow": "Kind words",
+        "heading": "Your messages, <em>our favourite part</em>",
+        "text": "Notes that land in our inbox and DMs.",
+        "speed": 60
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "The glow list",
+        "heading": "First dibs on <em>new scents</em>",
+        "text": "<p>Small batches sell out fast. Join to hear about new drops, restocks and members-only offers.</p>",
+        "button": "Subscribe",
+        "small": "No spam. Unsubscribe anytime."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "highlights",
+    "shop",
+    "about",
+    "process",
+    "reels",
+    "testimonials",
+    "newsletter"
+  ]
+}

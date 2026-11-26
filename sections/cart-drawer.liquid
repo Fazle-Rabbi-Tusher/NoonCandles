@@ -1,0 +1,77 @@
+<div id="CartDrawer" class="drawer drawer--right cart-drawer" aria-hidden="true">
+  <div class="drawer__overlay" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
+    <div data-cart-section="{{ section.id }}" style="display: contents">
+      <span hidden data-cart-count-source="{{ cart.item_count }}"></span>
+      <div class="drawer__header">
+        <h2 id="CartDrawerTitle" class="h3">
+          {{ 'cart.title' | t }}
+          {%- if cart.item_count > 0 %} <sup class="muted" style="font-size: .55em">{{ cart.item_count }}</sup>{% endif %}
+        </h2>
+        <button class="icon-btn" type="button" data-close aria-label="{{ 'general.close' | t }}">
+          {% render 'icon', name: 'close' %}
+        </button>
+      </div>
+
+      <div class="drawer__body">
+        {%- if cart.item_count > 0 -%}
+          {% render 'shipping-bar' %}
+          {% render 'cart-items', size: 'sm' %}
+        {%- else -%}
+          <div class="cart-empty">
+            {% render 'logo', variant: 'mark' %}
+            <p class="h3">{{ 'cart.empty' | t }}</p>
+            <p class="muted">{{ 'cart.empty_text' | t }}</p>
+            <a class="btn" href="{% if settings.cart_empty_collection != blank %}{{ settings.cart_empty_collection.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">
+              <span>{{ 'cart.continue' | t }}</span>
+            </a>
+          </div>
+          {%- if settings.cart_empty_collection != blank -%}
+            <div class="product-grid" style="--cols: 2; margin-top: 12px">
+              {%- for product in settings.cart_empty_collection.products limit: 4 -%}
+                {% render 'product-card', product: product, index: forloop.index0, sizes: '200px' %}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      {%- if cart.item_count > 0 -%}
+        <div class="drawer__footer">
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <div class="cart-totals" style="font-size: .9rem; font-weight: 500">
+              <span>{{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+          <div class="cart-totals">
+            <span>{{ 'cart.subtotal' | t }}</span>
+            <span>{{ cart.total_price | money_with_currency }}</span>
+          </div>
+          <p class="cart-taxes">{{ 'cart.taxes_note' | t }}</p>
+          <form action="{{ routes.cart_url }}" method="post" class="stack" style="--stack: 10px">
+            {%- if settings.cart_show_note -%}
+              <details class="cart-note">
+                <summary>{{ 'cart.note' | t }}</summary>
+                <textarea class="textarea" name="note" data-cart-note aria-label="{{ 'cart.note' | t }}">{{ cart.note }}</textarea>
+              </details>
+            {%- endif -%}
+            <button class="btn btn--block" type="submit" name="checkout"><span>{{ 'cart.checkout' | t }}</span></button>
+            <a class="btn btn--outline btn--block" href="{{ routes.cart_url }}"><span>{{ 'cart.view_cart' | t }}</span></a>
+          </form>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Edit cart behaviour under Theme settings → Cart."
+    }
+  ]
+}
+{% endschema %}

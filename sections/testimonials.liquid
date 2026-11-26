@@ -1,0 +1,83 @@
+{%- liquid
+  assign s = section.settings
+  assign half = section.blocks.size | divided_by: 2
+  if section.blocks.size < 6
+    assign half = section.blocks.size
+  endif
+-%}
+<section class="section testimonials{% if s.background == 'cream' %} section--cream{% endif %}">
+  <div class="page-width section-header section-header--center" data-reveal>
+    {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+    <h2>{{ s.heading }}</h2>
+    {%- if s.text != blank -%}<p class="muted">{{ s.text | escape }}</p>{%- endif -%}
+  </div>
+
+  {%- capture row_one -%}
+    {%- for block in section.blocks limit: half -%}{% render 'quote-card', block: block %}{%- endfor -%}
+  {%- endcapture -%}
+  {%- capture row_two -%}
+    {%- for block in section.blocks offset: half -%}{% render 'quote-card', block: block %}{%- endfor -%}
+  {%- endcapture -%}
+
+  <div class="marquee" style="--speed: {{ s.speed }}s" data-reveal="fade">
+    <div class="marquee__track">
+      <div class="marquee__group">{{ row_one }}</div>
+      <div class="marquee__group" aria-hidden="true">{{ row_one }}</div>
+    </div>
+  </div>
+  {%- if row_two != blank -%}
+    <div class="marquee marquee--reverse" style="--speed: {{ s.speed | plus: 10 }}s" data-reveal="fade">
+      <div class="marquee__track">
+        <div class="marquee__group">{{ row_two }}</div>
+        <div class="marquee__group" aria-hidden="true">{{ row_two }}</div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "cream", "label": "Whipped Cream" }
+      ],
+      "default": "cream"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Kind words" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Your messages, <em>our favourite part</em>" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Notes that land in our inbox and DMs." },
+    { "type": "range", "id": "speed", "label": "Scroll duration", "min": 20, "max": 120, "step": 5, "unit": "s", "default": 60 }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "I opened the box and the whole room smelled amazing. Almost too pretty to light!" },
+        { "type": "text", "id": "author", "label": "Name", "default": "Sarah" },
+        { "type": "range", "id": "stars", "label": "Stars", "min": 0, "max": 5, "step": 1, "default": 5 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "quote", "settings": { "quote": "I opened the box and the whole room smelled amazing. Almost too pretty to light!", "author": "Sarah", "stars": 5 } },
+        { "type": "quote", "settings": { "quote": "Bought one as a gift and ended up ordering three more for myself.", "author": "Amira", "stars": 5 } },
+        { "type": "quote", "settings": { "quote": "The packaging, the scent, the little note — every detail is perfect.", "author": "Jess", "stars": 5 } },
+        { "type": "quote", "settings": { "quote": "Burns so evenly and the matcha scent is unreal.", "author": "Lina", "stars": 5 } },
+        { "type": "quote", "settings": { "quote": "My go-to birthday present now. Everyone asks where it's from.", "author": "Hannah", "stars": 5 } },
+        { "type": "quote", "settings": { "quote": "Arrived quickly and beautifully wrapped. 10/10 customer service.", "author": "Zara", "stars": 5 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

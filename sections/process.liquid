@@ -1,0 +1,68 @@
+{%- assign s = section.settings -%}
+<section class="section{% if s.background == 'cream' %} section--cream{% endif %}">
+  <div class="page-width process__grid">
+    <div class="stack" style="--stack: 1.2rem">
+      {%- if s.eyebrow != blank -%}<span class="eyebrow" data-reveal>{{ s.eyebrow | escape }}</span>{%- endif -%}
+      <h2 data-reveal>{{ s.heading }}</h2>
+      {%- if s.text != blank -%}<div class="rte muted" data-reveal>{{ s.text }}</div>{%- endif -%}
+    </div>
+    <ol class="process__steps list-unstyled" role="list">
+      {%- for block in section.blocks -%}
+        <li class="process__step" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 110 }}" {{ block.shopify_attributes }}>
+          <div>
+            <h3>{{ block.settings.title | escape }}</h3>
+            <p class="muted">{{ block.settings.text | escape }}</p>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "How it's made",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "cream", "label": "Whipped Cream" }
+      ],
+      "default": "none"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "How it's made" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Slow-made, <em>on purpose</em>" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Wax is melted and coloured by hand, poured into glass or moulds, then finished line by line. It takes longer — and that's the point.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Melt & colour" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Soy wax is melted slowly and tinted by hand in small batches." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it's made",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Melt & colour", "text": "Soy wax is melted slowly and tinted by hand in small batches." } },
+        { "type": "step", "settings": { "title": "Scent & pour", "text": "Premium, phthalate-free fragrance oils are blended in, then poured into glass or moulds." } },
+        { "type": "step", "settings": { "title": "Cure & finish", "text": "Each candle cures for days before it is decorated, trimmed and checked by hand." } },
+        { "type": "step", "settings": { "title": "Wrap & send", "text": "Packed gift-ready with a care card, so it arrives looking as good as it left." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,132 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Noon Candles",
+    "theme_version": "1.0.0",
+    "theme_author": "Noon Candles",
+    "theme_documentation_url": "https://github.com/Fazle-Rabbi-Tusher/NoonCandles",
+    "theme_support_url": "https://github.com/Fazle-Rabbi-Tusher/NoonCandles"
+  },
+  {
+    "name": "Brand colours",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Defaults are the Noon Candles palette: Natural White, Whipped Cream, Matcha Green and Cherry Red."
+      },
+      { "type": "color", "id": "color_cherry", "label": "Cherry Red (primary / text)", "default": "#4B0B19" },
+      { "type": "color", "id": "color_white", "label": "Natural White (page background)", "default": "#F0EDE6" },
+      { "type": "color", "id": "color_cream", "label": "Whipped Cream (soft panels)", "default": "#F8EED5" },
+      { "type": "color", "id": "color_matcha", "label": "Matcha Green (accent)", "default": "#BED698" },
+      {
+        "type": "checkbox",
+        "id": "background_glow",
+        "label": "Soft glow behind page",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Logo & favicon",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "The vector Noon Candles logo is built into the theme. Upload an image only if you want to replace it."
+      },
+      { "type": "image_picker", "id": "logo_image", "label": "Replace logo with image" },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Header logo width",
+        "min": 100,
+        "max": 300,
+        "step": 5,
+        "unit": "px",
+        "default": 190
+      },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon image", "info": "Leave empty to use the built-in Noon mark." }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "animations_reveal",
+        "label": "Reveal sections on scroll",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_hover",
+        "label": "Hover lift on product cards",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Product image shape",
+        "options": [
+          { "value": "square", "label": "Square" },
+          { "value": "portrait", "label": "Portrait" },
+          { "value": "natural", "label": "Natural" }
+        ],
+        "default": "square"
+      },
+      { "type": "checkbox", "id": "card_show_secondary", "label": "Show second image on hover", "default": true },
+      { "type": "checkbox", "id": "card_quick_add", "label": "Show quick add button", "default": true },
+      { "type": "checkbox", "id": "card_show_vendor", "label": "Show vendor", "default": false },
+      {
+        "type": "text",
+        "id": "badge_new_tag",
+        "label": "Tag that shows the “New” badge",
+        "default": "new"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" }
+        ],
+        "default": "drawer"
+      },
+      { "type": "checkbox", "id": "cart_show_note", "label": "Enable order notes", "default": true },
+      {
+        "type": "range",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping goal",
+        "info": "Shows a progress bar in the cart. Set to 0 to hide. Uses your store currency.",
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "default": 100
+      },
+      {
+        "type": "collection",
+        "id": "cart_empty_collection",
+        "label": "Collection shown when cart is empty"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "placeholder": "https://instagram.com/nooncandles" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok", "placeholder": "https://tiktok.com/@nooncandles" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook", "placeholder": "https://facebook.com/nooncandles" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest", "placeholder": "https://pinterest.com/nooncandles" }
+    ]
+  }
+]

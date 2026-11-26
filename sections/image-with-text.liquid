@@ -1,0 +1,97 @@
+{%- assign s = section.settings -%}
+<section class="section{% if s.background == 'cream' %} section--cream{% elsif s.background == 'matcha' %} section--matcha{% endif %}">
+  <div class="page-width about__grid{% if s.reverse %} about--reverse{% endif %}">
+    <div class="about__media" data-reveal="scale">
+      <div class="about__image">
+        {%- if s.image != blank -%}
+          {%- assign about_alt = s.image.alt | default: s.heading | strip_html | escape -%}
+          {{ s.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 850px) 50vw, 100vw', widths: '500, 800, 1100, 1400', alt: about_alt }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {%- if s.sticker != blank -%}
+        <span class="about__sticker">{{ s.sticker | escape }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="stack" style="--stack: 1.4rem">
+      {%- if s.eyebrow != blank -%}<span class="eyebrow" data-reveal>{{ s.eyebrow | escape }}</span>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 data-reveal>{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="rte lead" data-reveal style="--reveal-delay: 120">{{ s.text }}</div>{%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="counters">
+          {%- for block in section.blocks -%}
+            <div class="counter" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 100 }}" {{ block.shopify_attributes }}>
+              <div class="counter__value" data-count-to="{{ block.settings.number }}" data-suffix="{{ block.settings.suffix | escape }}">
+                0{{ block.settings.suffix | escape }}
+              </div>
+              <div class="counter__label">{{ block.settings.label | escape }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if s.button_label != blank -%}
+        <div data-reveal>
+          <a class="link-arrow" href="{{ s.button_link }}">{{ s.button_label | escape }} {% render 'icon', name: 'arrow-right' %}</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "sticker", "label": "Round sticker text", "default": "Poured by hand" },
+    { "type": "checkbox", "id": "reverse", "label": "Image on the right", "default": false },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "cream", "label": "Whipped Cream" },
+        { "value": "matcha", "label": "Matcha Green" }
+      ],
+      "default": "none"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our story" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Behind every candle, <em>a pair of hands</em>" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Noon began at a kitchen table with one pot of wax and a lot of patience. Every candle is still poured, shaped and finished by hand — which is why each one is a little different from the last.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Link label", "default": "Read our story" },
+    { "type": "url", "id": "button_link", "label": "Link" }
+  ],
+  "blocks": [
+    {
+      "type": "counter",
+      "name": "Counter",
+      "settings": [
+        { "type": "number", "id": "number", "label": "Number", "default": 1000 },
+        { "type": "text", "id": "suffix", "label": "Suffix", "default": "+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "candles found a home" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [
+        { "type": "counter", "settings": { "number": 1000, "suffix": "+", "label": "candles found a home" } },
+        { "type": "counter", "settings": { "number": 24, "suffix": "", "label": "scents in rotation" } },
+        { "type": "counter", "settings": { "number": 100, "suffix": "%", "label": "hand-poured" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

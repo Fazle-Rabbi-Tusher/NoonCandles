@@ -1,0 +1,146 @@
+{%- liquid
+  assign s = section.settings
+  assign video_id = 'HeroVideo-' | append: section.id
+-%}
+<section class="hero{% if s.reverse %} hero--reverse{% endif %}">
+  <div class="page-width hero__grid">
+    <div class="hero__media" data-video-root data-reveal="scale">
+      {%- if s.video != blank -%}
+        {{
+          s.video
+          | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', image_size: '1200x', id: video_id
+        }}
+        <button
+          class="btn btn--light btn--sm hero__media-toggle"
+          type="button"
+          data-video-toggle="{{ video_id }}"
+          data-play="{{ 'general.play' | t }}"
+          data-pause="{{ 'general.pause' | t }}"
+        >
+          {{- 'general.pause' | t -}}
+        </button>
+      {%- elsif s.image != blank -%}
+        {%- assign hero_alt = s.image.alt | default: s.heading | strip_html | escape -%}
+        {{
+          s.image
+          | image_url: width: 1600
+          | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 850px) 45vw, 100vw', widths: '600, 900, 1200, 1600', alt: hero_alt
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      {%- if s.badge != blank -%}
+        <span class="hero__media-badge"><span class="dot"></span>{{ s.badge | escape }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="hero__content">
+      {%- if s.eyebrow != blank -%}
+        <span class="eyebrow" data-reveal>{{ s.eyebrow | escape }}</span>
+      {%- endif -%}
+      {%- if s.heading != blank -%}
+        <h2 class="h-display" data-split>{{ s.heading }}</h2>
+      {%- endif -%}
+      {%- if s.text != blank -%}
+        <div class="lead" data-reveal style="--reveal-delay: 250">{{ s.text }}</div>
+      {%- endif -%}
+      <div class="hero__actions" data-reveal style="--reveal-delay: 350">
+        {%- if s.button_label != blank -%}
+          <a class="btn" href="{{ s.button_link | default: routes.all_products_collection_url }}">
+            <span>{{ s.button_label | escape }}</span>
+          </a>
+        {%- endif -%}
+        {%- if s.button_label_2 != blank -%}
+          <a class="btn btn--outline" href="{{ s.button_link_2 | default: routes.collections_url }}">
+            <span>{{ s.button_label_2 | escape }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="hero__trust" data-reveal style="--reveal-delay: 450">
+          {%- if s.trust_label != blank -%}
+            <p class="hero__trust-label">{{ s.trust_label | escape }}</p>
+          {%- endif -%}
+          <div class="marquee" style="--speed: {{ section.blocks.size | times: 5 | at_least: 20 }}s">
+            <div class="marquee__track">
+              {%- for i in (1..2) -%}
+                <div class="marquee__group"{% if i == 2 %} aria-hidden="true"{% endif %}>
+                  {%- for block in section.blocks -%}
+                    <span class="trust-item" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                      {%- if block.settings.label != blank -%}
+                        <span class="trust-item__label">{{ block.settings.label | escape }}</span>
+                      {%- endif -%}
+                      {%- if block.settings.logo != blank -%}
+                        {{ block.settings.logo | image_url: height: 80 | image_tag: loading: 'lazy', alt: block.settings.name }}
+                      {%- else -%}
+                        <span class="trust-item__name">{{ block.settings.name | escape }}</span>
+                      {%- endif -%}
+                    </span>
+                  {%- endfor -%}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "hero-section",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "header", "content": "Media" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Plays muted on loop. Overrides the image." },
+    { "type": "text", "id": "badge", "label": "Badge on media", "default": "Freshly poured this week" },
+    { "type": "checkbox", "id": "reverse", "label": "Media on the right", "default": false },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Hand-poured candles" },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Use italic for a soft accent word.",
+      "default": "A little <em>light</em> for every moment."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Small-batch candles that look as good as they smell. Each one is poured, finished and wrapped by hand — no two are quite the same.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop all candles" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "button_label_2", "label": "Second button label", "default": "Gift sets" },
+    { "type": "url", "id": "button_link_2", "label": "Second button link" },
+    { "type": "header", "content": "Trust strip" },
+    { "type": "text", "id": "trust_label", "label": "Trust strip label", "default": "Loved by" }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Trust item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Small label", "default": "Featured in" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Brand" },
+        { "type": "image_picker", "id": "logo", "label": "Logo (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "blocks": [
+        { "type": "trust", "settings": { "label": "5-star", "name": "2,000+ reviews" } },
+        { "type": "trust", "settings": { "label": "Burn time", "name": "Up to 60 h" } },
+        { "type": "trust", "settings": { "label": "Wax", "name": "100% soy" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

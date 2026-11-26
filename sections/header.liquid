@@ -1,0 +1,150 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign cart_href = routes.cart_url
+-%}
+<div class="header-wrapper" data-header data-sticky="{{ section.settings.sticky }}">
+  <header class="header{% if section.settings.solid %} header--solid{% endif %}">
+    <div class="page-width header__inner">
+      <button class="icon-btn header__burger" type="button" data-open="MenuDrawer" aria-label="{{ 'header.menu' | t }}" aria-controls="MenuDrawer">
+        {% render 'icon', name: 'menu' %}
+      </button>
+
+      {%- if request.page_type == 'index' -%}<h1 class="visually-hidden">{{ shop.name }}</h1>{%- endif -%}
+      <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {%- if settings.logo_image != blank -%}
+          {{ settings.logo_image | image_url: width: 600 | image_tag: alt: shop.name, loading: 'eager', widths: '200, 300, 400, 600' }}
+        {%- else -%}
+          {% render 'logo', variant: section.settings.logo_variant %}
+        {%- endif -%}
+      </a>
+
+      <nav class="header__nav" aria-label="{{ 'header.main_nav' | t }}">
+        <ul class="header__menu list-unstyled" role="list">
+          {%- for link in menu.links -%}
+            <li class="header__menu-item">
+              <a class="header__menu-link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
+                {{ link.title | escape }}
+                {%- if link.links.size > 0 %}{% render 'icon', name: 'chevron-down', class: 'icon--sm' %}{% endif -%}
+              </a>
+              {%- if link.links.size > 0 -%}
+                <div class="header__submenu">
+                  {%- for child in link.links -%}
+                    <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <div class="header__icons">
+        <button class="icon-btn" type="button" data-open="SearchModal" aria-label="{{ 'header.search' | t }}">
+          {% render 'icon', name: 'search' %}
+        </button>
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="icon-btn header__account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="{{ 'header.account' | t }}">
+            {% render 'icon', name: 'account' %}
+          </a>
+        {%- endif -%}
+        <a class="icon-btn" href="{{ cart_href }}" data-open="CartDrawer" aria-label="{{ 'header.cart' | t }}">
+          {% render 'icon', name: 'bag' %}
+          <span class="cart-count" data-cart-count>{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+</div>
+
+{%- comment -%} Mobile menu {%- endcomment -%}
+<div id="MenuDrawer" class="drawer drawer--left" aria-hidden="true">
+  <div class="drawer__overlay" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'header.menu' | t }}">
+    <div class="drawer__header">
+      <a class="header__logo" href="{{ routes.root_url }}" style="--logo-width: 130px">{% render 'logo', variant: 'horizontal' %}</a>
+      <button class="icon-btn" type="button" data-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <nav class="drawer__body mobile-menu">
+      {%- for link in menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <details>
+            <summary>{{ link.title | escape }} {% render 'icon', name: 'chevron-down' %}</summary>
+            <a href="{{ link.url }}">{{ 'header.view_all' | t: title: link.title }}</a>
+            {%- for child in link.links -%}
+              <a href="{{ child.url }}">{{ child.title | escape }}</a>
+            {%- endfor -%}
+          </details>
+        {%- else -%}
+          <a href="{{ link.url }}">{{ link.title | escape }} {% render 'icon', name: 'arrow-right' %}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+    <div class="drawer__footer stack" style="--stack: 10px">
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="btn btn--outline btn--block" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+          {% render 'icon', name: 'account' %}
+          <span>{% if customer %}{{ 'header.account' | t }}{% else %}{{ 'customer.login.title' | t }}{% endif %}</span>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_instagram != blank -%}
+        <a class="btn btn--block" href="{{ settings.social_instagram }}" target="_blank" rel="noopener">{% render 'icon', name: 'instagram' %}<span>Instagram</span></a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Search {%- endcomment -%}
+<div id="SearchModal" class="search-modal" aria-hidden="true">
+  <div class="search-modal__overlay" data-close></div>
+  <div class="search-modal__panel" role="dialog" aria-modal="true" aria-label="{{ 'header.search' | t }}">
+    <div class="page-width">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+        <input type="hidden" name="type" value="product">
+        <input
+          class="input"
+          type="search"
+          name="q"
+          placeholder="{{ 'search.placeholder' | t }}"
+          aria-label="{{ 'header.search' | t }}"
+          data-autofocus
+        >
+        <button class="btn" type="submit"><span>{{ 'header.search' | t }}</span></button>
+        <button class="icon-btn" type="button" data-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'close' %}</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "logo_variant",
+      "label": "Logo layout",
+      "options": [
+        { "value": "horizontal", "label": "Mark + wordmark (side by side)" },
+        { "value": "stacked", "label": "Stacked" },
+        { "value": "mark", "label": "Mark only" },
+        { "value": "wordmark", "label": "Wordmark only" }
+      ],
+      "default": "horizontal"
+    },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "Sticky header",
+      "options": [
+        { "value": "always", "label": "Always visible" },
+        { "value": "hide", "label": "Hide on scroll down" }
+      ],
+      "default": "always"
+    },
+    { "type": "checkbox", "id": "solid", "label": "Solid background at top of page", "default": false }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

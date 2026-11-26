@@ -1,0 +1,34 @@
+{%- assign s = section.settings -%}
+<section class="section">
+  <div class="page-width">
+    <div class="section-header" data-reveal>
+      <h2>{{ s.heading }}</h2>
+    </div>
+    <div
+      class="product-grid"
+      style="--cols: {{ s.columns }}"
+      data-recommendations
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ s.limit }}&intent=related"
+    >
+      {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+        {%- for rec in recommendations.products -%}
+          <div data-reveal style="--reveal-delay: {{ forloop.index0 | times: 80 }}">
+            {% render 'product-card', product: rec, index: forloop.index0 %}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Related products",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "You might also <em>love</em>" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Columns on desktop", "min": 2, "max": 5, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Related products" }]
+}
+{% endschema %}

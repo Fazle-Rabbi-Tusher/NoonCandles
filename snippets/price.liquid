@@ -1,0 +1,48 @@
+{%- comment -%}
+  Renders a price for a product or variant.
+  Usage: {% render 'price', product: product %}  or  {% render 'price', product: product, variant: variant, size: 'lg' %}
+{%- endcomment -%}
+{%- liquid
+  if variant != blank
+    assign target = variant
+    assign price = variant.price
+    assign compare = variant.compare_at_price
+    assign varies = false
+  else
+    assign target = product.selected_or_first_available_variant
+    assign price = product.price_min
+    assign compare = product.compare_at_price_min
+    assign varies = product.price_varies
+    if compare < price
+      assign compare = nil
+    endif
+  endif
+  assign on_sale = false
+  if compare > price
+    assign on_sale = true
+  endif
+-%}
+<div class="price{% if on_sale %} price--sale{% endif %}{% if size == 'lg' %} price--lg{% endif %}">
+  {%- if on_sale -%}
+    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    <s class="price__compare">{{ compare | money }}</s>
+    <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+  {%- endif -%}
+  <span class="price__current">
+    {%- if varies -%}
+      {%- assign price_money = price | money -%}
+      {{ 'products.product.price_from' | t: price: price_money }}
+    {%- else -%}
+      {{ price | money }}
+    {%- endif -%}
+  </span>
+  {%- if target.unit_price_measurement -%}
+    <span class="price__unit">
+      {{- target.unit_price | money }}/
+      {%- if target.unit_price_measurement.reference_value != 1 -%}
+        {{- target.unit_price_measurement.reference_value -}}
+      {%- endif -%}
+      {{ target.unit_price_measurement.reference_unit }}
+    </span>
+  {%- endif -%}
+</div>

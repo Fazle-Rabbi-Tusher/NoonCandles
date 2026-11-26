@@ -1,0 +1,87 @@
+{%- comment -%}
+  Product card.
+  Params: product (required), index (int, for stagger), sizes (string), quick_add (bool, default from settings)
+{%- endcomment -%}
+{%- liquid
+  assign quick = settings.card_quick_add
+  if quick_add == false
+    assign quick = false
+  endif
+  assign sizes = sizes | default: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw'
+  assign new_tag = settings.badge_new_tag | downcase | strip
+  assign is_new = false
+  for tag in product.tags
+    assign t = tag | downcase
+    if t == new_tag
+      assign is_new = true
+    endif
+  endfor
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+  assign variant = product.selected_or_first_available_variant
+-%}
+<article class="product-card" style="--i: {{ index | default: 0 }}">
+  <a class="product-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    <span class="badges">
+      {%- if product.available == false -%}
+        <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale -%}
+        <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+      {%- if is_new -%}
+        <span class="badge badge--new">{{ 'products.product.new' | t }}</span>
+      {%- endif -%}
+    </span>
+    {%- if product.featured_media -%}
+      {%- assign card_alt = product.featured_media.alt | default: product.title | escape -%}
+      {{
+        product.featured_media
+        | image_url: width: 900
+        | image_tag: loading: 'lazy', sizes: sizes, widths: '300, 450, 600, 900', alt: card_alt
+      }}
+      {%- if settings.card_show_secondary and product.media[1] -%}
+        {{
+          product.media[1]
+          | image_url: width: 900
+          | image_tag: loading: 'lazy', sizes: sizes, widths: '300, 450, 600, 900', class: 'secondary', alt: ''
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {%- assign ph = index | modulo: 6 | plus: 1 -%}
+      {{ 'product-' | append: ph | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+
+  <div class="product-card__info">
+    {%- if settings.card_show_vendor -%}
+      <span class="product-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+    <a class="product-card__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+    {% render 'price', product: product %}
+  </div>
+
+  {%- if quick -%}
+    <div class="product-card__action">
+      {%- if product.available == false -%}
+        <button class="btn btn--outline btn--sm" type="button" disabled>
+          <span>{{ 'products.product.sold_out' | t }}</span>
+        </button>
+      {%- elsif product.has_only_default_variant -%}
+        {%- form 'product', product, data-product-form: '', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button class="btn btn--outline btn--sm" type="submit">
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        {%- endform -%}
+      {%- else -%}
+        <a class="btn btn--outline btn--sm" href="{{ product.url }}">
+          <span>{{ 'products.product.choose_options' | t }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</article>

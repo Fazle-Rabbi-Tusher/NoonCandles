@@ -1,0 +1,42 @@
+{%- assign s = section.settings -%}
+<section class="section">
+  <div class="page-width">
+    <div class="newsletter__card" data-reveal="scale">
+      <div class="newsletter__mark">{% render 'logo', variant: 'mark' %}</div>
+      <div class="stack" style="--stack: 1rem">
+        {%- if s.eyebrow != blank -%}<span class="eyebrow" style="color: var(--c-matcha)">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ s.heading }}</h2>
+        {%- if s.text != blank -%}<div class="lead">{{ s.text }}</div>{%- endif -%}
+      </div>
+      {%- form 'customer', id: 'NewsletterForm', class: 'stack' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success" style="color: var(--c-cherry)">{{ 'newsletter.success' | t }}</p>
+        {%- else -%}
+          <div class="newsletter__form">
+            <input class="input" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ 'newsletter.placeholder' | t }}" aria-label="{{ 'newsletter.placeholder' | t }}">
+            <button class="btn btn--matcha" type="submit"><span>{{ s.button | escape }}</span></button>
+          </div>
+          {%- if form.errors -%}
+            <p class="form-message form-message--error" style="background: var(--c-cream)">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          {%- if s.small != blank -%}<p class="muted" style="color: rgba(var(--c-white-rgb), .6); font-size: .82rem">{{ s.small | escape }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The glow list" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "First dibs on <em>new scents</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Small batches sell out fast. Join to hear about new drops, restocks and members-only offers.</p>" },
+    { "type": "text", "id": "button", "label": "Button", "default": "Subscribe" },
+    { "type": "text", "id": "small", "label": "Small print", "default": "No spam. Unsubscribe anytime." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

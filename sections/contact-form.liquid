@@ -1,0 +1,38 @@
+<section class="section" style="padding-top: 0">
+  <div class="page-width page-width--narrow">
+    {%- form 'contact', id: 'ContactForm', class: 'form-grid' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-message form-message--success" role="status">{{ 'contact.success' | t }}</p>
+      {%- elsif form.errors -%}
+        <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="form-grid form-grid--2">
+        <label class="field">
+          <span class="field__label">{{ 'contact.name' | t }}</span>
+          <input class="input" type="text" name="contact[name]" autocomplete="name" value="{{ form.name | default: customer.name }}">
+        </label>
+        <label class="field">
+          <span class="field__label">{{ 'contact.email' | t }} *</span>
+          <input class="input" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email | default: customer.email }}">
+        </label>
+      </div>
+      <label class="field">
+        <span class="field__label">{{ 'contact.phone' | t }}</span>
+        <input class="input" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+      </label>
+      <label class="field">
+        <span class="field__label">{{ 'contact.message' | t }}</span>
+        <textarea class="textarea" name="contact[body]">{{ form.body }}</textarea>
+      </label>
+      <div><button class="btn" type="submit"><span>{{ 'contact.send' | t }}</span></button></div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [],
+  "presets": [{ "name": "Contact form" }]
+}
+{% endschema %}

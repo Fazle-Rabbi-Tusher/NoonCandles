@@ -1,0 +1,31 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu-shop": {
+          "type": "menu",
+          "settings": { "heading": "Shop", "menu": "main-menu" }
+        },
+        "menu-help": {
+          "type": "menu",
+          "settings": { "heading": "Help", "menu": "footer" }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": { "heading": "Join the glow list" }
+        }
+      },
+      "block_order": ["menu-shop", "menu-help", "newsletter"],
+      "settings": {
+        "about": "Hand-poured candles, made in small batches. The flame is the dot of the ن — our little light for your home.",
+        "show_payment": true,
+        "show_localization": true,
+        "show_giant_logo": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

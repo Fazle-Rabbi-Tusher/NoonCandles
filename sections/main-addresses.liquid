@@ -1,0 +1,49 @@
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<section class="section" style="padding-top: clamp(28px, 4vw, 56px)">
+  <div class="page-width">
+    <a class="link-arrow" href="{{ routes.account_url }}">{% render 'icon', name: 'arrow-left' %} {{ 'customer.account.title' | t }}</a>
+    <h1 style="margin: 12px 0 32px">{{ 'customer.addresses.title' | t }}</h1>
+
+    <div class="account-grid">
+      <div class="stack" style="--stack: 1rem">
+        {%- paginate customer.addresses by 10 -%}
+          {%- for address in customer.addresses -%}
+            <div class="address-card stack" style="--stack: .8rem">
+              {%- if address == customer.default_address -%}<span class="badge badge--new" style="justify-self: start; display: inline-block">{{ 'customer.addresses.default' | t }}</span>{%- endif -%}
+              <div>{{ address | format_address }}</div>
+              <details>
+                <summary class="link-arrow" style="cursor: pointer">{{ 'customer.addresses.edit' | t }}</summary>
+                <div style="margin-top: 16px">
+                  {% render 'address-form', address: address, form_id: address.id %}
+                </div>
+              </details>
+              <form method="post" action="{{ address.url }}" onsubmit="return confirm('{{ 'customer.addresses.delete_confirm' | t }}')">
+                <input type="hidden" name="_method" value="delete">
+                <button class="cart-item__remove" type="submit">{{ 'customer.addresses.delete' | t }}</button>
+              </form>
+            </div>
+          {%- endfor -%}
+          {% render 'pagination', paginate: paginate %}
+        {%- endpaginate -%}
+      </div>
+
+      <aside class="address-card stack" style="--stack: 1rem">
+        <h2 class="h4">{{ 'customer.addresses.add' | t }}</h2>
+        {% render 'address-form', address: customer.new_address, form_id: 'new' %}
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () { document.querySelectorAll('[data-address-country]').forEach(function (select) {
+    var id = select.dataset.addressCountry;
+    if (window.Shopify && Shopify.CountryProvinceSelector) {
+      new Shopify.CountryProvinceSelector('AddressCountry_' + id, 'AddressProvince_' + id, { hideElement: 'AddressProvinceWrap_' + id });
+    }
+  }); });
+</script>
+
+{% schema %}
+{ "name": "Customer addresses", "settings": [] }
+{% endschema %}

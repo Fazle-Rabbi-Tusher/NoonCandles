@@ -1,0 +1,23 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_cherry": "#4B0B19",
+      "color_white": "#F0EDE6",
+      "color_cream": "#F8EED5",
+      "color_matcha": "#BED698",
+      "background_glow": true,
+      "logo_width": 190,
+      "animations_reveal": true,
+      "animations_hover": true,
+      "card_image_ratio": "square",
+      "card_show_secondary": true,
+      "card_quick_add": true,
+      "card_show_vendor": false,
+      "badge_new_tag": "new",
+      "cart_type": "drawer",
+      "cart_show_note": true,
+      "free_shipping_threshold": 100
+    }
+  }
+}

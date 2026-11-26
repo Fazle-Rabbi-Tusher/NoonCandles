@@ -1,0 +1,240 @@
+{
+  "general": {
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "play": "Play",
+    "pause": "Pause",
+    "rating": "{{ count }} out of 5 stars",
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page"
+    },
+    "404": {
+      "title": "This wick went out",
+      "text": "We couldn't find the page you were looking for. Let's get you back to the candles."
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "header": {
+    "menu": "Menu",
+    "main_nav": "Main navigation",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart",
+    "view_all": "All {{ title }}"
+  },
+  "footer": {
+    "country": "Country / region"
+  },
+  "onboarding": {
+    "product_title": "Your candle's name"
+  },
+  "newsletter": {
+    "placeholder": "Your email",
+    "button": "Join",
+    "success": "Thanks for joining! Watch your inbox for something warm."
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "adding": "Adding…",
+      "added": "Added to your cart",
+      "choose_options": "Choose options",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "on_sale": "Sale",
+      "new": "New",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "price_from": "From {{ price }}",
+      "tax_included": "Tax included.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "in_stock": "In stock, ready to ship",
+      "low_stock": {
+        "one": "Only {{ count }} left",
+        "other": "Only {{ count }} left"
+      },
+      "made_to_order": "Made to order",
+      "view_media": "View image {{ index }}"
+    }
+  },
+  "collections": {
+    "eyebrow": "Collection",
+    "view_all": "View all",
+    "filter": "Filter",
+    "sort_by": "Sort by",
+    "apply": "Apply",
+    "clear_all": "Clear all",
+    "price_from": "From",
+    "price_to": "To",
+    "empty": "No candles match these filters.",
+    "product_count": {
+      "one": "{{ count }} candle",
+      "other": "{{ count }} candles"
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "empty_text": "Let's find something that smells like home.",
+    "continue": "Shop candles",
+    "subtotal": "Subtotal",
+    "taxes_note": "Taxes, discounts and shipping calculated at checkout.",
+    "note": "Add a gift note",
+    "checkout": "Checkout",
+    "view_cart": "View cart",
+    "update": "Update",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "increase": "Increase quantity for {{ product }}",
+    "decrease": "Decrease quantity for {{ product }}",
+    "error": "Something went wrong. Please try again.",
+    "login_html": "Have an account? <a href=\"{{ link }}\">Log in</a> to check out faster.",
+    "shipping_remaining_html": "You're <strong>{{ amount }}</strong> away from free shipping",
+    "shipping_unlocked": "You've unlocked free shipping ✨"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search candles, scents, gifts…",
+    "results_for": "Results for “{{ terms }}”",
+    "no_results": "Nothing found. Try another scent or word.",
+    "count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    }
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "send": "Send message",
+    "success": "Thanks for your message! We'll be in touch soon."
+  },
+  "blogs": {
+    "eyebrow": "Journal",
+    "all": "All",
+    "empty": "No posts yet.",
+    "comments": {
+      "one": "{{ count }} comment",
+      "other": "{{ count }} comments"
+    },
+    "leave_comment": "Leave a comment",
+    "post": "Post comment",
+    "comment_moderated": "Thanks! Your comment will appear once it's approved.",
+    "comment_posted": "Thanks! Your comment has been posted."
+  },
+  "customer": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "zip": "Postcode",
+      "country": "Country",
+      "province": "State",
+      "phone": "Phone"
+    },
+    "login": {
+      "title": "Log in",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "new_html": "New here? <a href=\"{{ link }}\">Create an account</a>",
+      "guest": "Continue as guest"
+    },
+    "recover": {
+      "title": "Reset your password",
+      "text": "We'll email you a link to reset it.",
+      "submit": "Send reset link",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "register": {
+      "title": "Create account",
+      "submit": "Create account",
+      "marketing": "Email me about new scents and offers",
+      "login_html": "Already have an account? <a href=\"{{ link }}\">Log in</a>"
+    },
+    "account": {
+      "title": "My account",
+      "hello": "Hello, {{ name }}",
+      "logout": "Log out"
+    },
+    "orders": {
+      "title": "Order history",
+      "order": "Order",
+      "date": "Date",
+      "payment": "Payment",
+      "fulfillment": "Fulfilment",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "cancelled": "Order cancelled on {{ date }}",
+      "product": "Product",
+      "price": "Price",
+      "quantity": "Quantity",
+      "fulfilled": "Fulfilled {{ date }}",
+      "track": "Track shipment",
+      "shipping": "Shipping",
+      "billing": "Billing address",
+      "shipping_address": "Shipping address"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default address",
+      "none": "No address saved yet.",
+      "view": {
+        "one": "View addresses ({{ count }})",
+        "other": "View addresses ({{ count }})"
+      },
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Delete this address?",
+      "add": "Add a new address",
+      "save": "Save address",
+      "set_default": "Set as default address"
+    },
+    "activate": {
+      "title": "Activate account",
+      "text": "Create a password to activate your account.",
+      "submit": "Activate account",
+      "decline": "Decline invitation"
+    },
+    "reset": {
+      "title": "Reset password",
+      "text": "Choose a new password for your account.",
+      "submit": "Reset password"
+    }
+  },
+  "password": {
+    "notify": "Notify me",
+    "enter_store": "Enter using password",
+    "enter": "Enter",
+    "admin_html": "Are you the store owner? <a href=\"{{ link }}\">Log in here</a>"
+  },
+  "gift_card": {
+    "title": "Your gift card",
+    "heading": "Here's your gift card",
+    "initial": "Initial value {{ value }}",
+    "disabled": "This gift card is no longer active.",
+    "expires": "Expires {{ date }}",
+    "code": "Gift card code",
+    "shop": "Start shopping",
+    "apple_wallet": "Add to Apple Wallet",
+    "print": "Print"
+  }
+}

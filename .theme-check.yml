@@ -1,0 +1,5 @@
+ignore:
+  - brand/**
+  - node_modules/**
+RemoteAsset:
+  enabled: false

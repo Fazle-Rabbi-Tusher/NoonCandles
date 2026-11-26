@@ -1,0 +1,58 @@
+{%- comment -%}
+  Usage: {% render 'icon', name: 'search', class: 'extra' %}
+{%- endcomment -%}
+{%- capture attrs -%}class="icon icon-{{ name }} {{ class }}" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"{%- endcapture -%}
+{%- case name -%}
+  {%- when 'search' -%}
+    <svg {{ attrs }}><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  {%- when 'account' -%}
+    <svg {{ attrs }}><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+  {%- when 'bag' -%}
+    <svg {{ attrs }}><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>
+  {%- when 'menu' -%}
+    <svg {{ attrs }}><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  {%- when 'close' -%}
+    <svg {{ attrs }}><path d="M6 6l12 12M18 6 6 18"/></svg>
+  {%- when 'plus' -%}
+    <svg {{ attrs }}><path d="M12 5v14M5 12h14"/></svg>
+  {%- when 'minus' -%}
+    <svg {{ attrs }}><path d="M5 12h14"/></svg>
+  {%- when 'arrow-right' -%}
+    <svg {{ attrs }}><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  {%- when 'arrow-left' -%}
+    <svg {{ attrs }}><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+  {%- when 'chevron-down' -%}
+    <svg {{ attrs }}><path d="m6 9 6 6 6-6"/></svg>
+  {%- when 'filter' -%}
+    <svg {{ attrs }}><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+  {%- when 'check' -%}
+    <svg {{ attrs }}><path d="m5 12 5 5L20 7"/></svg>
+  {%- when 'flame' -%}
+    <svg {{ attrs }}><path d="M12 22c4 0 7-2.7 7-6.8 0-3.9-2.6-6.3-4.3-8.2-.4 2-1.4 3.2-2.7 3.7.5-3.2-.8-6.3-3.6-8.2.2 3.4-1.7 5.5-3.2 7.4A8.6 8.6 0 0 0 5 15.2C5 19.3 8 22 12 22Z"/></svg>
+  {%- when 'leaf' -%}
+    <svg {{ attrs }}><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19 13 11"/></svg>
+  {%- when 'hand' -%}
+    <svg {{ attrs }}><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11V4.5a1.5 1.5 0 0 1 3 0V12M14 11.5V6a1.5 1.5 0 0 1 3 0v7c0 4.4-2.6 8-6.5 8-2.6 0-4.3-1.3-5.6-3.4L3.4 14.6a1.6 1.6 0 0 1 2.6-1.8L8 15"/></svg>
+  {%- when 'truck' -%}
+    <svg {{ attrs }}><path d="M3 6h11v10H3zM14 9h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+  {%- when 'gift' -%}
+    <svg {{ attrs }}><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14"/><path d="M12 7c-1.5-3-5-3.5-5-1.2C7 7 9 7 12 7Zm0 0c1.5-3 5-3.5 5-1.2C17 7 15 7 12 7Z"/></svg>
+  {%- when 'clock' -%}
+    <svg {{ attrs }}><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+  {%- when 'sparkle' -%}
+    <svg {{ attrs }}><path d="M12 3c.6 4.4 2.6 6.4 7 7-4.4.6-6.4 2.6-7 7-.6-4.4-2.6-6.4-7-7 4.4-.6 6.4-2.6 7-7Z"/></svg>
+  {%- when 'heart' -%}
+    <svg {{ attrs }}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>
+  {%- when 'star' -%}
+    <svg class="icon icon-star {{ class }}" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+  {%- when 'play' -%}
+    <svg class="icon icon-play {{ class }}" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+  {%- when 'instagram' -%}
+    <svg {{ attrs }}><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>
+  {%- when 'tiktok' -%}
+    <svg {{ attrs }}><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.8 2.3 4.5 5 4.8"/></svg>
+  {%- when 'facebook' -%}
+    <svg {{ attrs }}><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5Z"/></svg>
+  {%- when 'pinterest' -%}
+    <svg {{ attrs }}><circle cx="12" cy="12" r="9"/><path d="M10.5 20 12.5 11M10 14c.5 1.3 1.6 2 3 2 2.5 0 4-2.2 4-5a5 5 0 0 0-10 .5c0 1 .3 1.8.8 2.4"/></svg>
+{%- endcase -%}

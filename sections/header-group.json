@@ -1,0 +1,26 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "msg-1": {
+          "type": "announcement",
+          "settings": { "highlight": "FREE SHIPPING", "text": "on orders over $100 across Australia", "link": "" }
+        },
+        "msg-2": {
+          "type": "announcement",
+          "settings": { "highlight": "HAND-POURED", "text": "Small batches, made to order", "link": "" }
+        }
+      },
+      "block_order": ["msg-1", "msg-2"],
+      "settings": { "speed": 5 }
+    },
+    "header": {
+      "type": "header",
+      "settings": { "logo_variant": "horizontal", "menu": "main-menu", "sticky": "always", "solid": false }
+    }
+  },
+  "order": ["announcement", "header"]
+}

@@ -1,0 +1,14 @@
+<figure class="quote-card" {{ block.shopify_attributes }}>
+  {%- if block.settings.stars > 0 -%}
+    <div class="quote-card__stars" aria-label="{{ 'general.rating' | t: count: block.settings.stars }}">
+      {%- for i in (1..block.settings.stars) -%}{% render 'icon', name: 'star' %}{%- endfor -%}
+    </div>
+  {%- endif -%}
+  <blockquote class="quote-card__text">{{ block.settings.quote | escape | newline_to_br }}</blockquote>
+  {%- if block.settings.author != blank -%}
+    <figcaption class="quote-card__author">
+      <span class="quote-card__avatar" aria-hidden="true">{{ block.settings.author | slice: 0 }}</span>
+      {{ block.settings.author | escape }}
+    </figcaption>
+  {%- endif -%}
+</figure>

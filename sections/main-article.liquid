@@ -1,0 +1,57 @@
+<article class="section" style="padding-top: clamp(28px, 4vw, 56px)">
+  <script type="application/ld+json">{{ article | structured_data }}</script>
+  <div class="page-width page-width--narrow">
+    <div class="stack" style="--stack: 1rem">
+      <a class="eyebrow" href="{{ blog.url }}" style="text-decoration: none">{{ blog.title | escape }}</a>
+      <h1 data-split>{{ article.title | escape }}</h1>
+      <p class="muted">{{ article.published_at | time_tag: format: 'date' }}{% if section.settings.show_author %} · {{ article.author }}{% endif %}</p>
+    </div>
+    {%- if article.image -%}
+      <div class="article__hero" data-reveal="scale">
+        {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1600', sizes: '(min-width: 900px) 820px, 100vw', alt: article.title }}
+      </div>
+    {%- endif -%}
+    <div class="rte" data-reveal>{{ article.content }}</div>
+
+    {%- if blog.comments_enabled? -%}
+      <div class="stack" style="--stack: 1.2rem; margin-top: 60px">
+        <h2 class="h3">{{ 'blogs.comments' | t: count: article.comments_count }}</h2>
+        {%- paginate article.comments by 20 -%}
+          {%- for comment in article.comments -%}
+            <div class="comment">
+              <div class="rte">{{ comment.content }}</div>
+              <p class="muted" style="font-size: .85rem; margin-top: 8px">{{ comment.author }} · {{ comment.created_at | time_tag: format: 'date' }}</p>
+            </div>
+          {%- endfor -%}
+          {% render 'pagination', paginate: paginate %}
+        {%- endpaginate -%}
+
+        {%- form 'new_comment', article, class: 'form-grid' -%}
+          <h3 class="h4">{{ 'blogs.leave_comment' | t }}</h3>
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success">
+              {%- if blog.moderated? -%}{{ 'blogs.comment_moderated' | t }}{%- else -%}{{ 'blogs.comment_posted' | t }}{%- endif -%}
+            </p>
+          {%- elsif form.errors -%}
+            <div class="form-message form-message--error">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+          <div class="form-grid form-grid--2">
+            <input class="input" type="text" name="comment[author]" placeholder="{{ 'contact.name' | t }}" required value="{{ form.author }}" aria-label="{{ 'contact.name' | t }}">
+            <input class="input" type="email" name="comment[email]" placeholder="{{ 'contact.email' | t }}" required value="{{ form.email }}" aria-label="{{ 'contact.email' | t }}">
+          </div>
+          <textarea class="textarea" name="comment[body]" placeholder="{{ 'contact.message' | t }}" required aria-label="{{ 'contact.message' | t }}">{{ form.body }}</textarea>
+          <div><button class="btn" type="submit"><span>{{ 'blogs.post' | t }}</span></button></div>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Blog post",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,39 @@
+{%- assign s = section.settings -%}
+<section class="section{% if s.background == 'cream' %} section--cream{% elsif s.background == 'cherry' %} section--cherry{% elsif s.background == 'matcha' %} section--matcha{% endif %}">
+  <div class="page-width page-width--narrow text-center stack" style="--stack: 1.2rem">
+    {%- if s.eyebrow != blank -%}<span class="eyebrow" data-reveal>{{ s.eyebrow | escape }}</span>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 data-reveal>{{ s.heading }}</h2>{%- endif -%}
+    {%- if s.text != blank -%}<div class="rte lead" style="margin-inline: auto" data-reveal>{{ s.text }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <div data-reveal>
+        <a class="btn{% if s.background == 'cherry' %} btn--light{% endif %}" href="{{ s.button_link }}"><span>{{ s.button_label | escape }}</span></a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "cream", "label": "Whipped Cream" },
+        { "value": "matcha", "label": "Matcha Green" },
+        { "value": "cherry", "label": "Cherry Red" }
+      ],
+      "default": "none"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Made slowly, <em>burned slowly</em>" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Tell your story, share an offer or introduce a new collection.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

@@ -1,0 +1,62 @@
+{%- assign s = section.settings -%}
+<section class="section">
+  <div class="page-width">
+    <div class="section-header" data-reveal>
+      <div class="stack" style="--stack: .5rem">
+        {%- if s.eyebrow != blank -%}<span class="eyebrow">{{ s.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ s.heading }}</h2>
+      </div>
+      <a class="link-arrow" href="{{ routes.collections_url }}">{{ 'collections.view_all' | t }} {% render 'icon', name: 'arrow-right' %}</a>
+    </div>
+    <div class="collection-list">
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        <a class="collection-tile" href="{{ c.url | default: '#' }}" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 90 }}" {{ block.shopify_attributes }}>
+          {%- assign img = block.settings.image | default: c.featured_image -%}
+          {%- if img != blank -%}
+            {{ img | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 990px) 25vw, 50vw', alt: c.title }}
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+          <span class="collection-tile__label">
+            {{ block.settings.label | default: c.title | default: 'Collection' | escape }}
+            {% render 'icon', name: 'arrow-right' %}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Shop by mood" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Find your scent" }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom image" },
+        { "type": "text", "id": "label", "label": "Custom label" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "collection", "settings": { "label": "Desserts" } },
+        { "type": "collection", "settings": { "label": "Drinks" } },
+        { "type": "collection", "settings": { "label": "Florals" } },
+        { "type": "collection", "settings": { "label": "Gift sets" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

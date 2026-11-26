@@ -1,0 +1,58 @@
+<section class="section section--tight">
+  <div class="page-width">
+    <div class="usp__grid">
+      {%- for block in section.blocks -%}
+        <div class="usp__item" data-reveal style="--reveal-delay: {{ forloop.index0 | times: 90 }}" {{ block.shopify_attributes }}>
+          <span class="usp__icon">{% render 'icon', name: block.settings.icon %}</span>
+          <span class="usp__value">{{ block.settings.value | escape }}</span>
+          <span class="usp__label">{{ block.settings.label }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Highlights",
+  "max_blocks": 4,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Highlight",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "clock", "label": "Clock" },
+            { "value": "hand", "label": "Hand" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "flame", "label": "Flame" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "heart", "label": "Heart" }
+          ],
+          "default": "leaf"
+        },
+        { "type": "text", "id": "value", "label": "Big text", "default": "100%" },
+        { "type": "inline_richtext", "id": "label", "label": "Small text", "default": "natural soy wax" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Highlights",
+      "blocks": [
+        { "type": "stat", "settings": { "icon": "leaf", "value": "100%", "label": "natural soy wax" } },
+        { "type": "stat", "settings": { "icon": "clock", "value": "60 h", "label": "of slow, clean burn" } },
+        { "type": "stat", "settings": { "icon": "hand", "value": "1 of 1", "label": "hand-finished, no two alike" } },
+        { "type": "stat", "settings": { "icon": "gift", "value": "Gift-ready", "label": "wrapped with care, every order" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

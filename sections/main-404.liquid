@@ -1,0 +1,13 @@
+<section class="page-width not-found">
+  {% render 'logo', variant: 'mark' %}
+  <h1>{{ 'general.404.title' | t }}</h1>
+  <p class="lead">{{ 'general.404.text' | t }}</p>
+  <a class="btn" href="{{ routes.all_products_collection_url }}"><span>{{ 'cart.continue' | t }}</span></a>
+</section>
+
+{% schema %}
+{
+  "name": "404",
+  "settings": []
+}
+{% endschema %}
