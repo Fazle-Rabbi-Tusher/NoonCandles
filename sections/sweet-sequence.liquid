@@ -1,0 +1,125 @@
+{%- comment -%}
+  Sweet sequence — scroll-scrubbed, frame by frame.
+  1 dark scene: product in a glass frame + facts → 2 a light panel rises; the frame becomes a pale card
+  with a white circle → 3 the circle grows to fill the left half → 4 big line + blurred product, a second
+  line reveals word by word → 5 label + statement, background splits → 6 product sharpens and multiplies
+  into a row of products.
+  Timeline: assets/sweet-sequence.js · visuals: assets/sweet-sequence.css
+{%- endcomment -%}
+{{ 'sweet-sequence.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sweet-sequence.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign s = section.settings
+  assign first_img = s.frame_image
+  if first_img == blank and s.product_1 != blank
+    assign first_img = s.product_1.featured_media
+  endif
+-%}
+<section class="sq" data-sweet style="--sq-length: {{ s.length }}vh; --sq-dark: {{ s.dark }}; --sq-pale: {{ s.pale }}; --sq-light: {{ s.light }};">
+  <div class="sq__stage" data-sq-stage>
+    {%- comment -%} 1 · dark scene {%- endcomment -%}
+    <div class="sq__dark" aria-hidden="true"></div>
+    <div class="sq__glass" data-sq="glass" aria-hidden="true">
+      <div class="sq__glass-circle">
+        {%- if first_img != blank -%}
+          {{ first_img | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '40vmin', alt: '' }}
+        {%- endif -%}
+      </div>
+    </div>
+    <dl class="sq__facts" data-sq="facts">
+      {%- if s.fact_1_label != blank -%}<div><dt>{{ s.fact_1_label | escape }}</dt><dd>{{ s.fact_1_value | escape }}</dd></div>{%- endif -%}
+      {%- if s.fact_2_label != blank -%}<div><dt>{{ s.fact_2_label | escape }}</dt><dd>{{ s.fact_2_value | escape }}</dd></div>{%- endif -%}
+    </dl>
+    {%- if s.intro != blank -%}<p class="sq__intro" data-sq="intro">{{ s.intro | escape }}</p>{%- endif -%}
+
+    {%- comment -%} 2–6 · light panel rises; everything below lives inside it {%- endcomment -%}
+    <div class="sq__light" data-sq="light">
+      <div class="sq__quad" data-sq="quad" aria-hidden="true"></div>
+      <div class="sq__pale" data-sq="pale" aria-hidden="true"><span></span></div>
+
+      <div class="sq__row" data-sq="row">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign pkey = 'product_' | append: i
+            assign ikey = 'photo_' | append: i
+            assign prod = s[pkey]
+            assign img = s[ikey]
+            if img == blank and prod != blank
+              assign img = prod.featured_media
+            endif
+          -%}
+          <a class="sq__card" data-sq-card="{{ i }}" {% if prod != blank %}href="{{ prod.url }}"{% else %}role="presentation"{% endif %} tabindex="-1">
+            {%- if img != blank -%}
+              {%- assign card_alt = prod.title | default: '' | escape -%}
+              {{ img | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '26vh', alt: card_alt }}
+            {%- endif -%}
+            {%- if prod != blank -%}
+              <span class="sq__card-label"><b>{{ prod.title | escape }}</b><span>{{ prod.price | money }}</span></span>
+            {%- endif -%}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      <h2 class="sq__big" data-sq="big">{{ s.big_line }}</h2>
+      <p class="sq__words" data-sq="words">
+        {%- assign words = s.word_line | split: ' ' -%}
+        {%- for w in words -%}<span>{{ w | escape }}</span> {% endfor -%}
+      </p>
+
+      <div class="sq__promise" data-sq="promise">
+        <p class="sq__label">{{ s.label | escape }}</p>
+        <p class="sq__statement">{{ s.statement | escape }}</p>
+      </div>
+      <div class="sq__end" data-sq="end">
+        {% render 'icon', name: 'spark' %}
+        <p>{{ s.end_line_1 | escape }}<br>{{ s.end_line_2 | escape }}</p>
+        {%- if s.button_label != blank -%}
+          <a class="btn btn--sm" href="{{ s.button_link | default: routes.all_products_collection_url }}"><span>{{ s.button_label | escape }}</span>{% render 'icon', name: 'spark' %}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sweet sequence",
+  "class": "sq-section",
+  "settings": [
+    { "type": "paragraph", "content": "A scroll-scrubbed sequence: product in a glass frame → circle reveal → big line → statement → your products in a row." },
+    { "type": "range", "id": "length", "label": "Scroll length", "min": 300, "max": 900, "step": 50, "unit": "vh", "default": 600 },
+    { "type": "header", "content": "1 · Dark scene" },
+    { "type": "image_picker", "id": "frame_image", "label": "Photo in the glass frame", "info": "Defaults to product 1’s photo." },
+    { "type": "text", "id": "intro", "label": "Small line (bottom left)", "default": "Sweet enough to eat. Please don’t." },
+    { "type": "text", "id": "fact_1_label", "label": "Fact 1 label", "default": "Poured by hand" },
+    { "type": "text", "id": "fact_1_value", "label": "Fact 1", "default": "One at a time" },
+    { "type": "text", "id": "fact_2_label", "label": "Fact 2 label", "default": "Every order" },
+    { "type": "text", "id": "fact_2_value", "label": "Fact 2", "default": "Gift-wrapped" },
+    { "type": "header", "content": "2 · Big line" },
+    { "type": "inline_richtext", "id": "big_line", "label": "Big line", "default": "Sweet enough to eat." },
+    { "type": "text", "id": "word_line", "label": "Line that lights up word by word", "default": "Please don’t — it’s a candle." },
+    { "type": "header", "content": "3 · Statement" },
+    { "type": "text", "id": "label", "label": "Label", "default": "Our promise" },
+    { "type": "textarea", "id": "statement", "label": "Statement", "default": "Every candle is whipped, piped and finished by hand, so it looks like dessert and burns like a candle should." },
+    { "type": "text", "id": "end_line_1", "label": "Closing line 1", "default": "Hand-poured in small batches." },
+    { "type": "text", "id": "end_line_2", "label": "Closing line 2", "default": "Wrapped and ready to gift." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the range" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "4 · Products in a row" },
+    { "type": "product", "id": "product_1", "label": "Product 1 (front)" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "product", "id": "product_3", "label": "Product 3" },
+    { "type": "product", "id": "product_4", "label": "Product 4" },
+    { "type": "image_picker", "id": "photo_1", "label": "Override photo 1" },
+    { "type": "image_picker", "id": "photo_2", "label": "Override photo 2" },
+    { "type": "image_picker", "id": "photo_3", "label": "Override photo 3" },
+    { "type": "image_picker", "id": "photo_4", "label": "Override photo 4" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "dark", "label": "Dark scene", "default": "#3A0812" },
+    { "type": "color", "id": "pale", "label": "Pale card", "default": "#F1E2E1" },
+    { "type": "color", "id": "light", "label": "Light panel", "default": "#FBF8F4" }
+  ],
+  "presets": [{ "name": "Sweet sequence" }]
+}
+{% endschema %}

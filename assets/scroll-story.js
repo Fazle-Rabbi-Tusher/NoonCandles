@@ -50,6 +50,11 @@
       [0.16, { x: 0.5, y: 0.54, k: 0, r: 1 }],
       [0.27, { x: 0.5, y: 0.5, k: 1, r: 0 }]
     ],
+    frameCentered: [
+      [0, { x: 0.5, y: 0.53, k: 0, r: 1 }],
+      [0.16, { x: 0.5, y: 0.53, k: 0, r: 1 }],
+      [0.27, { x: 0.5, y: 0.5, k: 1, r: 0 }]
+    ],
     night: [[0.025, 0], [0.09, 1]],
     heroImg: [[0.045, 1], [0.095, 0]],
     // Candle photo inside the frame: zoom (z × cover), flame height (ty, fraction of frame), opacity
@@ -223,11 +228,13 @@
       const { W, H, U, D } = this;
 
       // 1 · Hero copy slides away
-      const hero = sample(T.hero, p);
-      L.hero.style.transform = `translate3d(${hero.x * W}px, 0, 0)`;
-      L.hero.style.opacity = hero.o;
-      L.hero.style.visibility = hero.o <= 0.001 ? 'hidden' : 'visible';
-      L.hero.style.pointerEvents = hero.o > 0.6 ? 'auto' : 'none';
+      if (L.hero) {
+        const hero = sample(T.hero, p);
+        L.hero.style.transform = `translate3d(${hero.x * W}px, 0, 0)`;
+        L.hero.style.opacity = hero.o;
+        L.hero.style.visibility = hero.o <= 0.001 ? 'hidden' : 'visible';
+        L.hero.style.pointerEvents = hero.o > 0.6 ? 'auto' : 'none';
+      }
       if (L.down) {
         const d = sample(T.down, p);
         L.down.style.opacity = d;
@@ -236,7 +243,7 @@
       if (L.night) L.night.style.opacity = sample(T.night, p);
 
       // 2 · The arch frame
-      const f = sample(this.wide ? T.frameWide : T.frameNarrow, p);
+      const f = sample(!L.hero ? T.frameCentered : this.wide ? T.frameWide : T.frameNarrow, p);
       const archH = this.wide ? H * 0.78 : H * 0.4;
       const archW = this.wide ? Math.min(W * 0.36, archH * 0.74) : Math.min(W * 0.76, archH * 0.78);
       const fw = lerp(archW, W * 1.04, f.k);

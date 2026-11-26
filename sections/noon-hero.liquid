@@ -1,0 +1,125 @@
+{%- comment -%}
+  Noon hero — editorial card with an oval window, two 3D candles passing through it,
+  and the brand name set huge with script overlays.
+  Visuals: assets/noon-hero.css · motion + WebGL candles: assets/noon-hero.js (three.js from jsDelivr)
+{%- endcomment -%}
+{{ 'noon-hero.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Pinyon+Script&display=swap" rel="stylesheet">
+<script type="module" src="{{ 'noon-hero.js' | asset_url }}"></script>
+
+{%- assign s = section.settings -%}
+<section class="nh" data-noon-hero style="--nh-sky-top: {{ s.sky_top }}; --nh-sky-mid: {{ s.sky_mid }}; --nh-dusk: {{ s.dusk }}; --nh-script: {{ s.script_color }};">
+  <div class="nh__sky" aria-hidden="true">
+    <span class="nh__cloud nh__cloud--1"></span>
+    <span class="nh__cloud nh__cloud--2"></span>
+    <span class="nh__cloud nh__cloud--3"></span>
+    <span class="nh__cloud nh__cloud--4"></span>
+  </div>
+
+  {%- comment -%} Candles behind the card (seen through the oval and below the card) {%- endcomment -%}
+  <canvas class="nh__gl nh__gl--back" data-nh-back aria-hidden="true"></canvas>
+
+  {%- comment -%} The card with an oval window {%- endcomment -%}
+  <div class="nh__card" data-nh-card>
+    <svg class="nh__card-shape" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <defs>
+        <mask id="nh-hole-{{ section.id }}">
+          <rect width="1000" height="400" fill="#fff"/>
+          <ellipse cx="500" cy="196" rx="392" ry="118" transform="rotate(-9 500 196)" fill="#000"/>
+        </mask>
+      </defs>
+      <rect width="1000" height="400" fill="currentColor" mask="url(#nh-hole-{{ section.id }})"/>
+    </svg>
+
+    <div class="nh__tag" data-nh-in>
+      <div class="nh__tag-row">
+        <span>{{ s.tag_line_1 | escape }}</span>
+        {% render 'icon', name: 'flame' %}
+      </div>
+      <div class="nh__tag-row nh__tag-row--split">
+        <span class="nh__tag-side">{{ s.tag_side | escape }}</span>
+        <span>{{ s.tag_line_2 | escape }}</span>
+      </div>
+    </div>
+    <div class="nh__corner" data-nh-in aria-hidden="true"><span></span></div>
+    <span class="nh__cross nh__cross--center" aria-hidden="true"></span>
+    <div class="nh__progress" aria-hidden="true"><span data-nh-progress></span><i></i><i></i><i></i></div>
+    <a class="nh__explore" href="#{{ section.id }}-after" data-nh-explore data-nh-in>
+      <span class="nh__explore-label">{{ s.scroll_label | escape }}</span>
+      <span class="nh__explore-btn">{% render 'icon', name: 'arrow-down' %}</span>
+    </a>
+  </div>
+
+  {%- comment -%} Same render, in front of the card above the oval's middle — so the candles pass through {%- endcomment -%}
+  <canvas class="nh__gl nh__gl--front" data-nh-front aria-hidden="true"></canvas>
+
+  {%- if s.fallback_image != blank -%}
+    <div class="nh__fallback" aria-hidden="true">
+      {{ s.fallback_image | image_url: width: 1200 | image_tag: loading: 'eager', alt: '' }}
+    </div>
+  {%- endif -%}
+
+  <span class="nh__cross nh__cross--side" aria-hidden="true"></span>
+
+  <div class="nh__marquee" aria-hidden="true">
+    <div class="nh__marquee-track">
+      {%- for i in (1..2) -%}
+        <span>{{ s.marquee | escape }}</span>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <h1 class="nh__type" data-nh-type>
+    <span class="visually-hidden">{{ s.line_1 | escape }} {{ s.line_2 | escape }} — {{ s.script_1 | escape }}, {{ s.script_2 | escape }} {{ s.script_3 | escape }}</span>
+    <span class="nh__line" aria-hidden="true">
+      <span class="nh__word" data-nh-word>{{ s.line_1 | escape }}</span>
+      <span class="nh__script nh__script--1" data-nh-script>{{ s.script_1 | escape }}</span>
+    </span>
+    <span class="nh__line" aria-hidden="true">
+      <span class="nh__word" data-nh-word>{{ s.line_2 | escape }}</span>
+      <span class="nh__script nh__script--2" data-nh-script>
+        {{- s.script_2 | escape -}}
+        {%- if s.script_3 != blank -%}<i class="nh__dash"></i>{{ s.script_3 | escape }}{%- endif -%}
+      </span>
+    </span>
+  </h1>
+</section>
+<span id="{{ section.id }}-after" class="nh__anchor" aria-hidden="true"></span>
+
+{% schema %}
+{
+  "name": "Noon hero",
+  "class": "nh-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Two 3D candles pass through an oval window in the card. Works best as the first section on the home page."
+    },
+    { "type": "header", "content": "Brand type" },
+    { "type": "text", "id": "line_1", "label": "Big word 1", "default": "NOON" },
+    { "type": "text", "id": "line_2", "label": "Big word 2", "default": "CANDLES" },
+    { "type": "text", "id": "script_1", "label": "Script over word 1", "default": "hand-poured" },
+    { "type": "text", "id": "script_2", "label": "Script over word 2 (left)", "default": "sweet" },
+    { "type": "text", "id": "script_3", "label": "Script over word 2 (right)", "default": "& slow" },
+    { "type": "header", "content": "Card details" },
+    { "type": "text", "id": "tag_line_1", "label": "Tag, first line", "default": "Hand-poured dessert candles" },
+    { "type": "text", "id": "tag_line_2", "label": "Tag, second line", "default": "Keeping homes sweet / one candle at a time" },
+    { "type": "text", "id": "tag_side", "label": "Tag, side label", "default": "N°01" },
+    { "type": "text", "id": "scroll_label", "label": "Scroll prompt", "default": "Scroll down to explore" },
+    { "type": "text", "id": "marquee", "label": "Moving line", "default": "Noon — hand-poured — dessert candles — small batches — sweet enough to eat — please don’t — " },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "sky_top", "label": "Sky top", "default": "#E8D6D2" },
+    { "type": "color", "id": "sky_mid", "label": "Sky middle", "default": "#F6E9DC" },
+    { "type": "color", "id": "dusk", "label": "Bottom", "default": "#5B1A2B" },
+    { "type": "color", "id": "script_color", "label": "Script colour", "default": "#C2416B" },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image",
+      "info": "Shown only if a visitor’s browser can’t draw 3D."
+    }
+  ],
+  "presets": [{ "name": "Noon hero" }]
+}
+{% endschema %}

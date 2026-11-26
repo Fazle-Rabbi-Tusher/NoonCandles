@@ -1,5 +1,25 @@
 {
   "sections": {
+    "noon-hero": {
+      "type": "noon-hero",
+      "settings": {
+        "line_1": "NOON",
+        "line_2": "CANDLES",
+        "script_1": "hand-poured",
+        "script_2": "sweet",
+        "script_3": "& slow",
+        "tag_line_1": "Hand-poured dessert candles",
+        "tag_line_2": "Keeping homes sweet / one candle at a time",
+        "tag_side": "N°01",
+        "scroll_label": "Scroll down to explore",
+        "marquee": "Noon — hand-poured — dessert candles — small batches — sweet enough to eat — please don’t — ",
+        "sky_top": "#E8D6D2",
+        "sky_mid": "#F6E9DC",
+        "dusk": "#5B1A2B",
+        "script_color": "#C2416B",
+        "fallback_image": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg"
+      }
+    },
     "story": {
       "type": "scroll-story",
       "blocks": {
@@ -32,9 +52,9 @@
       ],
       "settings": {
         "length": 800,
-        "hero_eyebrow": "Hand-poured dessert candles",
-        "hero_heading": "A little light isn’t found. <em>It’s poured.</em>",
-        "hero_text": "Whipped, piped and finished by hand — candles that look good enough to eat.",
+        "hero_eyebrow": "",
+        "hero_heading": "",
+        "hero_text": "",
         "statement_heading": "Every candle is whipped, piped and finished by hand.",
         "statement_text": "Sweet enough to eat. Please don’t.",
         "mark_caption": "Our flame is the dot of the ن.",
@@ -55,9 +75,9 @@
         "orb_b_image": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg",
         "hero_photo": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
         "hero_product": "strawberry-whipped-coupe",
-        "hero_button_label": "Shop candles",
+        "hero_button_label": "",
         "hero_button_link": "shopify://collections/all",
-        "hero_link_label": "Our story"
+        "hero_link_label": ""
       }
     },
     "hero": {
@@ -437,7 +457,8 @@
         "button_bg": "#C97B84",
         "button_ink": "#FFFFFF",
         "image": "shopify://shop_images/noon-letterboard-coupes.jpg"
-      }
+      },
+      "disabled": true
     },
     "banner-together": {
       "type": "split-banner",
@@ -454,10 +475,43 @@
         "button_ink": "#DDE9C6",
         "image": "shopify://shop_images/noon-bubble-jars-table.jpg"
       }
+    },
+    "sweet": {
+      "type": "sweet-sequence",
+      "settings": {
+        "length": 600,
+        "frame_image": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
+        "intro": "Sweet enough to eat. Please don’t.",
+        "fact_1_label": "Poured by hand",
+        "fact_1_value": "One at a time",
+        "fact_2_label": "Every order",
+        "fact_2_value": "Gift-wrapped",
+        "big_line": "Sweet enough to eat.",
+        "word_line": "Please don’t — it’s a candle.",
+        "label": "Our promise",
+        "statement": "Every candle is whipped, piped and finished by hand, so it looks like dessert and burns like a candle should.",
+        "end_line_1": "Hand-poured in small batches.",
+        "end_line_2": "Wrapped and ready to gift.",
+        "button_label": "Shop the range",
+        "button_link": "shopify://collections/all",
+        "product_1": "strawberry-whipped-coupe",
+        "product_2": "raspberry-whipped-coupe",
+        "product_3": "mango-matcha-bubble-jar",
+        "product_4": "strawberry-matcha-bubble-jar",
+        "photo_1": "shopify://shop_images/noon-strawberry-whipped-coupe.jpg",
+        "photo_2": "shopify://shop_images/noon-raspberry-whipped-coupe.jpg",
+        "photo_3": "shopify://shop_images/noon-mango-matcha-bubble-jar.jpg",
+        "photo_4": "shopify://shop_images/noon-strawberry-matcha-bubble-jar.jpg",
+        "dark": "#3A0812",
+        "pale": "#F1E2E1",
+        "light": "#FBF8F4"
+      }
     }
   },
   "order": [
+    "noon-hero",
     "story",
+    "sweet",
     "banner-sweet",
     "banner-together",
     "hero",

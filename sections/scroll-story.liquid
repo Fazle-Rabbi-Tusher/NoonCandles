@@ -52,7 +52,8 @@
     </div>
     <div class="story__glow" data-layer="glow" aria-hidden="true"><span class="story__glow-core"></span></div>
 
-    {%- comment -%} 1 · bright hero copy {%- endcomment -%}
+    {%- comment -%} 1 · bright hero copy (optional — leave the heading empty when a hero section sits above) {%- endcomment -%}
+    {%- if s.hero_heading != blank -%}
     <div class="story__hero" data-layer="hero">
       <div class="story__hero-inner">
         {%- if s.hero_eyebrow != blank -%}<span class="story__eyebrow">{{ s.hero_eyebrow | escape }}</span>{%- endif -%}
@@ -85,6 +86,7 @@
     <button class="story__down" type="button" data-story-next data-layer="down" aria-label="{{ 'general.scroll' | t }}">
       {% render 'icon', name: 'arrow-down' %}
     </button>
+    {%- endif -%}
 
     {%- comment -%} 3 · statement over the flame {%- endcomment -%}
     <div class="story__statement" data-layer="statement">
