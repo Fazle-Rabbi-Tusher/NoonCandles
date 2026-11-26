@@ -31,7 +31,9 @@
           const now = performance.now();
           const dt = Math.min(120, now - (this.last || now - 16));
           this.last = now;
-          this.cur += (target - this.cur) * (1 - Math.exp(-dt / 65));
+          // while the page glides (smooth-scroll.js) follow it almost directly; ease only real jumps
+          const tau = window.noonScroll && window.noonScroll.gliding() ? 14 : 65;
+          this.cur += (target - this.cur) * (1 - Math.exp(-dt / tau));
         }
         if (Math.abs(target - this.cur) < 0.0003) this.cur = target;
         this.update(this.cur, rect);

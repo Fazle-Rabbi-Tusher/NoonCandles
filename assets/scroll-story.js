@@ -129,7 +129,9 @@
           const now = performance.now();
           const dt = Math.min(120, now - (this.last || now - 16));
           this.last = now;
-          this.cur += (target - this.cur) * (1 - Math.exp(-dt / 65));
+          // while the page glides (smooth-scroll.js) follow it almost directly; ease only real jumps
+          const tau = window.noonScroll && window.noonScroll.gliding() ? 14 : 65;
+          this.cur += (target - this.cur) * (1 - Math.exp(-dt / tau));
         }
         if (Math.abs(target - this.cur) < 0.0003) this.cur = target;
         this.render(this.cur, rect);
@@ -193,7 +195,8 @@
     scrollToProgress(p) {
       const top = this.root.getBoundingClientRect().top + window.scrollY;
       const total = this.root.offsetHeight - this.H;
-      window.scrollTo({ top: top + total * p, behavior: this.reduce ? 'auto' : 'smooth' });
+      if (window.noonScroll) window.noonScroll.scrollTo(top + total * p, { duration: 1.6 });
+      else window.scrollTo({ top: top + total * p, behavior: this.reduce ? 'auto' : 'smooth' });
     }
 
     place(el, x, y, d, o, base) {
