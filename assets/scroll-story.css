@@ -1,0 +1,247 @@
+/* ==========================================================================
+   Noon Candles — Scroll story (scroll-scrubbed animation)
+   Positions/opacity are driven by assets/scroll-story.js
+   ========================================================================== */
+
+.story {
+  --story-top: color-mix(in srgb, var(--c-cherry) 62%, #000);
+  --story-mid: var(--c-cherry);
+  --story-low: color-mix(in srgb, var(--c-cherry) 42%, var(--c-cream));
+  --story-bottom: var(--c-cream);
+  --story-ink: var(--c-cream);
+  position: relative;
+  height: var(--story-length, 750vh);
+  background: var(--c-cherry);
+  color: var(--story-ink);
+}
+/* Slide under the transparent header when the story opens the page */
+main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)); }
+
+.story__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint;
+}
+
+.story__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--story-top) 0%, var(--story-mid) 36%, var(--story-low) 74%, var(--story-bottom) 100%);
+}
+
+/* ---------- Glass orbs ---------- */
+.orb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  will-change: transform, width, height, opacity;
+  box-shadow:
+    inset 0 2px 1px -1px rgba(255, 244, 232, 0.6),
+    inset 0 -3px 2px -1px rgba(26, 3, 8, 0.9),
+    inset 0 0 0 1px rgba(255, 244, 232, 0.1),
+    inset 0 -40px 70px -40px rgba(255, 244, 232, 0.28),
+    inset 0 30px 60px -30px rgba(20, 2, 6, 0.35),
+    0 50px 90px -60px rgba(20, 2, 6, 0.7);
+}
+.orb--dark {
+  background: linear-gradient(180deg, rgba(22, 2, 7, 0.55) 0%, rgba(75, 11, 25, 0.22) 55%, rgba(248, 238, 213, 0.08) 100%);
+}
+.orb--light {
+  background: linear-gradient(180deg, rgba(255, 244, 232, 0.04) 0%, rgba(248, 238, 213, 0.2) 70%, rgba(248, 238, 213, 0.32) 100%);
+}
+.orb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 60% 35% at 50% 10%, rgba(255, 255, 255, 0.16), transparent 70%);
+}
+/* thin iridescent rim — matcha / cream / cherry */
+.orb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from 200deg,
+    transparent 0 22%,
+    rgba(190, 214, 152, 0.9) 30%,
+    rgba(248, 238, 213, 0.95) 35%,
+    rgba(230, 120, 120, 0.85) 40%,
+    transparent 48% 70%,
+    rgba(190, 214, 152, 0.5) 76%,
+    transparent 84% 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.75;
+}
+.orb--small::after { padding: 1px; }
+
+/* Noon mark glowing inside the big orb */
+.story__mark {
+  position: absolute;
+  inset: 24% 20%;
+  display: grid;
+  place-items: center;
+  color: var(--c-cream);
+  opacity: 0;
+  filter: drop-shadow(0 0 28px rgba(248, 238, 213, 0.55));
+}
+.story__mark .noon-logo { width: 100%; height: auto; }
+.story__mark .noon-flame { animation: flame-flicker 1.6s ease-in-out infinite; }
+
+/* ---------- Copy ---------- */
+.story__hero {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(1040px, calc(100% - var(--gutter) * 2));
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  z-index: 2;
+}
+.story__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(var(--c-cream-rgb), 0.75);
+}
+.story__eyebrow--dot { display: inline-flex; align-items: center; gap: 10px; }
+.story__eyebrow--dot::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c-matcha); }
+.story__title {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 0, 'opsz' 144;
+  font-weight: 420;
+  font-size: clamp(2.7rem, 7.2vw, 6.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--story-ink);
+  text-wrap: balance;
+}
+.story__title em { font-style: italic; color: var(--c-matcha); font-weight: 380; }
+.story__title--md { font-size: clamp(2rem, 4.6vw, 4.2rem); line-height: 1.02; }
+.story__sub { font-size: clamp(1rem, 1.3vw, 1.2rem); color: rgba(var(--c-cream-rgb), 0.72); max-width: 46ch; }
+
+.story__down {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 5vh, 48px);
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--c-cherry);
+  border: 1px solid rgba(var(--c-cherry-rgb), 0.25);
+  background: rgba(var(--c-cream-rgb), 0.35);
+  backdrop-filter: blur(6px);
+  z-index: 3;
+  transition: transform 0.4s var(--ease-spring), background-color 0.3s;
+}
+.story__down svg { transform: rotate(90deg); width: 20px; height: 20px; }
+.story__down:hover { transform: translateY(3px); background: rgba(var(--c-cream-rgb), 0.6); }
+
+/* ---------- Statement panel ---------- */
+.story__panel {
+  position: absolute;
+  inset: 0;
+  background: var(--c-cherry);
+  transform: translateY(100%);
+  z-index: 4;
+}
+.story__statement {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: calc(var(--header-h) + 4vh);
+  padding: clamp(28px, 6vh, 64px) clamp(20px, 6vw, 96px);
+  border-radius: 24px;
+  border: 1px solid rgba(var(--c-cream-rgb), 0.14);
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  text-align: center;
+}
+.story__statement .story__title { max-width: 18ch; }
+
+/* ---------- Shape reveal ---------- */
+.story__reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 0 0;
+  mask-size: 0 0;
+  opacity: 0;
+}
+.story--arch .story__reveal {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' preserveAspectRatio='none'%3E%3Cpath d='M0 130V50a50 50 0 0 1 100 0v80z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130' preserveAspectRatio='none'%3E%3Cpath d='M0 130V50a50 50 0 0 1 100 0v80z'/%3E%3C/svg%3E");
+}
+.story--diamond .story__reveal {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='15' y='15' width='70' height='70' rx='13' transform='rotate(45 50 50)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='15' y='15' width='70' height='70' rx='13' transform='rotate(45 50 50)'/%3E%3C/svg%3E");
+}
+.story__reveal.is-full { -webkit-mask-image: none; mask-image: none; }
+.story__dim { position: absolute; inset: 0; background: color-mix(in srgb, var(--c-cherry) 55%, #000); opacity: 0; }
+
+/* ---------- Finale ---------- */
+.story__final {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+}
+.story__final.is-live { pointer-events: auto; }
+.story__final-copy {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(28px, 7vh, 72px);
+  width: min(680px, calc(100% - var(--gutter) * 2));
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+.story__final-copy .story__title { text-shadow: 0 2px 30px rgba(20, 2, 6, 0.35); }
+.story__stats {
+  position: absolute;
+  right: var(--gutter);
+  top: 30%;
+  width: min(380px, 32vw);
+  margin: 0;
+  display: grid;
+}
+.story__stat { padding: 18px 0 20px; border-top: 1px solid rgba(var(--c-cream-rgb), 0.22); }
+.story__stat dt { font-size: 0.88rem; color: rgba(var(--c-cream-rgb), 0.7); }
+.story__stat dd { margin: 6px 0 0; font-family: var(--font-display); font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.1; color: var(--c-cream); }
+
+@media (max-width: 749px) {
+  .story__stats { left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + 8px); width: auto; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .story__stat { padding: 10px 0 0; }
+  .story__stat dt { font-size: 0.72rem; }
+  .story__stat dd { font-size: 1.05rem; }
+  .story__statement { top: calc(var(--header-h) + 2vh); }
+}
+
+/* Without JS: show the hero only */
+html.no-js .story { height: auto; }
+html.no-js .story__stage { position: relative; }
+html.no-js .story__panel, html.no-js .story__reveal, html.no-js .story__final, html.no-js .story__down { display: none; }

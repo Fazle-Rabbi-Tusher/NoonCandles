@@ -1,5 +1,49 @@
 {
   "sections": {
+    "story": {
+      "type": "scroll-story",
+      "blocks": {
+        "stat-1": {
+          "type": "stat",
+          "settings": {
+            "label": "Scents in rotation",
+            "value": "24"
+          }
+        },
+        "stat-2": {
+          "type": "stat",
+          "settings": {
+            "label": "Slow, clean burn",
+            "value": "Up to 60 h"
+          }
+        },
+        "stat-3": {
+          "type": "stat",
+          "settings": {
+            "label": "Wax",
+            "value": "100% soy · hand-poured"
+          }
+        }
+      },
+      "block_order": [
+        "stat-1",
+        "stat-2",
+        "stat-3"
+      ],
+      "settings": {
+        "length": 750,
+        "reveal_shape": "arch",
+        "hero_eyebrow": "Hand-poured candles",
+        "hero_heading": "A little light isn’t found. <em>It’s poured.</em>",
+        "hero_text": "Made by hand, one small batch at a time.",
+        "statement_heading": "Every candle is melted, scented, poured and finished by hand.",
+        "statement_text": "No two are quite the same — that’s the point.",
+        "final_eyebrow": "What we make",
+        "final_heading": "Small-batch candles. From the first pour to your front door.",
+        "final_button_label": "Shop candles",
+        "final_button_link": "shopify://collections/all"
+      }
+    },
     "hero": {
       "type": "hero",
       "blocks": {
@@ -48,7 +92,8 @@
         "button_link": "shopify://collections/all",
         "button_label_2": "Our story",
         "trust_label": "Why people love Noon"
-      }
+      },
+      "disabled": true
     },
     "highlights": {
       "type": "usp-stats",
@@ -92,7 +137,8 @@
         "s3",
         "s4"
       ],
-      "settings": {}
+      "settings": {},
+      "disabled": true
     },
     "shop": {
       "type": "featured-collection",
@@ -339,6 +385,7 @@
     }
   },
   "order": [
+    "story",
     "hero",
     "highlights",
     "shop",

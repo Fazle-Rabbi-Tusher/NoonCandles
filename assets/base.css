@@ -197,6 +197,16 @@ h3, .h3 { font-size: clamp(1.35rem, 2vw, 1.75rem); }
   background: rgba(var(--c-white-rgb), 0.82); backdrop-filter: saturate(1.4) blur(14px); -webkit-backdrop-filter: saturate(1.4) blur(14px);
   box-shadow: 0 1px 0 var(--c-line);
 }
+/* Over the dark scroll story: light text, floating pill nav, no white bar */
+.header, .header__logo, .header__menu-link, .header__icons .icon-btn { transition: color 0.35s, background-color 0.35s, box-shadow 0.35s; }
+.header-wrapper.is-on-dark .header { background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; color: var(--c-cream); }
+.header-wrapper.is-on-dark .header__logo { color: var(--c-cream); }
+.header-wrapper.is-on-dark .header__menu { gap: 6px; }
+.header-wrapper.is-on-dark .header__menu-link { background: rgba(var(--c-cherry-rgb), 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--c-cream); }
+.header-wrapper.is-on-dark .header__menu-link:hover { background: rgba(var(--c-cherry-rgb), 0.8); }
+.header-wrapper.is-on-dark .header__icons .icon-btn { background: rgba(var(--c-cherry-rgb), 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.header-wrapper.is-on-dark .header__icons { gap: 6px; }
+.header-wrapper.is-on-dark .cart-count { background: var(--c-matcha); color: var(--c-cherry); }
 .header__inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; min-height: var(--header-h); }
 .header__logo { display: inline-flex; color: var(--c-cherry); text-decoration: none; }
 .header__logo .noon-logo, .header__logo img { width: var(--logo-width); height: auto; }
