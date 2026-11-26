@@ -295,14 +295,6 @@ function initHero(root) {
   const progressBar = root.querySelector('[data-nh-progress]');
   const explore = root.querySelector('[data-nh-explore]');
 
-  // the hero fills the screen below whatever sits above it (the announcement bar)
-  const fit = () => {
-    const top = root.getBoundingClientRect().top + window.scrollY;
-    root.style.setProperty('--nh-above', (top < 200 ? Math.max(0, Math.round(top)) : 0) + 'px');
-  };
-  fit();
-  window.addEventListener('resize', fit);
-
   requestAnimationFrame(() => root.classList.add('is-in'));
   if (explore) {
     explore.addEventListener('click', (e) => {

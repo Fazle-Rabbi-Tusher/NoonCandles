@@ -1,9 +1,11 @@
 {%- comment -%}
-  Noon hero — editorial card with an oval window, Noon’s own candles in 3D passing through it,
-  and the brand name set huge in the theme’s display face (Fraunces) with italic overlays.
+  Noon hero — editorial card with an oval window, two 3D candles passing through it,
+  and the brand name set huge with script overlays.
   Visuals: assets/noon-hero.css · motion + WebGL candles: assets/noon-hero.js (three.js from jsDelivr)
 {%- endcomment -%}
 {{ 'noon-hero.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Pinyon+Script&display=swap" rel="stylesheet">
 <script type="module" src="{{ 'noon-hero.js' | asset_url }}"></script>
 
 {%- assign s = section.settings -%}
@@ -95,11 +97,11 @@
       "content": "Two 3D candles pass through an oval window in the card. Works best as the first section on the home page."
     },
     { "type": "header", "content": "Brand type" },
-    { "type": "text", "id": "line_1", "label": "Big word 1", "default": "Noon" },
-    { "type": "text", "id": "line_2", "label": "Big word 2", "default": "candles" },
-    { "type": "text", "id": "script_1", "label": "Italic over word 1", "default": "hand-poured" },
-    { "type": "text", "id": "script_2", "label": "Italic over word 2 (left)", "default": "sweet" },
-    { "type": "text", "id": "script_3", "label": "Italic over word 2 (right)", "default": "& slow" },
+    { "type": "text", "id": "line_1", "label": "Big word 1", "default": "NOON" },
+    { "type": "text", "id": "line_2", "label": "Big word 2", "default": "CANDLES" },
+    { "type": "text", "id": "script_1", "label": "Script over word 1", "default": "hand-poured" },
+    { "type": "text", "id": "script_2", "label": "Script over word 2 (left)", "default": "sweet" },
+    { "type": "text", "id": "script_3", "label": "Script over word 2 (right)", "default": "& slow" },
     { "type": "header", "content": "Card details" },
     { "type": "text", "id": "tag_line_1", "label": "Tag, first line", "default": "Hand-poured dessert candles" },
     { "type": "text", "id": "tag_line_2", "label": "Tag, second line", "default": "Keeping homes sweet / one candle at a time" },
