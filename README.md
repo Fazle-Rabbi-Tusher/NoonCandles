@@ -53,7 +53,7 @@ brand/       logo source and exports (not uploaded to Shopify; see .shopifyignor
 ## Develop
 
 ```powershell
-shopify theme dev --store ktxp1m-in.myshopify.com
+shopify theme dev --store nooncandles.myshopify.com
 ```
 
 ```powershell
@@ -61,7 +61,7 @@ shopify theme check
 ```
 
 ```powershell
-shopify theme push --unpublished --store ktxp1m-in.myshopify.com
+shopify theme push --unpublished --store nooncandles.myshopify.com
 ```
 
 You can also connect this GitHub repo in **Online Store → Themes → Add theme → Connect from GitHub**. The theme files are at the repo root.

@@ -7,11 +7,11 @@
       "blocks": {
         "msg-1": {
           "type": "announcement",
-          "settings": { "highlight": "FREE SHIPPING", "text": "on orders over $100 across Australia", "link": "" }
+          "settings": { "highlight": "HAND-POURED", "text": "Small batches, made to order" }
         },
         "msg-2": {
           "type": "announcement",
-          "settings": { "highlight": "HAND-POURED", "text": "Small batches, made to order", "link": "" }
+          "settings": { "highlight": "GIFT-READY", "text": "Every order wrapped with care" }
         }
       },
       "block_order": ["msg-1", "msg-2"],

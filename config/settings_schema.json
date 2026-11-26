@@ -111,7 +111,7 @@
         "min": 0,
         "max": 300,
         "step": 5,
-        "default": 100
+        "default": 0
       },
       {
         "type": "collection",

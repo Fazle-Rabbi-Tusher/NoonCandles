@@ -17,7 +17,7 @@
       "badge_new_tag": "new",
       "cart_type": "drawer",
       "cart_show_note": true,
-      "free_shipping_threshold": 100
+      "free_shipping_threshold": 0
     }
   }
 }

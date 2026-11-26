@@ -1,6 +1,12 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
+    {%- comment -%}
+      Noon Candles main layout. It depends on sections/header-group.json and
+      sections/footer-group.json. On a first GitHub connect, if this file is
+      missing from the theme, push any change to it to re-sync once the
+      section groups exist.
+    {%- endcomment -%}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
