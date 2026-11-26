@@ -18,16 +18,31 @@
       this.cards = Array.from(root.querySelectorAll('[data-sq-card]'));
       this.words = Array.from(root.querySelectorAll('.sq__words span'));
       this.header = document.querySelector('[data-header]');
-      this.tick = false;
-      const onScroll = () => {
-        if (this.tick) return;
-        this.tick = true;
-        requestAnimationFrame(() => { this.tick = false; this.update(); });
+      this.cur = null;
+      this.raf = 0;
+      this.loop = () => {
+        this.raf = 0;
+        const rect = this.root.getBoundingClientRect();
+        const total = this.root.offsetHeight - this.H;
+        const target = clamp(-rect.top / (total || 1));
+        if (this.cur === null || reduce) this.cur = target;
+        else {
+          // time-based easing: same feel at any frame rate (~0.2s to catch up)
+          const now = performance.now();
+          const dt = Math.min(120, now - (this.last || now - 16));
+          this.last = now;
+          this.cur += (target - this.cur) * (1 - Math.exp(-dt / 65));
+        }
+        if (Math.abs(target - this.cur) < 0.0003) this.cur = target;
+        this.update(this.cur, rect);
+        if (this.cur !== target) this.raf = requestAnimationFrame(this.loop);
+        else this.last = 0;
       };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', () => { this.measure(); this.update(); });
+      this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(this.loop); };
+      window.addEventListener('scroll', this.onScroll, { passive: true });
+      window.addEventListener('resize', () => { this.measure(); this.cur = null; this.onScroll(); });
       this.measure();
-      this.update();
+      this.onScroll();
     }
 
     measure() {
@@ -35,6 +50,16 @@
       this.H = this.stage.clientHeight;
       this.wide = this.W >= 900;
       this.headerH = this.header ? this.header.getBoundingClientRect().height : 0;
+      const { W, H, wide, el } = this;
+      this.S = wide ? Math.min(H * 0.56, W * 0.36) : W * 0.62;
+      [el.glass, el.pale].forEach((n) => { n.style.width = n.style.height = this.S + 'px'; });
+      this.cw = wide ? H * 0.28 : W * 0.34;
+      this.ch = this.cw * 1.36;
+      this.cards.forEach((c) => { c.style.width = this.cw + 'px'; c.style.height = this.ch + 'px'; });
+    }
+
+    move(el, cx, cy, size, k = 1) {
+      el.style.transform = `translate3d(${(cx - size / 2).toFixed(1)}px, ${(cy - size / 2).toFixed(1)}px, 0) scale(${k.toFixed(4)})`;
     }
 
     box(el, cx, cy, w, h) {
@@ -43,10 +68,7 @@
       el.style.transform = `translate3d(${cx - w / 2}px, ${cy - h / 2}px, 0)`;
     }
 
-    update() {
-      const rect = this.root.getBoundingClientRect();
-      const total = this.root.offsetHeight - this.H;
-      let p = clamp(-rect.top / (total || 1));
+    update(p, rect) {
       if (reduce) p = p < 0.15 ? 0 : p < 0.35 ? 0.34 : p < 0.58 ? 0.5 : p < 0.85 ? 0.7 : 1;
 
       // Header: light text while the dark scene sits under it
@@ -58,9 +80,9 @@
       const { W, H, wide, el } = this;
 
       // 1 · glass frame + facts
-      const S = wide ? Math.min(H * 0.56, W * 0.36) : W * 0.62;
+      const S = this.S;
       const gy = wide ? H / 2 : H * 0.42;
-      this.box(el.glass, W / 2, gy, S, S);
+      this.move(el.glass, W / 2, gy, S);
       const factsOut = 1 - range(p, 0.1, 0.18);
       if (el.facts) el.facts.style.opacity = factsOut;
       if (el.intro) el.intro.style.opacity = factsOut;
@@ -75,10 +97,9 @@
       const sEnd = endDia / (0.94 * S);
       const endX = wide ? Math.max(H * 0.52, W * 0.25) : W / 2;
       const endY = wide ? H / 2 : H * 0.3;
-      const ps = lerp(1, sEnd, grow) * S;
       const pcx = lerp(W / 2, endX, grow);
       const pcy = lerp(gy, endY, grow);
-      this.box(el.pale, pcx, pcy, ps, ps);
+      this.move(el.pale, pcx, pcy, S, lerp(1, sEnd, grow));
 
       // 4 · big line + word-by-word line
       const bigIn = range(p, 0.36, 0.42);
@@ -98,8 +119,8 @@
       el.end.style.opacity = range(p, 0.86, 0.93);
 
       // 6 · product: appears blurred, sharpens, then multiplies into a row
-      const cw = wide ? H * 0.28 : W * 0.34;
-      const ch = cw * 1.36;
+      const cw = this.cw;
+      const ch = this.ch;
       const appear = range(p, 0.34, 0.42);
       const sharp = range(p, 0.72, 0.8);
       const spread = range(p, 0.78, 0.92);
@@ -112,8 +133,6 @@
         const cx = baseX + offsets[i] * W * spread;
         const cy = endY + lift[i] * H * spread;
         const sc = lerp(1, scale[i], spread);
-        card.style.width = cw + 'px';
-        card.style.height = ch + 'px';
         card.style.transform = `translate3d(${cx - cw / 2}px, ${cy - ch / 2}px, 0) scale(${sc})`;
         card.style.opacity = vis;
         card.style.zIndex = String(10 - i);
@@ -127,6 +146,6 @@
   const init = (scope = document) => scope.querySelectorAll('[data-sweet]').forEach((n) => { if (!n.__sweet) n.__sweet = new Sweet(n); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => init());
   else init();
-  window.addEventListener('load', () => document.querySelectorAll('[data-sweet]').forEach((n) => n.__sweet && (n.__sweet.measure(), n.__sweet.update())));
+  window.addEventListener('load', () => document.querySelectorAll('[data-sweet]').forEach((n) => n.__sweet && (n.__sweet.measure(), (n.__sweet.cur = null), n.__sweet.onScroll())));
   document.addEventListener('shopify:section:load', (e) => init(e.target));
 })();

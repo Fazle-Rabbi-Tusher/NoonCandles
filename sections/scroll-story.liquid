@@ -45,7 +45,8 @@
           data-fx="{{ s.flame_x | divided_by: 100.0 }}"
           data-fy="{{ s.flame_y | divided_by: 100.0 }}"
         >
-          {{ zoom_img | image_url: width: 2000 | image_tag: loading: 'eager', widths: '800, 1200, 1600, 2000', sizes: '200vw', alt: '' }}
+          {{ zoom_img | image_url: width: 1600 | image_tag: loading: 'eager', class: 'story__photo-sharp', widths: '800, 1200, 1600', sizes: '100vw', alt: '' }}
+          {{ zoom_img | image_url: width: 90 | image_tag: loading: 'eager', class: 'story__photo-soft', data-sq-soft: '', alt: '' }}
         </div>
         <div class="story__shade" data-layer="shade"></div>
       {%- endif -%}
@@ -95,6 +96,7 @@
     </div>
 
     {%- comment -%} 4–6 · light floods the screen {%- endcomment -%}
+    <div class="story__flood" data-layer="flood" aria-hidden="true"></div>
     <div class="story__fill" data-layer="fill" aria-hidden="true">
       <div class="story__dusk" data-layer="dusk"></div>
       <div class="story__dim" data-layer="dim"></div>

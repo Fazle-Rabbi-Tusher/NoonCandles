@@ -18,8 +18,7 @@
   border: 1.5px solid rgba(255, 255, 255, 0.28);
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.25), 0 40px 80px -40px rgba(0, 0, 0, 0.6);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 40%, rgba(255, 255, 255, 0.06));
-  backdrop-filter: blur(2px);
-  will-change: transform, width, height;
+  will-change: transform;
 }
 .sq__glass-circle {
   position: absolute;
@@ -39,7 +38,7 @@
 /* 2 · light panel (clipped from the bottom up) */
 .sq__light { position: absolute; inset: 0; z-index: 3; background: var(--sq-light); clip-path: inset(100% 0 0 0); }
 .sq__quad { position: absolute; left: 0; right: 0; top: 50%; bottom: 0; background: var(--sq-pale); transform-origin: bottom; transform: scaleY(0); }
-.sq__pale { position: absolute; left: 0; top: 0; border-radius: 13%; background: var(--sq-pale); will-change: transform, width, height; }
+.sq__pale { position: absolute; left: 0; top: 0; border-radius: 13%; background: var(--sq-pale); transform-origin: 50% 50%; will-change: transform; }
 .sq__pale span { position: absolute; inset: 3%; border-radius: 50%; background: var(--sq-light); }
 
 /* products (first one starts blurred, alone) */

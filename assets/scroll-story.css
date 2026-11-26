@@ -52,19 +52,17 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
 /* ---------- The arch frame ---------- */
 .story__frame {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  height: 0;
+  inset: 0;
   overflow: hidden;
   background: #120306;
-  box-shadow: 0 60px 110px -50px rgba(var(--c-cherry-rgb), 0.55), 0 0 0 1px rgba(var(--c-cherry-rgb), 0.06);
-  will-change: transform, width, height, border-radius;
+  clip-path: inset(50% 50% 50% 50%);
+  will-change: clip-path;
 }
 .story__frame-hero { position: absolute; inset: 0; z-index: 2; }
 .story__frame-hero img { width: 100%; height: 100%; object-fit: cover; }
-.story__photo { position: absolute; left: 0; top: 0; will-change: transform, width, height; }
-.story__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.story__photo { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.story__photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.story__photo-soft { opacity: 0; }
 .story__shade {
   position: absolute;
   inset: 0;
@@ -81,9 +79,20 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(255, 226, 170, 0.5) 0%, rgba(255, 180, 100, 0.22) 20%, rgba(255, 140, 60, 0.08) 42%, transparent 66%);
-  mix-blend-mode: screen;
-  will-change: transform, width, height, opacity;
+  background: radial-gradient(circle, rgba(255, 232, 186, 0.55) 0%, rgba(255, 186, 108, 0.24) 20%, rgba(255, 140, 60, 0.08) 42%, transparent 66%);
+  will-change: transform, opacity;
+}
+/* Soft light that floods the screen from the flame (a scaling layer — cheap to animate) */
+.story__flood {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, #fffaf0 0%, #fdf1dc 30%, #f8eed5 50%, rgba(248, 238, 213, 0.6) 62%, rgba(248, 238, 213, 0) 72%);
+  will-change: transform, opacity;
 }
 .story__glow::after {
   content: "";
@@ -125,7 +134,7 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   width: 0;
   height: 0;
   border-radius: 50%;
-  will-change: transform, width, height, opacity;
+  will-change: transform, opacity;
   box-shadow:
     inset 0 2px 1px -1px rgba(255, 244, 232, 0.6),
     inset 0 -3px 2px -1px rgba(26, 3, 8, 0.85),
@@ -280,11 +289,9 @@ main > .story-section:first-child .story { margin-top: calc(-1 * var(--header-h)
   position: absolute;
   inset: 0;
   z-index: 5;
-  -webkit-mask-image: radial-gradient(circle 0 at 50% 50%, #000 0, transparent 0);
-  mask-image: radial-gradient(circle 0 at 50% 50%, #000 0, transparent 0);
+  opacity: 0;
   background: radial-gradient(circle at 50% 46%, #fffaf0 0%, #fdf1dc 30%, var(--c-cream) 55%, #efd8b6 100%);
 }
-.story__fill.is-full { -webkit-mask-image: none; mask-image: none; }
 .story__dusk {
   position: absolute;
   inset: 0;
