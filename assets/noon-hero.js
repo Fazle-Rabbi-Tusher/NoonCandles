@@ -1,5 +1,5 @@
 /* Noon hero — Noon's own candles in 3D (three.js), passing through the card's oval:
-   a whipped coupe with strawberries (the hero), a layered bubble jar, a strawberry candle and a loose
+   the whipped coupe (cupcake) with strawberries as the hero, a layered bubble jar, a strawberry candle and a loose
    strawberry. Glossy wax look: clearcoat + sheen under a soft studio environment.
    The scene renders into the back canvas (behind the card); the same frame is copied to the front
    canvas, clipped above the oval's middle — so objects appear to pass through the window. */
